@@ -11,6 +11,10 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 
+/**
+ * Created by SonPhan on 3/24/2018.
+ */
+
 
 public class MainScreenActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener, ExploreFragment.OnFragmentInteractionListener, SearchFragment.OnFragmentInteractionListener, LibraryFragment.OnFragmentInteractionListener {
     ViewPager mainViewPager;
@@ -29,18 +33,21 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
 
         tabLayout = findViewById(R.id.slideTab);
         tabLayout.setupWithViewPager(mainViewPager);
-
+        //Init tabs
         initTabIcons();
 
+        //Handle tab switching
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                //Selected tab has black icon
                 setTabIcon(tab.getPosition(), true);
             }
 
             @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
+                ////Uselected tabs have white icon
                 setTabIcon(tab.getPosition(), false);
             }
 
@@ -53,13 +60,20 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
     }
 
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
+    /**
+     * Function: initTabIcons
+     * Created by: SonPhan 24/3/2018
+     * Purpose: Initialize tabs
+     * Description: Initialize tabs' icons and title
+     */
     void initTabIcons(){
         tabHome = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabExplore = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabSearch = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
         tabLibrary = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        setTabIcon(0, true);
 
+        setTabIcon(0, true); //Tab "Home" is selected by default
+        //The rest is unselected
         setTabIcon(1, false);
         setTabIcon(2, false);
 
@@ -68,8 +82,14 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
     }
 
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
+    /**
+     * Function: setTabIcon
+     * Created by: SonPhan 24/3/2018
+     * Purpose: Set icons and titles for tabs
+     * Description:
+     */
     void setTabIcon(int position, boolean isSelected){
-        if (position == 0){
+        if (position == 0){ //First tab: Home
             tabHome.setText("Home");
             if (isSelected){
                 tabHome.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_home_black_36dp,0, 0);
@@ -77,7 +97,7 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
                 tabHome.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_home_white_36dp,0, 0);
             }
             tabLayout.getTabAt(position).setCustomView(tabHome);
-        } else if (position == 1){
+        } else if (position == 1){ //Second tab: Explore
             tabExplore.setText("Explore");
             if (isSelected){
                 tabExplore.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_explore_black_36dp,0, 0);
@@ -85,7 +105,7 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
                 tabExplore.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_explore_white_36dp,0, 0);
             }
             tabLayout.getTabAt(position).setCustomView(tabExplore);
-        } else if (position == 2){
+        } else if (position == 2){ //Third tab: Search
             tabSearch.setText("Search");
             if (isSelected){
                 tabSearch.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_search_black_36dp,0, 0);
@@ -93,7 +113,7 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
                 tabSearch.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_search_white_36dp,0, 0);
             }
             tabLayout.getTabAt(position).setCustomView(tabSearch);
-        } else {
+        } else {//position = 3. Last tab: Library
             tabLibrary.setText("Library");
             if (isSelected){
                 tabLibrary.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_library_music_black_36dp,0, 0);
