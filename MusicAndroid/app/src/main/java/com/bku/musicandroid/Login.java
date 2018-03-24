@@ -3,7 +3,6 @@ package com.bku.musicandroid;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,7 +16,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -87,7 +85,7 @@ public class Login extends Activity {
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(getApplicationContext(), "Login success",Toast.LENGTH_SHORT).show();
-                            Intent mainIntent = new Intent(Login.this, MainActivity.class);
+                            Intent mainIntent = new Intent(Login.this, MainScreenActivity.class);
                             startActivity(mainIntent);
                             //   updateUI(user);
                         } else {
