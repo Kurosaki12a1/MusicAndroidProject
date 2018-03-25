@@ -1,13 +1,22 @@
 package com.bku.musicandroid;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+/**
+ * Created by SonPhan on 3/24/2018.
+ */
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +37,13 @@ public class LibraryFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private LinearLayout layoutPlaylists;
+    private LinearLayout layoutSongs;
+    private ImageView imgPlaylists;
+    private ImageView imgSongs;
+    private TextView txtPlaylists;
+    private TextView txtSongs;
 
     public LibraryFragment() {
         // Required empty public constructor
@@ -63,9 +79,7 @@ public class LibraryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        TextView textView = new TextView(getActivity());
-        textView.setText(R.string.hello_blank_fragment);
-        return textView;
+        return inflater.inflate(R.layout.fragment_library, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -92,6 +106,14 @@ public class LibraryFragment extends Fragment {
         mListener = null;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        bindViews();
+
+        super.onViewCreated(view, savedInstanceState);
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -105,5 +127,20 @@ public class LibraryFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    /**
+     * Function: bindViews
+     * Created by: SonPhan 25/3/2018
+     * Purpose: Bind views to variables
+     * Description:
+     */
+    private void bindViews(){
+        layoutPlaylists = getView().findViewById(R.id.layoutPlaylists);
+        layoutSongs = getView().findViewById(R.id.layoutSongs);
+        imgPlaylists = getView().findViewById(R.id.imgPlaylists);
+        imgSongs = getView().findViewById(R.id.imgSongs);
+        txtPlaylists = getView().findViewById(R.id.txtPlaylists);
+        TextView txtSongs = getView().findViewById(R.id.txtSongs);
     }
 }

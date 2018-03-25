@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/layoutPlaylists"
+        android:background="@color/colorChildBackground"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        android:clickable="true">
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:id="@+id/imgPlaylists"
+            android:src="@mipmap/ic_playlist_play_white_36dp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/txtPlaylists"
+            android:text="@string/playlists"
+            android:textSize="15dp"
+            android:textColor="@color/colorWhite"
+            android:gravity="center_vertical"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/layoutSongs"
+        android:layout_height="40dp"
+        android:background="@color/colorChildBackground"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp">
+        <ImageView
+            android:layout_width="60dp"
+            android:id="@+id/imgSongs"
+            android:layout_height="match_parent"
+            android:src="@mipmap/ic_music_note_white_36dp" />
+        <TextView
+            android:id="@+id/txtSongs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/songs"
+            android:textSize="15dp"
+            android:textColor="@color/colorWhite"
+            android:gravity="center_vertical"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background2"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"></LinearLayout>
+</LinearLayout>

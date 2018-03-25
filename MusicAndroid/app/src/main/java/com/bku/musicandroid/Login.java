@@ -1,6 +1,7 @@
 package com.bku.musicandroid;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ public class Login extends Activity {
     private TextView sign_up;
     private Button login_btn;
     private FirebaseAuth mAuth;
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +60,14 @@ public class Login extends Activity {
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Begin to initialize the Progress dialog
+                progressDialog = new ProgressDialog(Login.this);
+                progressDialog.setTitle("Log in");
+                progressDialog.setMessage("Logging in, please wait...");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.show();
+                progressDialog.setCancelable(false);
+
                 signIn(email_txt.getText().toString().trim(),pass_txt.getText().toString().trim());
             }
         });
@@ -72,6 +82,7 @@ public class Login extends Activity {
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
         if (!validateForm()) {
+            progressDialog.dismiss(); //Log in done, close the progress dialog
             return;
         }
 
@@ -85,11 +96,13 @@ public class Login extends Activity {
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(getApplicationContext(), "Login success",Toast.LENGTH_SHORT).show();
+                            progressDialog.dismiss(); //Log in done, close the progress dialog
                             Intent mainIntent = new Intent(Login.this, MainScreenActivity.class);
                             startActivity(mainIntent);
                             //   updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
+                            progressDialog.dismiss(); //Log in done, close the progress dialog
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(getApplicationContext(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
