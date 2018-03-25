@@ -21,11 +21,15 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
     MainFragmentPagerAdapter mainFragmentPagerAdapter;
     TabLayout tabLayout;
     TextView tabHome, tabExplore, tabSearch, tabLibrary;
+    TextView txtStatus;
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainscreen);
+
+        //txtStatus = findViewById(R.id.txt);
+        txtStatus = findViewById(R.id.txtStatus);
         mainViewPager = findViewById(R.id.viewPager);
         mainFragmentPagerAdapter = new MainFragmentPagerAdapter(this, getSupportFragmentManager());
 
@@ -42,6 +46,8 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
             public void onTabSelected(TabLayout.Tab tab) {
                 //Selected tab has black icon
                 setTabIcon(tab.getPosition(), true);
+                //Set status bar with the name of tab
+                txtStatus.setText(tab.getText());
             }
 
             @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
