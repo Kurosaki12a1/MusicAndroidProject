@@ -8,33 +8,33 @@ import java.util.Date;
 
 public class Users {
 
-    public String DateOfBirth;
-    public String FullName;
-    public String UserName;
-    public String Email;
-    public String AvatarURL;
+    public String dateOfBirth;
+    public String fullName;
+    public String userName;
+    public String email;
+    public String avatarURL;
 
-    public Users(String UserName, String Email, String FullName,String AvatarURL,String DateOfBirth) {
-        this.UserName=UserName;
-        this.Email=Email;
-        this.FullName=FullName;
-        this.AvatarURL=AvatarURL;
-        this.DateOfBirth=DateOfBirth;
+    public Users(String newUserName, String newEmail, String newFullName,String newAvatarURL,String newDateOfBirth) {
+        this.userName=newUserName;
+        this.email=newEmail;
+        this.fullName=newFullName;
+        this.avatarURL=newAvatarURL;
+        this.dateOfBirth=newDateOfBirth;
     }
 
     public Users(){
 
     }
 
-    public String getUserName(){return UserName;}
+    public String getUserName(){return userName;}
 
-    public String getEmail(){return Email;}
+    public String getEmail(){return email;}
 
-    public String getFullName(){return FullName;}
+    public String getFullName(){return fullName;}
 
-    public String getAvatarURL(){return AvatarURL;}
+    public String getAvatarURL(){return avatarURL;}
 
-    public String DateOfBirth(){return DateOfBirth;}
+    public String getDateOfBirth(){return dateOfBirth;}
 
 
 
