@@ -6,4 +6,6 @@
     <color name="colorAppBackground">#0A071E</color>
     <color name="colorTabBackground">#42071E</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorChildBackground">#0A291E</color>
 </resources>

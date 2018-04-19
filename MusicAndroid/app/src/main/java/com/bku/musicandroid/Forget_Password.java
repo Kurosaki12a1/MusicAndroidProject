@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -38,10 +39,11 @@ public class Forget_Password extends Activity {
         forget_btn=findViewById(R.id.forget_btn);
         result_txt=findViewById(R.id.result_txt);
         auth = FirebaseAuth.getInstance();
-        emailAddress = email_txt.getText().toString().trim();
+        Log.d("1abc","forget pass: "+emailAddress);
         forget_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                emailAddress = email_txt.getText().toString().trim();
                 if(TextUtils.isEmpty(emailAddress)) {
                     Toast.makeText(getApplicationContext(), "Please type your Email!", Toast.LENGTH_SHORT).show();
                 }

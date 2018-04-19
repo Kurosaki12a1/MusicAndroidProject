@@ -60,9 +60,9 @@
         android:id="@+id/forgot_pass_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:clickable="true"
-        android:layout_gravity="center"
         android:text="Quên mật khẩu?"
         android:textColor="@color/colorAccent" />
 
@@ -76,5 +76,14 @@
         android:clickable="true"
         android:text="Chưa có tài khoản? Hãy đăng ký!"
         android:textColor="@color/colorAccent" />
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/login_google_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true"
+        android:visibility="visible"
+        tools:visibility="gone" />
 
 </LinearLayout>

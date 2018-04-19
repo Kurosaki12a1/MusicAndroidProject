@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 /**
+ * Created by SonPhan on 3/24/2018.
+ */
+/**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link ExploreFragment.OnFragmentInteractionListener} interface
