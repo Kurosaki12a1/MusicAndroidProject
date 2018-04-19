@@ -39,7 +39,7 @@
         android:orientation="horizontal"
         android:background="@color/colorTabBackground">
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:id="@+id/txtStatus"
             android:layout_height="match_parent"
             android:text="@string/home"
