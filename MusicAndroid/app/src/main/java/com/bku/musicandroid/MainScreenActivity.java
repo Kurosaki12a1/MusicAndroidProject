@@ -27,6 +27,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * Created by SonPhan on 3/24/2018.
@@ -188,8 +193,11 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
 
-//                 if (id == R.id.nav_upload) {
-//
+                    if (id == R.id.nav_upload) {
+                        Intent intent=new Intent(MainScreenActivity.this,UploadSongActivity.class);
+                        startActivity(intent);
+                    }
+
 //                } else if (id == R.id.nav_setting) {
 //
 //                }
@@ -217,8 +225,24 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
     }
     private void loadNavHeader() {
         // name, website
-        txtName.setText("HyHy");
-        txtEmail.setText("huy@gmail.com");
+
+        mAuth=FirebaseAuth.getInstance();
+        String userId=mAuth.getCurrentUser().getUid();
+        DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("All_Users_Info_Database").child("users").child(userId);
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                txtName.setText(dataSnapshot.child("fullName").getValue(String.class));
+                txtEmail.setText(dataSnapshot.child("email").getValue(String.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
         // loading header background image
         Glide.with(this).load(urlNavHeaderBg)

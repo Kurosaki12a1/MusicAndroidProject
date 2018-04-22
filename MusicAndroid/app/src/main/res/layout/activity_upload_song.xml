@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorAppBackground">
+    <RelativeLayout
+        android:id="@+id/RelLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.25">
+
+    <Button
+        android:id="@+id/btnSelectFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/titleUpload"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="Choose music file..."
+        android:background="@drawable/roundshapebtn"
+        android:textColor="@color/btn_login"/>
+
+    <TextView
+        android:id="@+id/titleUpload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="UPLOAD MUSIC"
+        android:textColor="@color/colorAccent"
+        android:textSize="40dp"
+        android:textStyle="bold"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.7">
+
+        <TextView
+            android:id="@+id/musicName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="30dp"
+            android:padding="10dp"
+            android:text="Song Name"
+            android:textColor="@color/colorAccent"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/inputNameMusic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/musicName"
+            android:layout_alignBottom="@+id/musicName"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="20dp"
+            android:layout_toEndOf="@+id/musicName"
+            android:background="@color/btn_login_bg"
+            android:ems="10"
+            android:inputType="text"
+            android:padding="10dp"
+            android:text="@null"
+            android:textColor="@color/colorAccent" />
+
+        <EditText
+            android:id="@+id/inputAuthorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/inputNameMusic"
+            android:layout_alignBaseline="@+id/singerName"
+            android:layout_below="@+id/inputNameMusic"
+            android:ems="10"
+            android:layout_marginRight="20dp"
+            android:inputType="text"
+            android:text="@null"
+            android:textColor="@color/colorAccent"
+            android:padding="10dp"
+            android:background="@color/btn_login_bg"/>
+
+        <TextView
+            android:id="@+id/singerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/musicName"
+            android:layout_alignTop="@+id/musicName"
+            android:padding="10dp"
+            android:layout_marginTop="70dp"
+            android:text="Singer Name:"
+            android:textColor="@color/colorAccent"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/genreLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/singerName"
+            android:layout_alignTop="@+id/singerName"
+            android:layout_below="@+id/singerName"
+            android:layout_marginTop="70dp"
+            android:text="Genre"
+            android:textColor="@color/colorAccent"
+            android:textSize="20dp"
+            android:padding="10dp"/>
+
+        <Spinner
+            android:id="@+id/genreSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/inputAuthorName"
+            android:layout_alignTop="@+id/genreLabel"
+            android:layout_alignBottom="@+id/genreLabel"
+
+            android:layout_alignEnd="@+id/inputAuthorName"
+            android:layout_centerVertical="true" />
+
+        <ProgressBar
+            android:id="@+id/determinateBar"
+            style="@style/CustomProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:progress="0"
+            android:visibility="invisible"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/genreSpinner"
+            android:layout_alignStart="@+id/genreLabel"
+            android:layout_alignEnd="@+id/inputAuthorName"
+            />
+
+        <Button
+            android:id="@+id/UpLoad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/singerName"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/singerName"
+
+            android:layout_marginBottom="30dp"
+            android:text="Upload"
+            android:background="@drawable/roundshapebtn"
+            android:textColor="@color/btn_login"/>
+        <Button
+            android:id="@+id/exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/UpLoad"
+            android:layout_alignBottom="@+id/UpLoad"
+            android:layout_alignStart="@+id/inputAuthorName"
+            android:layout_alignEnd="@+id/inputAuthorName"
+            android:layout_marginLeft="30dp"
+            android:text="Exit"
+            android:background="@drawable/roundshapebtn"
+            android:textColor="@color/btn_login"/>
+
+
+    </RelativeLayout>
+
+</LinearLayout>
