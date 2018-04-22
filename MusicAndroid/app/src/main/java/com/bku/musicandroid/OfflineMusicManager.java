@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -46,7 +48,7 @@ public class OfflineMusicManager {
 
     public ArrayList<SongPlayerOfflineInfo> scanAllOfflineMusic() {
         ArrayList<SongPlayerOfflineInfo> listSong = scanMusic(Environment.getExternalStorageDirectory().getAbsolutePath());
-        listSong.sort(new Comparator<SongPlayerOfflineInfo>() {
+        Collections.sort(listSong, new Comparator<SongPlayerOfflineInfo>() {
             @Override
             public int compare(SongPlayerOfflineInfo t1, SongPlayerOfflineInfo t2) {
                 return t1.getSongName().compareTo(t2.getSongName());
