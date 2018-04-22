@@ -1,20 +1,16 @@
-package com.bku.listenmusic;
+package com.bku.musicandroid;
 
 /**
  * Created by Welcome on 3/8/2018.
  */
 
-public class SongPlayerOnlineInfo {
+public class SongPlayerOnlineInfo extends SongPlayerInfo {
 
     private String songURL;
 
     private String userId;
 
     private String imageSongURL;
-
-    private String songArtists;
-
-    private String songName;
 
     private String liked;
 
@@ -38,9 +34,7 @@ public class SongPlayerOnlineInfo {
     public String getSongURL(){return songURL;}
     public String getUserId(){return userId;}
     public String getImageSongURL(){return imageSongURL;}
-    public String getSongArtists(){return songArtists;}
     public String getSongGenre(){return songGenre;}
-    public String getSongName(){return songName;}
     public String getLiked(){return liked;}
     public String getSongId(){return songId;}
 

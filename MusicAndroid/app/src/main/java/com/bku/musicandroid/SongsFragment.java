@@ -1,35 +1,30 @@
+/**
+ * Created by SonPhan on 4/22/2018.
+ */
 package com.bku.musicandroid;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ListView;
 
-/**
- * Created by SonPhan on 3/24/2018.
- */
+import java.util.ArrayList;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link LibraryFragment.OnFragmentInteractionListener} interface
+ * {@link SongsFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link LibraryFragment#newInstance} factory method to
+ * Use the {@link SongsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LibraryFragment extends Fragment {
+public class SongsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -41,15 +36,14 @@ public class LibraryFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private LinearLayout layoutPlaylists;
-    private LinearLayout layoutSongs;
-    private ImageView imgPlaylists;
-    private ImageView imgSongs;
-    private TextView txtPlaylists;
-    private TextView txtSongs;
-    private FragmentManager fragmentManager;
+    private SongInfoOfflineAdapter songInfoOfflineAdapter;
+    private ListView lvSong;
+    private ArrayList<SongPlayerOfflineInfo> listSong;
+    private OfflineMusicManager offlineMusicManager;
 
-    public LibraryFragment() {
+
+
+    public SongsFragment() {
         // Required empty public constructor
     }
 
@@ -59,11 +53,11 @@ public class LibraryFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment LibraryFragment.
+     * @return A new instance of fragment SongsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static LibraryFragment newInstance(String param1, String param2) {
-        LibraryFragment fragment = new LibraryFragment();
+    public static SongsFragment newInstance(String param1, String param2) {
+        SongsFragment fragment = new SongsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -83,7 +77,8 @@ public class LibraryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_library, container, false);
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_songs, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -105,17 +100,17 @@ public class LibraryFragment extends Fragment {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         bindViews();
 
         super.onViewCreated(view, savedInstanceState);
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     /**
@@ -133,33 +128,12 @@ public class LibraryFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    /**
-     * Function: bindViews
-     * Created by: SonPhan 25/3/2018
-     * Purpose: Bind views to variables
-     * Description:
-     */
     private void bindViews(){
-        layoutPlaylists = getView().findViewById(R.id.layoutPlaylists);
-        layoutSongs = getView().findViewById(R.id.layoutSongs);
-        imgPlaylists = getView().findViewById(R.id.imgPlaylists);
-        imgSongs = getView().findViewById(R.id.imgSongs);
-        txtPlaylists = getView().findViewById(R.id.txtPlaylists);
-        TextView txtSongs = getView().findViewById(R.id.txtSongs);
-        fragmentManager = getActivity().getSupportFragmentManager();
-
-        layoutSongs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
-                fragmentTransaction.replace(R.id.fragmentLibrary, new SongsFragment());
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commitAllowingStateLoss();
-                fragmentManager.executePendingTransactions();
-
-
-            }
-        });
+        lvSong = getView().findViewById(R.id.lvSong);
+        listSong = new ArrayList<>();
+        offlineMusicManager = new OfflineMusicManager();
+        listSong = offlineMusicManager.scanAllOfflineMusic();
+        songInfoOfflineAdapter = new SongInfoOfflineAdapter(getActivity(), R.layout.songs_item, listSong);
+        lvSong.setAdapter(songInfoOfflineAdapter);
     }
 }

@@ -11,13 +11,15 @@
     <string name="home">Home</string>
     <string name="playlists">Playlists</string>
     <string name="songs">Songs</string>
-  
+    <string name="library">Library</string>
+    <string name="songName">Song's name</string>
+    <string name="artistName">Artist's name</string>
+
     <string-array name="nav_item_activity_titles">
         <item>Upload</item>
         <item>Settings</item>
         <item>Logout</item>
     </string-array>
 
-    
 
 </resources>
