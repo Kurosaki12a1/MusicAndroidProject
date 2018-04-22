@@ -5,7 +5,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
     <android.support.design.widget.TabLayout
         android:id="@+id/slideTab"
         android:layout_width="match_parent"
@@ -23,34 +31,33 @@
         android:layout_below="@+id/slideTab"
         android:layout_above="@+id/statusBar"
         android:background="@color/colorAppBackground" />
-    <LinearLayout
+        <LinearLayout
         android:layout_width="match_parent"
         android:id="@+id/statusBar"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
-        android:background="@color/colorTabBackground"
-        android:weightSum="5">
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="1"></LinearLayout>
+        android:background="@color/colorTabBackground">
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:id="@+id/txtStatus"
             android:layout_height="match_parent"
-            android:layout_weight="3"
             android:text="@string/home"
             android:gravity="center"
             android:textColor="@color/colorWhite"
             android:textSize="20dp"/>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="1"></LinearLayout>
+        
 
     </LinearLayout>
+        </RelativeLayout>
+        <android.support.design.widget.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/nav_header_main"
+            app:menu="@menu/drawer_menu" />
+    </android.support.v4.widget.DrawerLayout>
 
 </RelativeLayout>
