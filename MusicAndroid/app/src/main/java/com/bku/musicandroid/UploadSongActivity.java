@@ -34,7 +34,7 @@ import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Array;
 
 /**
- * Created by Welcome on 4/22/2018.
+ * Created by Thinh on 4/22/2018.
  */
 
 public class UploadSongActivity extends AppCompatActivity {
