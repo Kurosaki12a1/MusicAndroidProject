@@ -63,7 +63,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginEnd="20dp"
             android:layout_toEndOf="@+id/musicName"
-            android:background="@color/btn_login_bg"
+            android:background="@color/colorWhite"
             android:ems="10"
             android:inputType="text"
             android:padding="10dp"
@@ -83,7 +83,7 @@
             android:text="@null"
             android:textColor="@color/colorAccent"
             android:padding="10dp"
-            android:background="@color/btn_login_bg"/>
+            android:background="@color/colorWhite"/>
 
         <TextView
             android:id="@+id/singerName"
@@ -117,7 +117,7 @@
             android:layout_alignStart="@+id/inputAuthorName"
             android:layout_alignTop="@+id/genreLabel"
             android:layout_alignBottom="@+id/genreLabel"
-
+            android:background="@color/colorWhite"
             android:layout_alignEnd="@+id/inputAuthorName"
             android:layout_centerVertical="true" />
 
