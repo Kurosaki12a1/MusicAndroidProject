@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        android:id="@+id/relativeLayout"
+
+        >
+
+        <EditText
+            android:id="@+id/searchBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:background="@null"
+            android:hint="Search..."
+            android:inputType="text"
+            android:textSize="25sp"
+            android:layout_toStartOf="@+id/searchOption"
+            />
+
+        <ImageView
+            android:id="@+id/Search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+
+            android:layout_alignParentTop="true"
+            app:srcCompat="@android:drawable/ic_search_category_default" />
+
+        <Spinner
+            android:id="@+id/searchOption"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_toStartOf="@+id/Search"
+
+         />
+
+        <!--<EditText
+            android:id="@+id/searchBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:gravity="center_vertical|left"
+            android:layout_alignParentStart="true"
+            android:textColor="@color/colorBlack"
+            android:background="@color/colorWhite"
+            android:layout_alignEnd="@+id/optionSearch"
+
+            />
+        <Spinner
+            android:id="@+id/optionSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_alignStart="@+id/searchBar"
+        >
+        </Spinner>
+
+        <ImageView
+            android:id="@+id/search"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/optionSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_alignParentEnd="true"
+            />-->
+
+    </RelativeLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/recyclerView"
+        android:layout_weight="0.9">
+
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>
