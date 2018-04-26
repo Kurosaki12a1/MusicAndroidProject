@@ -2,6 +2,7 @@ package com.bku.musicandroid;
 
 import android.media.MediaMetadataRetriever;
 import android.provider.MediaStore;
+import android.support.v4.view.PagerTabStrip;
 
 import com.bku.musicandroid.SongPlayerInfo;
 
