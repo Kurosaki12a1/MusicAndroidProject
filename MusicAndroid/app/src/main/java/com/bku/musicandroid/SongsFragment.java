@@ -140,6 +140,7 @@ public class SongsFragment extends Fragment {
      * Created by SonPhan
      */
 
+    @SuppressWarnings("unchecked")
     private void bindViews(){
         lvSong = getView().findViewById(R.id.lvSong);
         progressLoadMusic = getView().findViewById(R.id.progressLoadMusic);
