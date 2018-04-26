@@ -2,6 +2,7 @@ package com.bku.musicandroid;
 
 import android.media.MediaMetadataRetriever;
 import android.provider.MediaStore;
+import android.support.v4.view.PagerTabStrip;
 
 import com.bku.musicandroid.SongPlayerInfo;
 
@@ -19,20 +20,15 @@ public class SongPlayerOfflineInfo extends SongPlayerInfo {
         String songArtist;
 
         MediaMetadataRetriever m = new MediaMetadataRetriever();
-        if (fileSong.getAbsolutePath().equals("")){
-            songName = fileSong.getName();
-            songArtist = "Unknown";
+        m.setDataSource(fileSong.getAbsolutePath());
+        songName = m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+        songArtist = m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+        if (songName == null) {
+           songName=fileSong.getName();
+
         }
-        else {
-            m.setDataSource(fileSong.getAbsolutePath());
-            songName = m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
-            songArtist = m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
-            if (songName == null) {
-                songName = fileSong.getName();
-            }
-            if (songArtist == null) {
-                songArtist = "Unknown";
-            }
+        if(songArtist==null) {
+            songArtist="Unknown";
         }
         this.setSongName(songName);
         this.setSongArtists(songArtist);
