@@ -3,8 +3,10 @@
  */
 package com.bku.musicandroid;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 
@@ -40,6 +43,7 @@ public class SongsFragment extends Fragment {
     private ListView lvSong;
     private ArrayList<SongPlayerOfflineInfo> listSong;
     private OfflineMusicManager offlineMusicManager;
+    private ProgressBar progressLoadMusic;
 
 
 
@@ -107,6 +111,10 @@ public class SongsFragment extends Fragment {
 
     }
 
+    public SongInfoOfflineAdapter getSongInfoOfflineAdapter() {
+        return songInfoOfflineAdapter;
+    }
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -127,13 +135,61 @@ public class SongsFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+    /**
+     * Function: bindViews
+     * Created by SonPhan
+     */
 
     private void bindViews(){
         lvSong = getView().findViewById(R.id.lvSong);
+        progressLoadMusic = getView().findViewById(R.id.progressLoadMusic);
+
         listSong = new ArrayList<>();
         offlineMusicManager = new OfflineMusicManager();
-        listSong = offlineMusicManager.scanAllOfflineMusic();
+        GetOfflineSongListAsyncTask asyncTask = new GetOfflineSongListAsyncTask();
         songInfoOfflineAdapter = new SongInfoOfflineAdapter(getActivity(), R.layout.songs_item, listSong);
         lvSong.setAdapter(songInfoOfflineAdapter);
+        asyncTask.execute(listSong);
     }
+
+    /**
+     * Class: GetOfflineSongListAsyncTask
+     * Created by SonPhan on 4/26/2018.
+     */
+    @SuppressLint("StaticFieldLeak")
+    public class GetOfflineSongListAsyncTask extends AsyncTask <ArrayList<SongPlayerOfflineInfo>, ArrayList<SongPlayerOfflineInfo>, ArrayList<SongPlayerOfflineInfo>>{
+
+        GetOfflineSongListAsyncTask() {
+        }
+
+
+        @Override
+        protected void onPostExecute(ArrayList<SongPlayerOfflineInfo> songPlayerOfflineInfos) {
+            super.onPostExecute(songPlayerOfflineInfos);
+        }
+
+        @Override
+        protected void onProgressUpdate(ArrayList<SongPlayerOfflineInfo>... values) {
+            super.onProgressUpdate(values);
+            if (values[0].size() == 0){
+                progressLoadMusic.setVisibility(View.VISIBLE);
+
+            } else {
+                progressLoadMusic.setVisibility(View.GONE);
+                songInfoOfflineAdapter.setDataSet(values[0]);
+                songInfoOfflineAdapter.notifyDataSetChanged();
+            }
+
+        }
+
+        @Override
+        protected ArrayList<SongPlayerOfflineInfo> doInBackground(ArrayList<SongPlayerOfflineInfo>... arrayLists) {
+            publishProgress(arrayLists);
+            OfflineMusicManager offlineMusicManager = new OfflineMusicManager();
+            arrayLists[0] = offlineMusicManager.scanAllOfflineMusic();
+            publishProgress(arrayLists);
+            return arrayLists[0];
+        }
+    }
+
 }

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SongInfoOfflineAdapter extends ArrayAdapter<SongPlayerOfflineInfo> {
-    private final ArrayList<SongPlayerOfflineInfo> listSongInfo;
+    private ArrayList<SongPlayerOfflineInfo> listSongInfo;
     private final LayoutInflater inflater;
     private final int resource;
 
@@ -26,6 +26,10 @@ public class SongInfoOfflineAdapter extends ArrayAdapter<SongPlayerOfflineInfo> 
         inflater = context.getLayoutInflater();
         this.listSongInfo = new ArrayList<>(objects);
         this.resource = resource;
+    }
+
+    public void setDataSet(ArrayList<SongPlayerOfflineInfo> objects){
+        this.listSongInfo = objects;
     }
 
     @Override

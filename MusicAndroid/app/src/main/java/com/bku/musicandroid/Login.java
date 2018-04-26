@@ -5,9 +5,11 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -65,7 +67,48 @@ public class Login extends Activity {
     private Dialog dialog;
     private Dialog usernamedialog;
     private GoogleSignInClient mGoogleSignInClient;
+    private SharedPreferences sharedPreferences;
+    private AppCompatCheckBox chkRememberPassword;
     private static final int RC_SIGN_IN = 9001;
+
+    /**
+     * Function: onResume
+     * Created by: SonPhan 26/04/2018
+     * Purpose: 1. Restore email and password from sharedpreferences
+     * Description:
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sharedPreferences = getSharedPreferences("RememberPassword", MODE_PRIVATE);
+        email_txt.setText(sharedPreferences.getString("Email",""));
+        pass_txt.setText(sharedPreferences.getString("Password",""));
+        chkRememberPassword.setChecked(sharedPreferences.getBoolean("IsChecked", false));
+
+    }
+
+    /**
+     * Function: onResume
+     * Created by: SonPhan 26/04/2018
+     * Purpose: 1. Save email and password into sharedpreferences
+     * Description:
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        if (chkRememberPassword.isChecked()){
+            editor.putBoolean("IsChecked", true);
+            editor.putString("Email", email_txt.getText().toString());
+            editor.putString("Password", pass_txt.getText().toString());
+        }
+        else{
+            editor.putBoolean("IsChecked", false);
+            editor.putString("Email", "");
+            editor.putString("Password", "");
+        }
+        editor.apply();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +118,7 @@ public class Login extends Activity {
         this.setContentView(R.layout.activity_login);
         email_txt = findViewById(R.id.email_txt);
         pass_txt = findViewById(R.id.pass_txt);
+        chkRememberPassword = findViewById(R.id.chkRememberPassword);
         login_btn = findViewById(R.id.login_btn);
         forgot_password = findViewById(R.id.forgot_pass_txt);
         sign_up = findViewById(R.id.signup_txt);
