@@ -19,20 +19,14 @@ public class SongPlayerOfflineInfo extends SongPlayerInfo {
         String songArtist;
 
         MediaMetadataRetriever m = new MediaMetadataRetriever();
-        if (fileSong.getAbsolutePath().equals("")){
+        m.setDataSource(fileSong.getAbsolutePath());
+        songName = m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+        songArtist = m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+        if (songName == null) {
             songName = fileSong.getName();
-            songArtist = "Unknown";
         }
-        else {
-            m.setDataSource(fileSong.getAbsolutePath());
-            songName = m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
-            songArtist = m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
-            if (songName == null) {
-                songName = fileSong.getName();
-            }
-            if (songArtist == null) {
-                songArtist = "Unknown";
-            }
+        if (songArtist == null) {
+            songArtist = "Unknown";
         }
         this.setSongName(songName);
         this.setSongArtists(songArtist);
