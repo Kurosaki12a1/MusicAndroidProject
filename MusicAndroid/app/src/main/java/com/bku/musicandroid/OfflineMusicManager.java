@@ -35,7 +35,8 @@ public class OfflineMusicManager {
                     if (file.getName().endsWith(".mp3") || file.getName().endsWith(".MP3")) {
                         SongPlayerOfflineInfo songPlayerOfflineInfo = new SongPlayerOfflineInfo(file);
                         // Adding each song to SongList
-                        tempList.add(songPlayerOfflineInfo);
+                        if (!songPlayerOfflineInfo.isBrokenFile())
+                            tempList.add(songPlayerOfflineInfo);
                     }
                 } else {
                     tempList.addAll(scanMusic(file.getAbsolutePath()));
