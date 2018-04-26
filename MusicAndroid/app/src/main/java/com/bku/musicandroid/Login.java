@@ -116,6 +116,7 @@ public class Login extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.setContentView(R.layout.activity_login);
+        checkAlreadyLogin();
         email_txt = findViewById(R.id.email_txt);
         pass_txt = findViewById(R.id.pass_txt);
         chkRememberPassword = findViewById(R.id.chkRememberPassword);
@@ -550,4 +551,11 @@ public class Login extends Activity {
     }
     ///////////////////////////End of Google Authentication//////////////////////////////////////
 
+    public void   checkAlreadyLogin(){
+        mAuth=FirebaseAuth.getInstance();
+        if(mAuth.getCurrentUser()!=null){
+            Intent intent=new Intent(Login.this,MainScreenActivity.class);
+            startActivity(intent);
+        }
+    }
 }
