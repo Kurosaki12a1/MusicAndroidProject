@@ -10,4 +10,6 @@
     <color name="colorChildBackground">#0A291E</color>
     <color name="btn_login">#26ae90</color>
     <color name="btn_login_bg">#eceef1</color>
+    <color name="colorGray">#888888</color>
+    <color name="colorGreen">#7CFC00</color>
 </resources>
