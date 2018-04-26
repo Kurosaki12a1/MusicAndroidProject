@@ -3,11 +3,20 @@ package com.bku.musicandroid;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by SonPhan on 3/24/2018.
@@ -31,6 +40,12 @@ public class SearchFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+
+    private EditText searchBar;
+    private ImageView Search;
+    private Spinner searchOption;
+    private RecyclerView recyclerView;
+    private List<SongPlayerOnlineInfo> listSong;
     private OnFragmentInteractionListener mListener;
 
     public SearchFragment() {
@@ -67,9 +82,7 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        TextView textView = new TextView(getActivity());
-        textView.setText(R.string.hello_blank_fragment);
-        return textView;
+        return inflater.inflate(R.layout.fragment_search, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -96,6 +109,12 @@ public class SearchFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        bindViews();
+
+        super.onViewCreated(view, savedInstanceState);
+    }
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -109,5 +128,20 @@ public class SearchFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void bindViews(){
+        searchBar=getView().findViewById(R.id.searchBar);
+        searchOption=getView().findViewById(R.id.searchOption);
+        Search=getView().findViewById(R.id.Search);
+        recyclerView=getView().findViewById(R.id.recyclerView);
+        listSong=new ArrayList<>();
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        searchForMatch();
+    }
+
+    private void searchForMatch(){
+
     }
 }
