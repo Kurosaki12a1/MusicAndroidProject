@@ -28,6 +28,9 @@
             android:name=".Forget_Password"
             android:label="@string/app_name" />
         <activity
+            android:name=".Change_Password"
+            android:label="@string/app_name" />
+        <activity
             android:name=".Sign_up"
             android:label="@string/app_name" />
         <activity android:name=".UploadSongActivity"
