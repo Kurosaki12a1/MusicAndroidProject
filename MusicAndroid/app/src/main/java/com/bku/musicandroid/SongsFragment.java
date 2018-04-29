@@ -148,7 +148,7 @@ public class SongsFragment extends Fragment {
         listSong = new ArrayList<>();
         offlineMusicManager = new OfflineMusicManager(getContext());
         GetOfflineSongListAsyncTask asyncTask = new GetOfflineSongListAsyncTask();
-        songInfoOfflineAdapter = new SongInfoOfflineAdapter(getActivity(), R.layout.layout_song_offline_list, listSong);
+        songInfoOfflineAdapter = new SongInfoOfflineAdapter(getActivity(), R.layout.songs_item, listSong);
         lvSong.setAdapter(songInfoOfflineAdapter);
         asyncTask.execute(listSong);
     }
