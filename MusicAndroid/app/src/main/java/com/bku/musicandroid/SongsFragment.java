@@ -146,9 +146,9 @@ public class SongsFragment extends Fragment {
         progressLoadMusic = getView().findViewById(R.id.progressLoadMusic);
 
         listSong = new ArrayList<>();
-        offlineMusicManager = new OfflineMusicManager();
+        offlineMusicManager = new OfflineMusicManager(getContext());
         GetOfflineSongListAsyncTask asyncTask = new GetOfflineSongListAsyncTask();
-        songInfoOfflineAdapter = new SongInfoOfflineAdapter(getActivity(), R.layout.songs_item, listSong);
+        songInfoOfflineAdapter = new SongInfoOfflineAdapter(getActivity(), R.layout.layout_song_offline_list, listSong);
         lvSong.setAdapter(songInfoOfflineAdapter);
         asyncTask.execute(listSong);
     }
@@ -186,7 +186,7 @@ public class SongsFragment extends Fragment {
         @Override
         protected ArrayList<SongPlayerOfflineInfo> doInBackground(ArrayList<SongPlayerOfflineInfo>... arrayLists) {
             publishProgress(arrayLists);
-            OfflineMusicManager offlineMusicManager = new OfflineMusicManager();
+            OfflineMusicManager offlineMusicManager = new OfflineMusicManager(getContext());
             arrayLists[0] = offlineMusicManager.scanAllOfflineMusic();
             publishProgress(arrayLists);
             return arrayLists[0];

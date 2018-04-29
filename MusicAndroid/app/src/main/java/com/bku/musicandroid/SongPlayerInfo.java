@@ -1,17 +1,23 @@
 package com.bku.musicandroid;
 
-public class SongPlayerInfo {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class SongPlayerInfo  {
 
     protected String songArtists;
 
     protected String songName;
 
+    protected byte [] songImage;
+
     public SongPlayerInfo() {
     }
 
-    public SongPlayerInfo(String songArtists, String songName) {
+    public SongPlayerInfo(String songArtists, String songName,byte[] songImage) {
         this.songArtists = songArtists;
         this.songName = songName;
+        this.songImage=songImage;
     }
 
     public String getSongArtists() {
@@ -26,8 +32,16 @@ public class SongPlayerInfo {
         return songName;
     }
 
+    public byte [] getSongImage(){return songImage;}
+    public void setSongImage(byte[] data){
+        this.songImage=data;
+    }
+
     public void setSongName(String songName) {
         this.songName = songName;
     }
-}
 
+
+
+
+}

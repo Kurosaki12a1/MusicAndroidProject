@@ -3,23 +3,23 @@
  */
 package com.bku.musicandroid;
 
+import android.content.Context;
 import android.os.Environment;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.InputStream;
+
 import java.util.ArrayList;
-import java.util.Collection;
+
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Locale;
+
 
 public class OfflineMusicManager {
 
-    public OfflineMusicManager() {
-
+    Context context;
+    public OfflineMusicManager(Context context) {
+        this.context=context;
     }
 
     private ArrayList<SongPlayerOfflineInfo> scanMusic(String path) {
@@ -33,7 +33,7 @@ public class OfflineMusicManager {
             for (File file : listFile) {
                 if (!file.isDirectory()) {
                     if (file.getName().endsWith(".mp3") || file.getName().endsWith(".MP3")) {
-                        SongPlayerOfflineInfo songPlayerOfflineInfo = new SongPlayerOfflineInfo(file);
+                        SongPlayerOfflineInfo songPlayerOfflineInfo = new SongPlayerOfflineInfo(file,context);
                         // Adding each song to SongList
                         if (!songPlayerOfflineInfo.isBrokenFile())
                             tempList.add(songPlayerOfflineInfo);
