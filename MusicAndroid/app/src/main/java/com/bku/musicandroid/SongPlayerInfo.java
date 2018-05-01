@@ -9,7 +9,7 @@ public class SongPlayerInfo  {
 
     protected String songName;
 
-    protected byte [] songImage;
+    protected byte [] songImage=null;
 
     public SongPlayerInfo() {
     }

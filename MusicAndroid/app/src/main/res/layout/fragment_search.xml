@@ -22,31 +22,23 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
             android:layout_alignParentTop="true"
-            android:background="@null"
+            android:background="@color/colorTabBackground"
             android:hint="Search..."
             android:inputType="text"
             android:textSize="25sp"
+            android:textColor="@color/colorWhite"
             android:layout_toStartOf="@+id/searchOption"
             />
 
-        <ImageView
-            android:id="@+id/Search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-
-            android:layout_alignParentTop="true"
-            app:srcCompat="@android:drawable/ic_search_category_default" />
 
         <Spinner
             android:id="@+id/searchOption"
-            android:layout_width="100dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
-            android:layout_toStartOf="@+id/Search"
-
+            android:layout_alignParentEnd="true"
+            android:background="@color/btn_login"
          />
 
         <!--<EditText
@@ -87,7 +79,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:id="@+id/recyclerView"
-        android:layout_weight="0.9">
+        android:layout_weight="0.9"
+        android:background="@color/colorAppBackground">
 
     </android.support.v7.widget.RecyclerView>
 

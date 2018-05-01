@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -47,7 +48,6 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
     byte [] byteOfImageSong=null;
     Bitmap bmpImageSong;
 
-    float Rotate;
 
     ArrayList<SongPlayerOfflineInfo> listSong;
     UtilitySongOfflineClass utilitySongOfflineClass;
@@ -217,8 +217,9 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
     public void setBitMapFit(){
         int currentBitmapWidth = bmpImageSong.getWidth();
         int currentBitmapHeight = bmpImageSong.getHeight();
-        int ivWidth = DEFAULT_WIDTH_OF_AVATAR;
-        int newWidth = ivWidth;
+        int newWidth = DEFAULT_WIDTH_OF_AVATAR;
+
+        //the image dont need to resize anymore
 
         int newHeight = (int) Math.floor((double) currentBitmapHeight *( (double) newWidth / (double) currentBitmapWidth));
 
@@ -307,13 +308,10 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
 
         if(byteOfImageSong!=null) {
             bmpImageSong = BitmapFactory.decodeByteArray(byteOfImageSong, 0, byteOfImageSong.length);
-
-
         }
         else
         {
             bmpImageSong=BitmapFactory.decodeResource(this.getResources(),R.drawable.ic_audiotrack_dark);
-
         }
         setBitMapFit();
         avatarSong.setImageBitmap(bmpImageSong);
@@ -347,8 +345,9 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
     public void onStop() {
         super.onStop();
         mp.stop();
+        mHandler.removeCallbacks(mUpdateTimeTask);
         mp.release();
-     /*   mp.stop();*/
+        /*   mp.stop();*/
 
     }
 

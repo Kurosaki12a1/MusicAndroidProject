@@ -14,8 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.bku.musicandroid.R;
-import com.bku.musicandroid.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -39,7 +37,7 @@ import static java.lang.Thread.sleep;
  * Created by Administrator on 3/21/2018.
  */
 
-public class Sign_up extends Activity {
+public class SignUpActivity extends Activity {
     private static final String TAG = "abc";
     private String email;
     private String password;
@@ -74,7 +72,7 @@ public class Sign_up extends Activity {
                 password=password_txt.getText().toString().trim();
                 confirmpass=confirmpass_txt.getText().toString().trim();
                 username=username_txt.getText().toString().trim();
-                progressDialog = new ProgressDialog(Sign_up.this);
+                progressDialog = new ProgressDialog(SignUpActivity.this);
                 progressDialog.setTitle("Sign up");
                 progressDialog.setMessage("Signing in, please wait...");
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -119,13 +117,13 @@ public class Sign_up extends Activity {
 
                             final FirebaseUser firebaseuser = auth.getCurrentUser();
                             firebaseuser.sendEmailVerification()
-                                    .addOnCompleteListener(Sign_up.this, new OnCompleteListener() {
+                                    .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener() {
                                         @Override
                                         public void onComplete(@NonNull Task task) {
                                             if (task.isSuccessful()) {
                                                 Log.e("1abc", "Email send done");
                                                 progressDialog.dismiss();
-                                                Toast.makeText(Sign_up.this,
+                                                Toast.makeText(SignUpActivity.this,
                                                         "Verification email sent to " + firebaseuser.getEmail()+". Please verifying in your email.",
                                                         Toast.LENGTH_SHORT).show();
                                             } else {
@@ -137,7 +135,7 @@ public class Sign_up extends Activity {
                                             }
                                         }
                                     });
-                            Intent intent = new Intent(Sign_up.this, Login.class);
+                            Intent intent = new Intent(SignUpActivity.this, Login.class);
                             startActivity(intent);
                             auth.signOut();
 

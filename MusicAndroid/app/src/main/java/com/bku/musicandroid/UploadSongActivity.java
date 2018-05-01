@@ -23,8 +23,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -39,8 +42,8 @@ import java.lang.reflect.Array;
 
 public class UploadSongActivity extends AppCompatActivity {
     String Storage_Path = "Music Storage";
-    public static final String Database_Path = "All_Music_Database_Info";
-    public static final String user_path="All_Users_Info_Database";
+    public static final String Database_Path = "All_Song_Database_Info";
+    public static final String USER_PATH="All_Users_Info_Database";
     StorageReference storageReference;
     DatabaseReference databaseReference;
     Uri FilePathUri;
@@ -52,6 +55,7 @@ public class UploadSongActivity extends AppCompatActivity {
     Button openFile,Upload,Exit;
     String imageSong="";
     String currentId="";
+    String currentUserName="";
     byte [] bytePicSong=null;
     String [] gerne={
             "Pop",
@@ -97,6 +101,20 @@ public class UploadSongActivity extends AppCompatActivity {
 
 
         progressDialog = new ProgressDialog(UploadSongActivity.this);
+
+        DatabaseReference databaseReference1=FirebaseDatabase.getInstance().getReference(USER_PATH).child("users");
+        databaseReference1.child(currentId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                currentUserName=dataSnapshot.child("userName").getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
         storageReference = FirebaseStorage.getInstance().getReference();
         databaseReference = FirebaseDatabase.getInstance().getReference(Database_Path);
@@ -208,8 +226,8 @@ public class UploadSongActivity extends AppCompatActivity {
                             // String userId=mAuth.getCurrentUser().getUid().toString();
 
 
-                            SongPlayerOnlineInfo songPlayerOnlineInfo = new SongPlayerOnlineInfo(musicUploadId,songName.getText().toString(),singerName.getText().toString(),taskSnapshot.getDownloadUrl().toString(),imageSong,"0",currentId,genreSpinner.getSelectedItem().toString());
-                            databaseReference.child(currentId).child(musicUploadId).setValue(songPlayerOnlineInfo);
+                            SongPlayerOnlineInfo songPlayerOnlineInfo = new SongPlayerOnlineInfo(musicUploadId,songName.getText().toString(),singerName.getText().toString(),taskSnapshot.getDownloadUrl().toString(),imageSong,"0",currentId,genreSpinner.getSelectedItem().toString(),currentUserName,"0","0");
+                            databaseReference.child(musicUploadId).setValue(songPlayerOnlineInfo);
 
                         }
                     })
