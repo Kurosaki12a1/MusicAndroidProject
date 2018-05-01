@@ -1,7 +1,5 @@
 package com.bku.musicandroid;
 
-import java.util.ArrayList;
-
 /**
  * Created by Welcome on 4/30/2018.
  */

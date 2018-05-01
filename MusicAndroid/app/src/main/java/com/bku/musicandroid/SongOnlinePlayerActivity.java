@@ -55,8 +55,6 @@ public class SongOnlinePlayerActivity extends AppCompatActivity   implements See
     FirebaseAuth mAuth;
     //Chinh thoi gian display song :^
 
-    int nPosition = 0;
-    final int DEFAULT_WIDTH_OF_AVATAR = 180;
     String strSongURL = "";
     String strSongName = "";
     String strSongArtist = "";
@@ -64,7 +62,6 @@ public class SongOnlinePlayerActivity extends AppCompatActivity   implements See
     String strSongId = "";
 
     SongPlayerOnlineInfo songInfo;
-    SongPlayerOnlineInfo tempSongPlayerInfo;
     UtilitySongOnlineClass utilitySongOnlineClass;
 
     @Override
