@@ -1,5 +1,9 @@
 package com.bku.musicandroid;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
@@ -7,6 +11,7 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,14 +27,14 @@ import java.util.Random;
  * Created by Thinh on 4/24/2018.
  */
 
-public class SongOfflinePlayerActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener,MediaPlayer.OnCompletionListener{
+public class SongOfflinePlayerActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener/*,MediaPlayer.OnCompletionListener*/{
 
 
 
     TextView songTitle,songArtist,elapsedTime,durationTime;
     ImageView option,shuffle,repeatAll,repeatOne,previous,play,next,avatarSong,backArrow;
     SeekBar progressSong;
-    public static MediaPlayer mp;
+//    public static MediaPlayer mp;
 
     //Chinh thanh progress luon cap nhat
     private Handler mHandler ;
@@ -37,12 +42,15 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
     private boolean isShuffle=false;
     private boolean isPause=false;
     private boolean isRepeatAll=false;
+//    private int currentDuration = 0;
+    private int totalDuration = 0;
+    private int currentPosition = 0;
     private TimerOfSong timerOfSong;
+    private BroadcastReceiver receiver;
     //Chinh thoi gian display song :^
 
     int nPosition=0;
     final int DEFAULT_WIDTH_OF_AVATAR=180;
-    String strPathFile="";
     String strSongName="";
     String strSongArtist="";
     byte [] byteOfImageSong=null;
@@ -65,6 +73,22 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
             listSong= utilitySongOfflineClass.getList();
         }
 
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                nPosition = intent.getIntExtra("position", 0);
+                isRepeatOne = intent.getBooleanExtra("isRepeatOne", false);
+                isRepeatAll = intent.getBooleanExtra("isRepeatAll", false);
+                isShuffle = intent.getBooleanExtra("isShuffle", false);
+                isPause = intent.getBooleanExtra("isPause", false);
+                currentPosition = intent.getIntExtra("currentPosition", 0);
+//                currentDuration = intent.getIntExtra("currentDuration", 0);
+                totalDuration = intent.getIntExtra("totalDuration", 0);
+
+            }
+        };
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("MusicPlayerUpdate"));
+
         avatarSong=(ImageView)findViewById(R.id.albumImage);
         songTitle=(TextView)findViewById(R.id.song_title);
         songArtist=(TextView) findViewById(R.id.song_artist);
@@ -80,33 +104,31 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
         next=(ImageView)findViewById(R.id.next);
         progressSong=(SeekBar)findViewById(R.id.song_progress);
 
-        mp=new MediaPlayer();
+//        mp=new MediaPlayer();
         timerOfSong=new TimerOfSong();
 
 
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mp.isPlaying()){
-                    if(!isPause){
-                        isPause=true;
-                        mp.pause();
-                        play.setImageResource(R.drawable.btn_playback_play);
-                    }
+                if(!isPause){
+                    isPause=true;
+//                    mp.pause();
+                    startMusicService();
+                    play.setImageResource(R.drawable.btn_playback_play);
                 }
                 else
                 {
-                    if(isPause)
-                    {
-                        isPause=false;
-                        mp.start();
-                        play.setImageResource(R.drawable.ic_player_pause);
-                    }
-
+                    isPause=false;
+//                    mp.start();
+                    startMusicService();
+                    play.setImageResource(R.drawable.ic_player_pause);
                 }
+
+
             }
         });
-        mp.setOnCompletionListener(this);
+//        mp.setOnCompletionListener(this);
         progressSong.setOnSeekBarChangeListener(this);
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,9 +145,8 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
                     playSong(0);
                 }
                 else {
-                    mp.stop();
-                    playSong(nPosition-1);
-                    nPosition--;
+//                    mp.stop();
+                    playSong(--nPosition);
                 }
             }
         });
@@ -137,9 +158,8 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
                     playSong(nPosition);
                 }
                 else {
-                    mp.stop();
-                    playSong(nPosition+1);
-                    nPosition++;
+//                    mp.stop();
+                    playSong(++nPosition);
                 }
             }
         });
@@ -149,6 +169,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
             public void onClick(View v) {
                 isRepeatOne=true;
                 isRepeatAll=false;
+                startMusicService();
                 repeatOne.setVisibility(View.VISIBLE);
                 repeatAll.setVisibility(View.GONE);
             }
@@ -159,6 +180,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
             public void onClick(View v) {
                 isRepeatOne=false;
                 isRepeatAll=true;
+                startMusicService();
                 repeatAll.setVisibility(View.VISIBLE);
                 repeatOne.setVisibility(View.GONE);
             }
@@ -169,6 +191,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
             public void onClick(View v) {
                 isShuffle=!isShuffle;
                 isRepeatOne=false;
+                startMusicService();
             }
         });
 
@@ -180,17 +203,15 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
     }
     private Runnable mUpdateTimeTask = new Runnable() {
         public void run() {
-            long totalDuration = mp.getDuration();
-            long currentDuration = mp.getCurrentPosition();
 
             // Displaying Total Duration time
             durationTime.setText(""+timerOfSong.milliSecondsToTimer(totalDuration));
             // Displaying time completed playing
-            elapsedTime.setText(""+timerOfSong.milliSecondsToTimer(currentDuration));
+            elapsedTime.setText(""+timerOfSong.milliSecondsToTimer(currentPosition));
 
 
             // Updating progress bar
-            int progress = (int)(timerOfSong.getProgressPercentage(currentDuration, totalDuration));
+            int progress = (int)(timerOfSong.getProgressPercentage(currentPosition, totalDuration));
             if(!isPause){
                 try {
                   //  matrix.set(avatarSong.getImageMatrix());
@@ -226,54 +247,53 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
         bmpImageSong = Bitmap.createScaledBitmap(bmpImageSong, newWidth, newHeight, true);
     }
 
-    @Override
-    public void onCompletion(MediaPlayer mp) {
-        if(isRepeatOne)
-        {
-            playSong(nPosition);
-        }
-        else if(isShuffle)
-        {
-            //Tron cung mang nghia repeat all
-            Random rand=new Random();
-            int nTempPosition=rand.nextInt((listSong.size()-1));
-            if(nTempPosition==nPosition) {
-                while (nTempPosition == nPosition) {
-                    rand = new Random();
-                    nTempPosition = rand.nextInt((listSong.size()-1));
-                }
-            }
-            nPosition=nTempPosition;
-            playSong(nPosition);
-        }
-        else
-        {
-            //no repeatone or no shuffler->play next song
-            if(nPosition<listSong.size()-1){
-
-                playSong(nPosition+1);
-                nPosition=nPosition+1;
-            }
-            else if(isRepeatAll)
-            {
-                // play first song
-                nPosition=0;
-                playSong(0);
-           //     nPosition=0;
-            }
-        }
-    }
+//    @Override
+//    public void onCompletion(MediaPlayer mp) {
+//        if(isRepeatOne)
+//        {
+//            playSong(nPosition);
+//        }
+//        else if(isShuffle)
+//        {
+//            //Tron cung mang nghia repeat all
+//            Random rand=new Random();
+//            int nTempPosition=rand.nextInt((listSong.size()-1));
+//            if(nTempPosition==nPosition) {
+//                while (nTempPosition == nPosition) {
+//                    rand = new Random();
+//                    nTempPosition = rand.nextInt((listSong.size()-1));
+//                }
+//            }
+//            nPosition=nTempPosition;
+//            playSong(nPosition);
+//        }
+//        else
+//        {
+//            //no repeatone or no shuffler->play next song
+//            if(nPosition<listSong.size()-1){
+//
+//                playSong(nPosition+1);
+//                nPosition=nPosition+1;
+//            }
+//            else if(isRepeatAll)
+//            {
+//                // play first song
+//                nPosition=0;
+//                playSong(0);
+//           //     nPosition=0;
+//            }
+//        }
+//    }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if(fromUser){
-            if(mp!=null){
-                int currentDuration=mp.getDuration()*progress/100+1;
-                mp.seekTo(currentDuration);
-            }
+//            mp.seekTo(currentDuration);
+            startMusicService();
         }
         if(progress==100){
             isPause=false;
+            startMusicService();
             play.setImageResource(R.drawable.btn_playback_play);
         }
     }
@@ -286,11 +306,10 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         mHandler.removeCallbacks(mUpdateTimeTask);
-        int totalDuration = mp.getDuration();
-        int currentPosition = timerOfSong.progressToTimer(seekBar.getProgress(), totalDuration);
 
         // forward or backward to certain seconds
-        mp.seekTo(currentPosition);
+//        mp.seekTo(currentPosition);
+        startMusicService();
 
         // update timer progress again
         updateProgressBar();
@@ -300,7 +319,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
 
         strSongArtist=listSong.get(nPosition).getSongArtists();
         strSongName=listSong.get(nPosition).getSongName();
-        strPathFile=listSong.get(nPosition).getPathFileSong();
+ //       strPathFile=listSong.get(nPosition).getPathFileSong();
         byteOfImageSong=listSong.get(nPosition).getSongImage();
 
         songTitle.setText(strSongName);
@@ -323,12 +342,8 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
         mHandler = new Handler();
         getCurrentInfoSong(nPosition);
         try {
-            mp.reset();
-            mp.setDataSource(strPathFile);
-            mp.prepare();
-            mp.start();
+            startMusicService();
             play.setImageResource(R.drawable.ic_player_pause);
-
             progressSong.setProgress(0);
             progressSong.setMax(100);
             updateProgressBar();
@@ -336,17 +351,15 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
             e.printStackTrace();
         } catch (IllegalStateException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mp.stop();
+//        mp.stop();
         mHandler.removeCallbacks(mUpdateTimeTask);
-        mp.release();
+//        mp.release();
         /*   mp.stop();*/
 
     }
@@ -354,6 +367,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
     @Override
     public void onPause(){
         super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
       /*  mp.pause();*/
     }
 
@@ -369,5 +383,15 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
     public void onBackPressed(){
         super.onBackPressed();
 
+    }
+
+    void startMusicService(){
+        Intent i = new Intent(SongOfflinePlayerActivity.this, SongPlayerService.class);
+        i.putExtra("position", nPosition);
+        i.putExtra("isRepeatOne", isRepeatOne);
+        i.putExtra("isPause", isPause);
+        i.putExtra("isRepeatAll", isRepeatAll);
+        i.putExtra("seekToPosition", currentPosition);
+        startService(i);
     }
 }
