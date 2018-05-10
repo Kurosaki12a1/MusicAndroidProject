@@ -107,7 +107,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
             //no repeatone or no shuffler->play next song
             if (nPosition < listSong.size() - 1) {
 
-              //  nPosition++;
+                nPosition++;
                 playSong();
             } else if (isRepeatAll) {
                 // play first song

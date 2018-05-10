@@ -87,9 +87,6 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
                 if (!isPause) {
                     play.setImageResource(R.drawable.ic_player_pause);
                 }
-                else{
-                    play.setImageResource(R.drawable.btn_playback_play);
-                }
 
             }
         };
@@ -179,7 +176,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
                 isRepeatAll=false;
                 startMusicService();
                 repeatOne.setVisibility(View.VISIBLE);
-                repeatAll.setVisibility(View.INVISIBLE);
+                repeatAll.setVisibility(View.GONE);
             }
         });
 
@@ -190,7 +187,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
                 isRepeatAll=true;
                 startMusicService();
                 repeatAll.setVisibility(View.VISIBLE);
-                repeatOne.setVisibility(View.INVISIBLE);
+                repeatOne.setVisibility(View.GONE);
             }
         });
 
