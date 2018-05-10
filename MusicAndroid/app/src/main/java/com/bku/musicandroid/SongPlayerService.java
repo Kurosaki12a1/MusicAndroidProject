@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+
 public class SongPlayerService extends Service implements MediaPlayer.OnCompletionListener {
     private int nPosition;
     private MediaPlayer mp;
@@ -22,13 +23,15 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
     private boolean isRepeatAll;
     private int currentPosition;
     private int totalDuration;
-    private boolean isPrepared = false;
+    private boolean isUserChangePosition = false;
     private String lastFilePath = "";
+
     @Override
     public void onCreate() {
         super.onCreate();
         mp = new MediaPlayer();
         listSong = new ArrayList<>(UtilitySongOfflineClass.getInstance().getList());
+        mp.setOnCompletionListener(this);
     }
 
     @Override
@@ -36,50 +39,32 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
         Bundle bundle;
         if (intent != null && (bundle = intent.getExtras()) != null
                 && (nPosition = bundle.getInt("position", -1)) != -1) {
+            // Get the data from activity
             isRepeatOne = bundle.getBoolean("isRepeatOne", false);
             isPause = bundle.getBoolean("isPause", false);
             isRepeatAll = bundle.getBoolean("isRepeatAll", false);
             isShuffle = bundle.getBoolean("isShuffle", false);
             currentPosition = bundle.getInt("currentPosition", 0);
-            try {
-                if (!lastFilePath.equals(listSong.get(nPosition).getPathFileSong())) {
-                    lastFilePath = listSong.get(nPosition).getPathFileSong();
-                    mp.reset();
-                    mp.setDataSource(listSong.get(nPosition).getPathFileSong());
-                    mp.prepare();
-                    mp.start();
-                }
-                mp.seekTo(currentPosition);
-                totalDuration = mp.getDuration();
-                if (isPause) {
-                    mp.pause();
-                }
+            isUserChangePosition = bundle.getBoolean("isUserChangePosition", false);
+            playSong();
 
-//                while (true) {
-//                    if (mp.getCurrentPosition() != currentPosition) {
-//                        currentPosition = mp.getCurrentPosition();
-//                    }
-//                    sendDataToActivity();
-//
-//                }
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (true) {
-                            if (mp.getCurrentPosition() != currentPosition) {
-                                currentPosition = mp.getCurrentPosition();
-                            }
+            // Thread to send data back to activity to update UI if needed after every 1s
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (true) {
+                        try {
+                            Thread.sleep(100);
+                            currentPosition = mp.getCurrentPosition();
                             sendDataToActivity();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
-
                     }
-                });
-                thread.start();
 
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                }
+            });
+            thread.start();
 
 
         }
@@ -102,11 +87,61 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
+        currentPosition = 0;
+        if (isRepeatOne) {
+            lastFilePath = "";
+            playSong();
+        } else if (isShuffle) {
+            //Tron cung mang nghia repeat all
+            Random rand = new Random();
+            int nTempPosition = rand.nextInt((listSong.size() - 1));
+            if (nTempPosition == nPosition) {
+                while (nTempPosition == nPosition) {
+                    rand = new Random();
+                    nTempPosition = rand.nextInt((listSong.size() - 1));
+                }
+            }
+            nPosition = nTempPosition;
+            playSong();
+        } else {
+            //no repeatone or no shuffler->play next song
+            if (nPosition < listSong.size() - 1) {
 
-
+                nPosition++;
+                playSong();
+            } else if (isRepeatAll) {
+                // play first song
+                nPosition = 0;
+                playSong();
+                //     nPosition=0;
+            }
+        }
     }
 
-    void sendDataToActivity(){
+    void playSong() {
+        if (!lastFilePath.equals(listSong.get(nPosition).getPathFileSong())) {
+            lastFilePath = listSong.get(nPosition).getPathFileSong(); // Only need to do these steps if we're going to playing new songs
+            mp.reset();
+            try {
+                mp.setDataSource(listSong.get(nPosition).getPathFileSong());
+                mp.prepare();
+                totalDuration = mp.getDuration();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        mp.start();
+        if (isUserChangePosition) {
+            mp.seekTo(currentPosition);
+            isUserChangePosition = false; // Return to default
+        }
+        if (isPause) {
+            mp.pause();
+        }
+    }
+
+    // Function to send data back to activity
+    void sendDataToActivity() {
         Intent i = new Intent("MusicPlayerUpdate");
         i.putExtra("position", nPosition);
         i.putExtra("isPause", isPause);
@@ -114,8 +149,10 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
         i.putExtra("isRepeatOne", isRepeatOne);
         i.putExtra("isShuffle", isShuffle);
         i.putExtra("currentPosition", currentPosition);
-//        i.putExtra("currentDuration", currentDuration);
         i.putExtra("totalDuration", totalDuration);
+        i.putExtra("isUserChangePosition", isUserChangePosition);
+
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
     }
+
 }
