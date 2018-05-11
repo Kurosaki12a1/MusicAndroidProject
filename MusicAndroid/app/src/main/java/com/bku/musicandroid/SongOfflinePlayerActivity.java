@@ -119,27 +119,58 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
         previous.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mHandler.removeCallbacks(mUpdateTimeTask);
                 if(nPosition==0){
                     playSong(0);
                 }
                 else {
-                    mp.stop();
-                    playSong(nPosition-1);
-                    nPosition--;
+                    if(isShuffle)
+                    {
+                        //Tron cung mang nghia repeat all
+                        Random rand=new Random();
+                        int nTempPosition=rand.nextInt((listSong.size()-nPosition-1));
+                        if(nTempPosition==nPosition) {
+                            while (nTempPosition == nPosition) {
+                                rand = new Random();
+                                nTempPosition = rand.nextInt((listSong.size()-nPosition-1));
+                            }
+                        }
+                        nPosition=nTempPosition;
+                        playSong(nPosition);
+                    }
+                    else {
+                        playSong(nPosition - 1);
+                        nPosition--;
+                    }
                 }
             }
         });
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                mHandler.removeCallbacks(mUpdateTimeTask);
                 if(nPosition==listSong.size()-1){
                     playSong(nPosition);
                 }
                 else {
-                    mp.stop();
-                    playSong(nPosition+1);
-                    nPosition++;
+                    if(isShuffle)
+                    {
+                        //Tron cung mang nghia repeat all
+                        Random rand=new Random();
+                        int nTempPosition=rand.nextInt((listSong.size()-1));
+                        while(nTempPosition<=nPosition){
+                            rand=new Random();
+                            nTempPosition=rand.nextInt((listSong.size()-1));
+                        }
+
+                        nPosition=nTempPosition;
+                        playSong(nPosition);
+                    }
+                    else {
+                        playSong(nPosition+1);
+                        nPosition++;
+                    }
+
                 }
             }
         });
