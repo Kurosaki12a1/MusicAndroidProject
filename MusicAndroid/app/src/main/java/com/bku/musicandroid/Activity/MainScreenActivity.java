@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bku.musicandroid.Service.SongPlayerService;
 import com.bku.musicandroid.Utility.CircleTransform;
 import com.bku.musicandroid.Fragments.ExploreFragment;
 import com.bku.musicandroid.Fragments.HomeFragment;
@@ -58,6 +59,7 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
         ExploreFragment.OnFragmentInteractionListener, SearchFragment.OnFragmentInteractionListener,
         LibraryFragment.OnFragmentInteractionListener, SongsFragment.OnFragmentInteractionListener, SongGenreFragment.OnFragmentInteractionListener {
     private static final String TAG = "MainScreenActivity";
+
     private Context mContext = MainScreenActivity.this;
     ViewPager mainViewPager;
     MainFragmentPagerAdapter mainFragmentPagerAdapter;
@@ -149,16 +151,16 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
             @Override
             public void onPageSelected(final int position) {
                 if(position==0){
-                    txtStatus.setText("HOME");
+                    txtStatus.setText(R.string.home);
                 }
                 else if(position==1){
-                    txtStatus.setText("EXPLORE");
+                    txtStatus.setText(R.string.explore);
                 }
                 else if(position==2){
-                    txtStatus.setText("SEARCH");
+                    txtStatus.setText(R.string.search);
                 }
                 else{
-                    txtStatus.setText("LIBRARY");
+                    txtStatus.setText(R.string.library);
                 }
             }
 
@@ -211,6 +213,12 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
         if(mAuthListener!=null){
             mAuth.removeAuthStateListener(mAuthListener);
         }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }
 

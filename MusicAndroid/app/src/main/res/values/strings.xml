@@ -15,6 +15,9 @@
     <string name="songName">Song's name</string>
     <string name="artistName">Artist's name</string>
     <string name="rememberPassword">Nhớ mật khẩu</string>
+    <string name="explore">Explore</string>
+    <string name="search">Search</string>
+
 
     <string-array name="nav_item_activity_titles">
         <item>Upload</item>
