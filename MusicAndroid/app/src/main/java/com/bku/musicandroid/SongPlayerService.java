@@ -1,12 +1,18 @@
 package com.bku.musicandroid;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.widget.RemoteViews;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,12 +36,30 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
     private boolean isAutoToAnotherSong = false;
     private String lastFilePath = "";
 
+    private Notification notification;
+    private RemoteViews remoteViews;
+    private NotificationManager notificationManager;
+
+    public static int NOTIF_ID = 12;
+
     @Override
     public void onCreate() {
         super.onCreate();
         mp = new MediaPlayer();
         listSong = new ArrayList<>(UtilitySongOfflineClass.getInstance().getList());
         mp.setOnCompletionListener(this);
+
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        remoteViews = new RemoteViews(getPackageName(), R.layout.layout_song_player_notification);
+
+        notification = new NotificationCompat.Builder(getApplicationContext(), "MY_ID")
+                .setOngoing(true)
+                .setSmallIcon(R.drawable.ic_audiotrack_dark)
+                .setCustomBigContentView(remoteViews)
+                .build();
+
+
+
     }
 
     @Override
@@ -71,6 +95,9 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
                 }
             });
             thread.start();
+
+            setNotificationInfo();
+            notificationManager.notify(NOTIF_ID, notification);
 
 
         }
@@ -152,6 +179,18 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
         if (isPause) {
             mp.pause();
         }
+    }
+
+    /**
+     * Created by Son on 5/12/2018.
+     */
+
+    private void setNotificationInfo() {
+        SongPlayerOfflineInfo song = listSong.get(nPosition);
+        remoteViews.setTextViewText(R.id.txtSongName, song.getSongName());
+        remoteViews.setTextViewText(R.id.txtArtistName, song.getSongArtists());
+        Bitmap imgSong = BitmapFactory.decodeByteArray(song.getSongImage(), 0, song.getSongImage().length);
+        remoteViews.setImageViewBitmap(R.id.imgSongs, imgSong);
     }
 
     /**
