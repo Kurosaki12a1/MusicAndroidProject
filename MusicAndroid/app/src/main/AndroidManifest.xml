@@ -16,8 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainScreenActivity" />
-        <activity android:name=".Login">
+        <activity android:name=".Activity.MainScreenActivity" />
+        <activity android:name=".Activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,22 +25,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Forget_Password"
+            android:name=".Activity.ForgetPasswordActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".Change_Password"
+            android:name=".Activity.ChangePasswordActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".SignUpActivity"
+            android:name=".Activity.SignUpActivity"
             android:label="@string/app_name" />
-        <activity android:name=".UploadSongActivity"
+        <activity android:name=".Activity.UploadSongActivity"
             android:label="@string/app_name"
             />
-        <activity android:name=".SongOfflinePlayerActivity"
+        <activity android:name=".Activity.SongOfflinePlayerActivity"
             />
-        <activity android:name=".SongOnlinePlayerActivity"
+        <activity android:name=".Activity.SongOnlinePlayerActivity"
             />
-        <service android:name=".SongPlayerService"/>
+        <service android:name=".Service.SongPlayerService"/>
     </application>
 
 </manifest>
