@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +41,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainScreenActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener,
         ExploreFragment.OnFragmentInteractionListener, SearchFragment.OnFragmentInteractionListener,
-        LibraryFragment.OnFragmentInteractionListener, SongsFragment.OnFragmentInteractionListener {
+        LibraryFragment.OnFragmentInteractionListener, SongsFragment.OnFragmentInteractionListener, SongGenreFragment.OnFragmentInteractionListener {
     private static final String TAG = "MainScreenActivity";
     private Context mContext = MainScreenActivity.this;
     ViewPager mainViewPager;
