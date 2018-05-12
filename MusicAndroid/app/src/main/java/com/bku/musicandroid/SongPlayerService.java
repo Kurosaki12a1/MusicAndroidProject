@@ -187,8 +187,21 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
 
     private void setNotificationInfo() {
         SongPlayerOfflineInfo song = listSong.get(nPosition);
-        remoteViews.setTextViewText(R.id.txtSongName, song.getSongName());
-        remoteViews.setTextViewText(R.id.txtArtistName, song.getSongArtists());
+
+        String songName = song.getSongName();
+        // Name too long so we will epitomize it
+        if (songName.length() >= 30){
+            songName = songName.substring(0, 26) + "...";
+        }
+        remoteViews.setTextViewText(R.id.txtSongName, songName);
+
+        String songArtists = song.getSongArtists();
+        // Name too long so we will epitomize it
+        if (songArtists.length() >= 30){
+            songArtists = songName.substring(0, 26) + "...";
+        }
+        remoteViews.setTextViewText(R.id.txtArtistName, songArtists);
+
         Bitmap imgSong = BitmapFactory.decodeByteArray(song.getSongImage(), 0, song.getSongImage().length);
         remoteViews.setImageViewBitmap(R.id.imgSongs, imgSong);
     }
