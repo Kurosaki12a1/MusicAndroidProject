@@ -25,7 +25,7 @@ import java.util.ArrayList;
  * Created by Thinh on 4/24/2018.
  */
 
-public class SongOfflinePlayerActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener/*,MediaPlayer.OnCompletionListener*/ {
+public class SongOfflinePlayerActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
 
 
     TextView songTitle, songArtist, elapsedTime, durationTime;
@@ -68,6 +68,10 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
             listSong = utilitySongOfflineClass.getList();
         }
 
+
+        /**
+         * Created by Son on 5/12/2018.
+         */
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -244,6 +248,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
         currentPosition = timerOfSong.progressToTimer(seekBar.getProgress(), totalDuration);
         isUserChangePosition = true;
         startMusicService();
+        isUserChangePosition = false; // return to default
     }
 
     public void getCurrentInfoSong(int nPosition) {
@@ -264,6 +269,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
             play.setImageResource(R.drawable.ic_player_pause);
             progressSong.setProgress(0);
             progressSong.setMax(100);
+            isUserChangePosition = false; // Return to default
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         } catch (IllegalStateException e) {
@@ -295,8 +301,12 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
 
     }
 
-    // Function to start music service in background
-    // Beside the first call, we will call it everytime we need to change something in playing song
+    /**
+     * Created by Son on 5/12/2018.
+
+    * Function to start music service in background
+    * Beside the first call, we will call it each time user changes something in playing song
+     */
     void startMusicService() {
         Intent i = new Intent(SongOfflinePlayerActivity.this, SongPlayerService.class);
         i.putExtra("position", nPosition);
@@ -308,6 +318,9 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
         startService(i);
     }
 
+    /**
+     * Created by Son on 5/12/2018.
+     */
     private void updateSongInfoUI() {
         songTitle.setText(strSongName);
         if (songArtist != null) songArtist.setText(strSongArtist);
@@ -321,6 +334,9 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
         avatarSong.setImageBitmap(bmpImageSong);
     }
 
+    /**
+     * Created by Son on 5/12/2018.
+     */
     private void updateSongProgressUI() {
         // Displaying Total Duration time
         durationTime.setText("" + timerOfSong.milliSecondsToTimer(totalDuration));
@@ -336,6 +352,9 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
 
     }
 
+    /**
+     * Created by Son on 5/12/2018.
+     */
     private void rotateBitmap() {
         if (!isPause) {
             try {

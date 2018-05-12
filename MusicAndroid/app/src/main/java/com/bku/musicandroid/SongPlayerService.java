@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Created by Son on 5/12/2018.
+ */
 
 public class SongPlayerService extends Service implements MediaPlayer.OnCompletionListener {
     private int nPosition;
@@ -76,7 +79,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
 
     @Override
     public void onDestroy() {
-        super.onDestroy();//                currentDuration = intent.getIntExtra("currentDuration", 0);
+        super.onDestroy();
         mp.stop();
         mp.release();
 
@@ -88,6 +91,10 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
         return null;
     }
 
+
+    /**
+     * Created by Son on 5/12/2018.
+     */
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
         if (mediaPlayer.getDuration() - mediaPlayer.getCurrentPosition() < 200) { // End song, we accept 200ms of delay
@@ -121,6 +128,10 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
         }
     }
 
+    /**
+     * Created by Son on 5/12/2018.
+     */
+
     void playSong() {
         if (!lastFilePath.equals(listSong.get(nPosition).getPathFileSong())) {
             lastFilePath = listSong.get(nPosition).getPathFileSong(); // Only need to do these steps if we're going to playing new songs
@@ -143,7 +154,10 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
         }
     }
 
-    // Function to send data back to activity
+    /**
+     * Created by Son on 5/12/2018.
+     */
+    // Function to broadcast data all over the application
     void sendDataToActivity() {
         Intent i = new Intent("MusicPlayerUpdate");
         i.putExtra("position", nPosition);
