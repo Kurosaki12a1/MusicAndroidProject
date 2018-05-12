@@ -24,6 +24,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
     private int currentPosition;
     private int totalDuration;
     private boolean isUserChangePosition = false;
+    private boolean isAutoToAnotherSong = false;
     private String lastFilePath = "";
 
     @Override
@@ -57,6 +58,8 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
                             Thread.sleep(100);
                             currentPosition = mp.getCurrentPosition();
                             sendDataToActivity();
+                            // Return default
+                            isAutoToAnotherSong = false;
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -73,7 +76,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
+        super.onDestroy();//                currentDuration = intent.getIntExtra("currentDuration", 0);
         mp.stop();
         mp.release();
 
@@ -87,33 +90,33 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-        currentPosition = 0;
-        if (isRepeatOne) {
-            lastFilePath = "";
-            playSong();
-        } else if (isShuffle) {
-            //Tron cung mang nghia repeat all
-            Random rand = new Random();
-            int nTempPosition = rand.nextInt((listSong.size() - 1));
-            if (nTempPosition == nPosition) {
-                while (nTempPosition == nPosition) {
-                    rand = new Random();
+        if (mediaPlayer.getDuration() - mediaPlayer.getCurrentPosition() < 200) { // End song, we accept 200ms of delay
+            isAutoToAnotherSong = true;
+            currentPosition = 0;
+            if (isRepeatOne) {
+                lastFilePath = "";
+                playSong();
+            } else if (isShuffle) {
+                //Tron cung mang nghia repeat all
+                Random rand = new Random();
+                int nTempPosition;
+                do {
                     nTempPosition = rand.nextInt((listSong.size() - 1));
-                }
-            }
-            nPosition = nTempPosition;
-            playSong();
-        } else {
-            //no repeatone or no shuffler->play next song
-            if (nPosition < listSong.size() - 1) {
+                } while (nTempPosition == nPosition);
+                nPosition = nTempPosition;
+                playSong();
+            } else {
+                //no repeatone or no shuffler->play next song
+                if (nPosition < listSong.size() - 1) {
 
-              //  nPosition++;
-                playSong();
-            } else if (isRepeatAll) {
-                // play first song
-                nPosition = 0;
-                playSong();
-                //     nPosition=0;
+                    nPosition++;
+                    playSong();
+                } else if (isRepeatAll) {
+                    // play first song
+                    nPosition = 0;
+                    playSong();
+                    //     nPosition=0;
+                }
             }
         }
     }
@@ -152,7 +155,10 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
         i.putExtra("totalDuration", totalDuration);
         i.putExtra("isUserChangePosition", isUserChangePosition);
 
+        i.putExtra("isAutoToAnotherSong", isAutoToAnotherSong);
+
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
     }
+
 
 }
