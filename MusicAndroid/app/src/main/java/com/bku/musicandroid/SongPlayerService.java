@@ -97,7 +97,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
      */
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-        if (mediaPlayer.getDuration() - mediaPlayer.getCurrentPosition() < 200) { // End song, we accept 200ms of delay
+        if (mediaPlayer.getDuration() - mediaPlayer.getCurrentPosition() <= 1000) { // End song, we accept 1s of delay
             isAutoToAnotherSong = true;
             currentPosition = 0;
             if (isRepeatOne) {

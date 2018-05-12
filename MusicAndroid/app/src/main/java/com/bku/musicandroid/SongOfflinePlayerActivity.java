@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by Thinh on 4/24/2018.
@@ -155,8 +156,21 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
                 if (nPosition == 0) {
                     playSong();
                 } else {
-                    nPosition--;
-                    playSong();
+                    if(isShuffle)
+                    {
+                        //Tron cung mang nghia repeat all
+                        Random rand=new Random();
+                        int nTempPosition;
+                        do {
+                            nTempPosition = rand.nextInt((listSong.size()-nPosition-1));
+                        } while (nTempPosition == nPosition);
+                        nPosition=nTempPosition;
+                        playSong();
+                    }
+                    else {
+                        nPosition--;
+                        playSong();
+                    }
                 }
             }
         });
@@ -166,11 +180,25 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
             public void onClick(View v) {
                 isUserChangePosition = true;
 
-                if (nPosition == listSong.size() - 1) {
+                if(nPosition==listSong.size()-1){
                     playSong();
-                } else {
-                    nPosition++;
-                    playSong();
+                }
+                else {
+                    if(isShuffle)
+                    {
+                        //Tron cung mang nghia repeat all
+                        Random rand=new Random();
+                        int nTempPosition;
+                        do {
+                            nTempPosition = rand.nextInt((listSong.size()-nPosition-1));
+                        } while (nTempPosition == nPosition);
+                        nPosition=nTempPosition;
+                        playSong();
+                    }
+                    else {
+                        nPosition++;
+                        playSong();
+                    }
                 }
             }
         });
