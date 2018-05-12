@@ -4,8 +4,10 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MusicAndroid.iml" filepath="$PROJECT_DIR$/MusicAndroid.iml" />
       <module fileurl="file://D:/Android/BACKGROUNDMUSIC/MusicAndroidProject/MusicAndroid/MusicAndroid.iml" filepath="D:/Android/BACKGROUNDMUSIC/MusicAndroidProject/MusicAndroid/MusicAndroid.iml" />
+      <module fileurl="file://D:/Android/11052018PJ/MusicAndroidProject/MusicAndroid/MusicAndroid.iml" filepath="D:/Android/11052018PJ/MusicAndroidProject/MusicAndroid/MusicAndroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://D:/Android/BACKGROUNDMUSIC/MusicAndroidProject/MusicAndroid/app/app.iml" filepath="D:/Android/BACKGROUNDMUSIC/MusicAndroidProject/MusicAndroid/app/app.iml" />
+      <module fileurl="file://D:/Android/11052018PJ/MusicAndroidProject/MusicAndroid/app/app.iml" filepath="D:/Android/11052018PJ/MusicAndroidProject/MusicAndroid/app/app.iml" />
     </modules>
   </component>
 </project>
