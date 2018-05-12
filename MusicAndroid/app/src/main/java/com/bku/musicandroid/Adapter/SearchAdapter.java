@@ -1,4 +1,4 @@
-package com.bku.musicandroid.Fragments;
+package com.bku.musicandroid.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +25,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     static Context context;
     List<SongPlayerOnlineInfo> ListSong;
-    public final String USER_DATABASE="All_Users_Info_Database";
+
     public SearchAdapter(Context context, List<SongPlayerOnlineInfo>listSong){
 
         this.ListSong=listSong;

@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:textSize="20sp"
+            android:textSize="10sp"
             android:textColor="@color/colorWhite"
             android:id="@+id/nameSong"
             />
@@ -48,13 +48,13 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:textColor="@color/colorWhite"
-            android:textSize="20sp" />
+            android:textSize="10sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/nameSong"
-            android:textSize="20sp"
+            android:textSize="10sp"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="60dp"
             android:id="@+id/DownLoad"
@@ -64,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/nameArtist"
-            android:textSize="20sp"
+            android:textSize="10sp"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="60dp"
             android:id="@+id/ViewListen"
@@ -74,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/userUpload"
-            android:textSize="20sp"
+            android:textSize="10sp"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="60dp"
             android:id="@+id/Liked"
