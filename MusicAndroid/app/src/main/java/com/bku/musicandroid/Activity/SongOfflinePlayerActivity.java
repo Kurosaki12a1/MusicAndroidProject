@@ -74,7 +74,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
 
 
         /**
-         * Created by Son on 5/12/2018.
+         * Created by Son on 5/11/2018.
          */
 
         receiver = new BroadcastReceiver() {
@@ -333,7 +333,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
     }
 
     /**
-     * Created by Son on 5/12/2018.
+     * Created by Son on 5/11/2018.
 
     * Function to start music service in background
     * Beside the first call, we will call it each time user changes something in playing song

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Created by Son on 5/12/2018.
+ * Created by Son on 5/11/2018.
  */
 
 public class SongPlayerService extends Service implements MediaPlayer.OnCompletionListener {
@@ -124,7 +124,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
 
 
     /**
-     * Created by Son on 5/12/2018.
+     * Created by Son on 5/11/2018.
      */
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
@@ -160,7 +160,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
     }
 
     /**
-     * Created by Son on 5/12/2018.
+     * Created by Son on 5/11/2018.
      */
 
     void playSong() {
@@ -211,7 +211,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
     }
 
     /**
-     * Created by Son on 5/12/2018.
+     * Created by Son on 5/11/2018.
      */
     // Function to broadcast data all over the application
     void sendDataToActivity() {
