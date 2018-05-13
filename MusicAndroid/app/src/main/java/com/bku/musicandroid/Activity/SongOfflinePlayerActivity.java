@@ -42,7 +42,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
     private boolean isRepeatAll = false;
     private boolean isUserChangePosition = false;
     private boolean isChangeSongFromService = false;
-    private int totalDuration = 0;
+    private int totalDuration = 100;
     private int currentPosition = 0;
     private TimerOfSong timerOfSong;
     private BroadcastReceiver receiver;
@@ -86,7 +86,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
                 isShuffle = intent.getBooleanExtra("isShuffle", false);
                 isPause = intent.getBooleanExtra("isPause", false);
                 currentPosition = intent.getIntExtra("currentPosition", 0);
-                totalDuration = intent.getIntExtra("totalDuration", 0);
+                totalDuration = intent.getIntExtra("totalDuration", 100);
                 isChangeSongFromService = intent.getBooleanExtra("isChangeSongFromService", false);
 
                 if (!isPause) {
@@ -100,6 +100,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
                     getCurrentInfoSong(nPosition);
                     updateSongInfoUI();
                     avatarSong.setRotation(0.0f);
+                    isChangeSongFromService = false;
                 }
 
                 // Update progress bar and rotate the bitmap every 100ms
@@ -346,6 +347,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
         i.putExtra("isRepeatAll", isRepeatAll);
         i.putExtra("currentPosition", currentPosition);
         i.putExtra("isUserChangePosition", isUserChangePosition);
+        i.putExtra("isChangeSongFromService", isChangeSongFromService);
         startService(i);
     }
 

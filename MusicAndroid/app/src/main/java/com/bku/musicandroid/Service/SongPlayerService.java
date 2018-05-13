@@ -49,6 +49,8 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
     private boolean isChangeSongFromService = false;
     private String lastFilePath = "";
 
+    private boolean mediaPlayerPrepared = false;
+
     private Notification notification;
     private NotificationCompat.Builder builder;
     private RemoteViews remoteViews;
@@ -56,6 +58,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
+        notificationManager.cancel(NOTIF_ID);
         stopSelf();
     }
 
@@ -95,7 +98,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
                             mp.pause();
                         }
                     } else if (action.equalsIgnoreCase(Constants.ACTION.PREV_ACTION)) {
-                        isChangeSongFromService = true;
+//                        isChangeSongFromService = true;
                         isUserChangePosition = true;
                         currentPosition = 0;
                         if (isShuffle) {
@@ -116,7 +119,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
                         }
 
                     } else if (action.equalsIgnoreCase(Constants.ACTION.NEXT_ACTION)) {
-                        isChangeSongFromService = true;
+//                        isChangeSongFromService = true;
                         isUserChangePosition = true;
                         currentPosition = 0;
                         if (isShuffle) {
@@ -148,9 +151,40 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
             }
         };
 
+        // Thread to send data back to activity to update UI if needed after every 1s
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (MainScreenActivity.isRunning) {
+                    try {
+                        Thread.sleep(100);
+                        if (mediaPlayerPrepared) {
+                            currentPosition = mp.getCurrentPosition();
+
+                            sendDataToActivity();
+                            // Return default
+//                            isChangeSongFromService = false;
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                try {
+                    unregisterReceiver(musicPlayerBroadcastReceiver);
+                } catch (Exception e) {
+                    Log.d("exception", e.toString());
+                } finally {
+                    notificationManager.cancel(NOTIF_ID);
+                    stopSelf();
+                }
+
+            }
+        });
+        thread.start();
+
 
     }
-
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -174,34 +208,6 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
             isUserChangePosition = bundle.getBoolean("isUserChangePosition", false);
             playSong();
 
-            // Thread to send data back to activity to update UI if needed after every 1s
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (MainScreenActivity.isRunning ) {
-                        try {
-                            Thread.sleep(100);
-                            currentPosition = mp.getCurrentPosition();
-                            sendDataToActivity();
-                            // Return default
-                            isChangeSongFromService = false;
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                    try {
-                        unregisterReceiver(musicPlayerBroadcastReceiver);
-                    } catch (Exception e) {
-                        Log.d("exception", e.toString());
-                    } finally {
-                        notificationManager.cancel(NOTIF_ID);
-                        stopSelf();
-                    }
-
-                }
-            });
-            thread.start();
 
             setNotificationInfo();
             notificationManager.notify(NOTIF_ID, notification);
@@ -220,7 +226,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
     @Override
     public boolean stopService(Intent name) {
         mp.stop();
-        mp.release();
+//        mp.release();
         return super.stopService(name);
     }
 
@@ -236,8 +242,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
      */
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-        if (mediaPlayer.getDuration() - mediaPlayer.getCurrentPosition() <= 1000) { // End song, we accept 1s of delay
-            isChangeSongFromService = true;
+        if (mediaPlayer.getDuration() - mediaPlayer.getCurrentPosition() <= 2000) { // End song, we accept 2s of delay
             currentPosition = 0;
             if (isRepeatOne) {
                 lastFilePath = "";
@@ -263,6 +268,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
                     playSong();
                     //     nPosition=0;
                 }
+//                isChangeSongFromService = true;
             }
             setNotificationInfo();
             buildNotification();
@@ -276,26 +282,40 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
 
     void playSong() {
         if (!lastFilePath.equals(listSong.get(nPosition).getPathFileSong())) {
+            isChangeSongFromService = true;
             lastFilePath = listSong.get(nPosition).getPathFileSong(); // Only need to do these steps if we're going to playing new songs
+            mediaPlayerPrepared = false;
+            mp.release();
+            mp = new MediaPlayer();
             mp.reset();
             try {
                 mp.setDataSource(listSong.get(nPosition).getPathFileSong());
                 mp.prepare();
-                totalDuration = mp.getDuration();
+                mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mediaPlayer) {
+                        mediaPlayerPrepared = true;
+                        mp.start();
+                        mp.seekTo(0);
+                        totalDuration = mp.getDuration();
+                    }
+                });
             } catch (IOException e) {
                 e.printStackTrace();
+                Log.d("Crash position", String.valueOf(nPosition));
+                Log.d("Crash path", listSong.get(nPosition).getPathFileSong());
             }
         }
-        mp.start();
+
+//        mp.start();
         if (isUserChangePosition) {
             mp.seekTo(currentPosition);
             isUserChangePosition = false; // Return to default
         }
         if (isPause) {
             mp.pause();
-        }
-        {
-
+        } else {
+            mp.start();
         }
     }
 
