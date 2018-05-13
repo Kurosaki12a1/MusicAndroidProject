@@ -23,7 +23,7 @@
                 android:text="Top 10 Liked Songs: "
                 android:textColor="@color/colorWhite"
                 android:textSize="20dp"
-                android:drawableLeft="@drawable/cloud_computing"
+                android:drawableLeft="@drawable/like"
                 android:drawablePadding="2dp"
                 android:padding="5dp"
                 />
@@ -47,7 +47,7 @@
                 android:text="Top 10 Downloaded Songs:"
                 android:textColor="@color/colorWhite"
                 android:textSize="20dp"
-                android:drawableLeft="@drawable/like"
+                android:drawableLeft="@drawable/cloud_computing"
                 android:drawablePadding="2dp"
                 android:padding="5dp"/>
 
