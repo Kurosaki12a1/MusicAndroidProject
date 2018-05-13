@@ -52,6 +52,13 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
     private Notification notification;
     private NotificationCompat.Builder builder;
     private RemoteViews remoteViews;
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+        stopSelf();
+    }
+
     private NotificationManager notificationManager;
     private BroadcastReceiver musicPlayerBroadcastReceiver;
 
@@ -257,6 +264,9 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
                     //     nPosition=0;
                 }
             }
+            setNotificationInfo();
+            buildNotification();
+            notificationManager.notify(NOTIF_ID, notification);
         }
     }
 
