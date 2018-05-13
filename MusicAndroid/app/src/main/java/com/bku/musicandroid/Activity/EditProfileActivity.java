@@ -44,7 +44,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private  ImageView backArrow,saveChanges,profilePhoto,backGroundPhoto,eyes;
 
-    private EditText username,fullname,dateofbirth,email;
+    private EditText username,fullname,dateofbirth,email,accountId;
 
     private TextView changePhoto,changeBackGround;
 
@@ -71,6 +71,7 @@ public class EditProfileActivity extends AppCompatActivity {
         fullname=(EditText)findViewById(R.id.display_name);
         dateofbirth=(EditText)findViewById(R.id.dateOfBirth);
         email=(EditText) findViewById(R.id.email);
+        accountId=(EditText)findViewById(R.id.accountID);
 
         changePhoto=(TextView)findViewById(R.id.changeProfilePhoto);
         changeBackGround=(TextView)findViewById(R.id.changeBackGround);
@@ -80,6 +81,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         username.setEnabled(false);
         email.setEnabled(false);
+        accountId.setEnabled(false);
         backGroundPhoto.setVisibility(View.INVISIBLE);
 
 
@@ -92,7 +94,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 email.setText(dataSnapshot.child("email").getValue(String.class));
                 dateofbirth.setText(dataSnapshot.child("dateOfBirth").getValue(String.class));
                 avatarURL=dataSnapshot.child("avatarURL").getValue(String.class);
-
+                accountId.setText("Your Account ID : " + dataSnapshot.getKey());
                 Glide.with(EditProfileActivity.this).load(dataSnapshot.child("avatarURL").getValue(String.class)).into(profilePhoto);
                 if(dataSnapshot.hasChild("backgroundURL")){
                     backGroundAvatarURL=dataSnapshot.child("backgroundURL").getValue(String.class);
@@ -225,7 +227,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private void saveProfile(final String userId){
         StorageReference storageReference= FirebaseStorage.getInstance().getReference();
         if(FilePathUri == null && FilePathUri1!=null){
-            StorageReference storageReference2nd = storageReference.child(  System.currentTimeMillis() + "." + GetFileExtension(FilePathUri));
+            StorageReference storageReference2nd = storageReference.child(  System.currentTimeMillis() + "." + GetFileExtension(FilePathUri1));
 
             // Adding addOnSuccessListener to second StorageReference.
             StorageTask<UploadTask.TaskSnapshot> taskSnapshotStorageTask = storageReference2nd.putFile(FilePathUri1)

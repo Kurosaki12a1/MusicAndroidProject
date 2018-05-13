@@ -2,8 +2,11 @@ package com.bku.musicandroid.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
@@ -14,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bku.musicandroid.Activity.ChangePasswordActivity;
@@ -28,7 +32,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by Welcome on 5/13/2018.
@@ -42,6 +53,7 @@ public class ProfileFragment extends Fragment {
     String userId="";
     FirebaseAuth mAuth;
 
+    RelativeLayout rlayout;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -56,6 +68,9 @@ public class ProfileFragment extends Fragment {
     public ProfileFragment() {
         mAuth=FirebaseAuth.getInstance();
         userId=mAuth.getCurrentUser().getUid();
+        //khong co cai nay thi khoi resize image
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         // Required empty public constructor
     }
 
@@ -142,7 +157,7 @@ public class ProfileFragment extends Fragment {
                 txtBar.setText("Hi , "+ dataSnapshot.child("userName").getValue(String.class) + " !");
                 txtName.setText(dataSnapshot.child("fullName").getValue(String.class));
                 if(dataSnapshot.hasChild("backgroundURL")){
-                    Glide.with(getContext()).load(dataSnapshot.child("backgroundURL").getValue(String.class)).into(backGroundImage);
+                    Glide.with(getContext()).load(dataSnapshot.child("backgroundURL").getValue(String.class)).centerCrop().into(backGroundImage);
                 }
             }
 
@@ -167,6 +182,7 @@ public class ProfileFragment extends Fragment {
         txtBar=getView().findViewById(R.id.username);
         txtName=getView().findViewById(R.id.nameUser);
         menu=getView().findViewById(R.id.profileMenu);
+        rlayout = getView().findViewById(R.id.mainRel);
     }
     private void ShowMenu(){
         PopupMenu MenuPopUp =new PopupMenu(getContext(),menu);
@@ -211,4 +227,33 @@ public class ProfileFragment extends Fragment {
     public void signOut() {
         mAuth.signOut();
     }
+
+   /* private void setBitMapFit(Bitmap bitmap,int width){
+
+        int currentBitmapWidth = bitmap.getWidth();
+        int currentBitmapHeight = bitmap.getHeight();
+        int newWidth = width;
+
+        //the image dont need to resize anymore
+
+        int newHeight = (int) Math.floor((double) currentBitmapHeight * ((double) newWidth / (double) currentBitmapWidth));
+
+        Bitmap newBitMap = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
+        backGroundImage.setImageBitmap(newBitMap);
+    }
+
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }*/
 }
