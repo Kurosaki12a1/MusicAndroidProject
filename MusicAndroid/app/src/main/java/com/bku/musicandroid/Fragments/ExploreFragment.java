@@ -259,11 +259,11 @@ public class ExploreFragment extends Fragment {
         bundle.putString("GENRE", genre);
         songGenreFragment.setArguments(bundle);
 
-        fragmentTransaction.replace(R.id.fragmentLibrary, songGenreFragment);
+        fragmentTransaction.replace(R.id.fragmentExplorer, songGenreFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commitAllowingStateLoss();
-      //  fragmentManager.executePendingTransactions();
-    //    fragmentTransaction.commit();
+        //  fragmentManager.executePendingTransactions();
+        //    fragmentTransaction.commit();
     }
 
 
