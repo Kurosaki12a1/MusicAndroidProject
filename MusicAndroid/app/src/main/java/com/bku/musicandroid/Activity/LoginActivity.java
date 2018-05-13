@@ -51,16 +51,16 @@ import static android.content.ContentValues.TAG;
 
 public class LoginActivity extends Activity {
     public static String ROLES;
-    private EditText email_txt;
-    private EditText pass_txt;
-    private TextView forgot_password;
-    private TextView sign_up;
-    private Button login_btn;
-    private SignInButton login_google_btn;
+    private EditText emailTxt;
+    private EditText passTxt;
+    private TextView forgotPassword;
+    private TextView signUp;
+    private Button loginBtn;
+    private SignInButton loginGoogleBtn;
     private FirebaseAuth mAuth;
     private ProgressDialog progressDialog;
     private Dialog dialog;
-    private Dialog usernamedialog;
+    private Dialog usernameDialog;
     private GoogleSignInClient mGoogleSignInClient;
     private SharedPreferences sharedPreferences;
     private AppCompatCheckBox chkRememberPassword;
@@ -76,8 +76,8 @@ public class LoginActivity extends Activity {
     protected void onResume() {
         super.onResume();
         sharedPreferences = getSharedPreferences("RememberPassword", MODE_PRIVATE);
-        email_txt.setText(sharedPreferences.getString("Email",""));
-        pass_txt.setText(sharedPreferences.getString("Password",""));
+        emailTxt.setText(sharedPreferences.getString("Email",""));
+        passTxt.setText(sharedPreferences.getString("Password",""));
         chkRememberPassword.setChecked(sharedPreferences.getBoolean("IsChecked", false));
 
     }
@@ -94,8 +94,8 @@ public class LoginActivity extends Activity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         if (chkRememberPassword.isChecked()){
             editor.putBoolean("IsChecked", true);
-            editor.putString("Email", email_txt.getText().toString());
-            editor.putString("Password", pass_txt.getText().toString());
+            editor.putString("Email", emailTxt.getText().toString());
+            editor.putString("Password", passTxt.getText().toString());
         }
         else{
             editor.putBoolean("IsChecked", false);
@@ -112,13 +112,13 @@ public class LoginActivity extends Activity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.setContentView(R.layout.activity_login);
         checkAlreadyLogin();
-        email_txt = findViewById(R.id.email_txt);
-        pass_txt = findViewById(R.id.pass_txt);
+        emailTxt = findViewById(R.id.email_txt);
+        passTxt = findViewById(R.id.pass_txt);
         chkRememberPassword = findViewById(R.id.chkRememberPassword);
-        login_btn = findViewById(R.id.login_btn);
-        forgot_password = findViewById(R.id.forgot_pass_txt);
-        sign_up = findViewById(R.id.signup_txt);
-        login_google_btn = findViewById(R.id.login_google_btn);
+        loginBtn = findViewById(R.id.login_btn);
+        forgotPassword = findViewById(R.id.forgot_pass_txt);
+        signUp = findViewById(R.id.signup_txt);
+        loginGoogleBtn = findViewById(R.id.login_google_btn);
         //Google login
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -133,21 +133,21 @@ public class LoginActivity extends Activity {
         Log.d("1abc", "Check: " + mAuth.getCurrentUser());
         if (mAuth.getCurrentUser() != null)
             Log.d("1abc", "Check: " + mAuth.getCurrentUser() + " " + mAuth.getCurrentUser().getUid());
-        forgot_password.setOnClickListener(new View.OnClickListener() {
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
                 startActivity(intent);
             }
         });
-        sign_up.setOnClickListener(new View.OnClickListener() {
+        signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
                 startActivity(intent);
             }
         });
-        login_btn.setOnClickListener(new View.OnClickListener() {
+        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Begin to initialize the Progress dialog
@@ -164,10 +164,10 @@ public class LoginActivity extends Activity {
                 if (mAuth.getCurrentUser() != null) {
                     Toast.makeText(getApplicationContext(), "Co nguoi da login", Toast.LENGTH_SHORT).show();
                 }
-                signIn(email_txt.getText().toString().trim(), pass_txt.getText().toString().trim());
+                signIn(emailTxt.getText().toString().trim(), passTxt.getText().toString().trim());
             }
         });
-        login_google_btn.setOnClickListener(new View.OnClickListener() {
+        loginGoogleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Intent login_google=new Intent(LoginActivity.this,Login_Google.class);
@@ -219,6 +219,7 @@ public class LoginActivity extends Activity {
                                 Toast.makeText(getApplicationContext(), "LoginActivity success", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), MainScreenActivity.class);
                                 startActivity(intent);
+                                finish();
                             }
                             ////Success login
                             //   Intent mainIntent = new Intent(LoginActivity.this, MainScreenActivity.class);
@@ -248,20 +249,20 @@ public class LoginActivity extends Activity {
     private boolean validateForm() {
         boolean valid = true;
 
-        String email = email_txt.getText().toString();
+        String email = emailTxt.getText().toString();
         if (TextUtils.isEmpty(email)) {
-            email_txt.setError("Required.");
+            emailTxt.setError("Required.");
             valid = false;
         } else {
-            email_txt.setError(null);
+            emailTxt.setError(null);
         }
 
-        String password = pass_txt.getText().toString();
+        String password = passTxt.getText().toString();
         if (TextUtils.isEmpty(password)) {
-            pass_txt.setError("Required.");
+            passTxt.setError("Required.");
             valid = false;
         } else {
-            pass_txt.setError(null);
+            passTxt.setError(null);
         }
 
         return valid;
@@ -279,15 +280,15 @@ public class LoginActivity extends Activity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sign_out();
+                signOut();
                 dialog.dismiss();
             }
         });
         resend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resend_email_verification();
-                sign_out();
+                resendEmailVerification();
+                signOut();
                 dialog.dismiss();
             }
         });
@@ -297,7 +298,7 @@ public class LoginActivity extends Activity {
                     public void onCancel(DialogInterface dialog) {
                         //When you touch outside of dialog bounds,
                         //the dialog gets canceled and this method executes.
-                        sign_out();
+                        signOut();
                     }
                 }
         );
@@ -305,13 +306,13 @@ public class LoginActivity extends Activity {
     }
 
     public void verifyUsername() {
-        usernamedialog = new Dialog(LoginActivity.this);
-        usernamedialog.setTitle("Thêm Username");
-        usernamedialog.setContentView(R.layout.dialog_add_username);
-        final EditText usernameGoogle_txt = usernamedialog.findViewById(R.id.usernamegg_txt);
-        usernamedialog.show();
+        usernameDialog = new Dialog(LoginActivity.this);
+        usernameDialog.setTitle("Thêm Username");
+        usernameDialog.setContentView(R.layout.dialog_add_username);
+        final EditText usernameGoogle_txt = usernameDialog.findViewById(R.id.usernamegg_txt);
+        usernameDialog.show();
         Button accept;
-        accept = (Button) usernamedialog.findViewById(R.id.accept_btn);
+        accept = (Button) usernameDialog.findViewById(R.id.accept_btn);
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -373,7 +374,7 @@ public class LoginActivity extends Activity {
             }
         });
 
-        usernamedialog.setOnCancelListener(
+        usernameDialog.setOnCancelListener(
                 new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {
@@ -386,7 +387,7 @@ public class LoginActivity extends Activity {
 
     }
 
-    public void resend_email_verification() {
+    public void resendEmailVerification() {
         final FirebaseUser user = mAuth.getCurrentUser();
         user.sendEmailVerification()
                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener() {
@@ -406,7 +407,7 @@ public class LoginActivity extends Activity {
                 });
     }
 
-    public void sign_out() {
+    public void signOut() {
         FirebaseUser user = mAuth.getCurrentUser();
         mAuth.getInstance().signOut();
         if (mAuth.getCurrentUser() == null) {
@@ -456,7 +457,6 @@ public class LoginActivity extends Activity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithCredential:success");
-                            Toast.makeText(LoginActivity.this, "LoginActivity with Google Success, go to main page.", Toast.LENGTH_SHORT).show();
                             boolean isNew = task.getResult().getAdditionalUserInfo().isNewUser();
                             Log.d("1abc", "onComplete: " + isNew);
                             if (isNew == true) {
@@ -488,6 +488,7 @@ public class LoginActivity extends Activity {
                                     else{
                                         Intent intent = new Intent(getApplicationContext(), MainScreenActivity.class);
                                         startActivity(intent);
+                                        finish();
                                     }
                                 }
 

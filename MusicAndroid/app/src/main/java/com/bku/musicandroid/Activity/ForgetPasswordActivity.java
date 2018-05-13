@@ -25,9 +25,9 @@ import org.w3c.dom.Text;
  */
 
 public class ForgetPasswordActivity extends Activity {
-    private EditText email_txt;
-    private Button forget_btn;
-    private TextView result_txt;
+    private EditText emailTxt;
+    private Button forgetBtn;
+    private TextView resultTxt;
     private String emailAddress;
     private FirebaseAuth auth;
     @Override
@@ -36,15 +36,15 @@ public class ForgetPasswordActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.setContentView(R.layout.activity_forget_password);
-        email_txt=findViewById(R.id.email_txt);
-        forget_btn=findViewById(R.id.forget_btn);
-        result_txt=findViewById(R.id.result_txt);
+        emailTxt=findViewById(R.id.email_txt);
+        forgetBtn=findViewById(R.id.forget_btn);
+        resultTxt=findViewById(R.id.result_txt);
         auth = FirebaseAuth.getInstance();
         Log.d("1abc","forget pass: "+emailAddress);
-        forget_btn.setOnClickListener(new View.OnClickListener() {
+        forgetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                emailAddress = email_txt.getText().toString().trim();
+                emailAddress = emailTxt.getText().toString().trim();
                 if(TextUtils.isEmpty(emailAddress)) {
                     Toast.makeText(getApplicationContext(), "Please type your Email!", Toast.LENGTH_SHORT).show();
                 }
@@ -60,10 +60,10 @@ public class ForgetPasswordActivity extends Activity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    result_txt.setText("An verify mail was sent to your email. Please check that mail to reset password.");
+                                    resultTxt.setText("An verify mail was sent to your email. Please check that mail to reset password.");
                                 }
                                 else{
-                                    result_txt.setText("Error occurs. Please make sure type your email correctly.");
+                                    resultTxt.setText("Error occurs. Please make sure type your email correctly.");
                                 }
                             }
                         });

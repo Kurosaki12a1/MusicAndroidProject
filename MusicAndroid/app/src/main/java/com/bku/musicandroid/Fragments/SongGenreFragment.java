@@ -188,14 +188,6 @@ public class SongGenreFragment extends Fragment {
         @Override
         protected void onProgressUpdate(ArrayList<SongPlayerOnlineInfo>... values) {
             super.onProgressUpdate(values);
-            if (values[0].size() == 0){
-                progressLoadMusic.setVisibility(View.VISIBLE);
-
-            } else {
-                progressLoadMusic.setVisibility(View.GONE);
-                songInfoOnlineAdapter.notifyDataSetChanged();
-            }
-
         }
 
         @Override
@@ -203,6 +195,7 @@ public class SongGenreFragment extends Fragment {
          //   publishProgress(arrayLists);
          //   OfflineMusicManager offlineMusicManager = new OfflineMusicManager(getContext());
          //   arrayLists[0] = offlineMusicManager.scanAllOfflineMusic();
+            progressLoadMusic.setVisibility(View.VISIBLE);
             dataRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -224,10 +217,11 @@ public class SongGenreFragment extends Fragment {
                         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                         listSongGenre.setLayoutManager(layoutManager);
                         listSongGenre.setAdapter(songInfoOnlineAdapter);
-
+                        progressLoadMusic.setVisibility(View.GONE);
                     }
                 }@Override
                 public void onCancelled(DatabaseError databaseError) {
+                    progressLoadMusic.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), "Cannot retrieve data", Toast.LENGTH_SHORT).show();
 
                 }
