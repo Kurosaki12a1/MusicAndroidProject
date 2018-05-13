@@ -1,4 +1,4 @@
-package com.bku.musicandroid.Fragments;
+package com.bku.musicandroid.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,38 +21,32 @@ import java.util.List;
  * Created by Welcome on 4/29/2018.
  */
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
+public class TopTenSongRecyclerAdapter extends RecyclerView.Adapter<TopTenSongRecyclerAdapter.ViewHolder> {
 
     static Context context;
     List<SongPlayerOnlineInfo> ListSong;
     public final String USER_DATABASE="All_Users_Info_Database";
-    public SearchAdapter(Context context, List<SongPlayerOnlineInfo>listSong){
-
+    public TopTenSongRecyclerAdapter(Context context, List<SongPlayerOnlineInfo>listSong){
         this.ListSong=listSong;
         this.context=context;
     }
 
     @Override
-    public SearchAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_song_online_list, parent, false);
-
-        SearchAdapter.ViewHolder viewHolder = new SearchAdapter.ViewHolder(view);
+    public TopTenSongRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.top10_item, parent, false);
+        TopTenSongRecyclerAdapter.ViewHolder viewHolder = new TopTenSongRecyclerAdapter.ViewHolder(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder( SearchAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(TopTenSongRecyclerAdapter.ViewHolder holder, int position) {
         final SongPlayerOnlineInfo songPlayerOnlineInfo=ListSong.get(position);
         holder.nameArtist.setText(songPlayerOnlineInfo.getSongArtists());
         Glide.with(context).load(songPlayerOnlineInfo.getImageSongURL()).into(holder.songImage);
         holder.nameSong.setText(songPlayerOnlineInfo.getSongName());
-        holder.userUpload.setText(songPlayerOnlineInfo.getUserName());
-        String strTemp="Listen : "+songPlayerOnlineInfo.getView();
-        holder.ViewListen.setText(strTemp);
-        strTemp="DownLoad : "+songPlayerOnlineInfo.getDownload();
-        holder.DownLoad.setText(strTemp);
-        strTemp="Liked : "+songPlayerOnlineInfo.getLiked();
-        holder.Liked.setText(strTemp);
+        holder.downloadTxt.setText("Downloaded: "+songPlayerOnlineInfo.getDownload());
+        holder.likedTxt.setText("Liked: "+songPlayerOnlineInfo.getLiked());
+        holder.viewTxt.setText("Listened: "+songPlayerOnlineInfo.getView());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,18 +67,15 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView songImage;
-        public TextView nameSong,userUpload,nameArtist,DownLoad,Liked,ViewListen;
+        public TextView nameSong,nameArtist,downloadTxt,likedTxt, viewTxt;
         public ViewHolder(View itemView) {
             super(itemView);
-
-            songImage=(ImageView)itemView.findViewById(R.id.songImage);
-            nameArtist=(TextView)itemView.findViewById(R.id.nameArtist);
-            nameSong=(TextView)itemView.findViewById(R.id.nameSong);
-            userUpload=(TextView)itemView.findViewById(R.id.userUpload);
-            DownLoad=(TextView)itemView.findViewById(R.id.DownLoad);
-            Liked=(TextView)itemView.findViewById(R.id.Liked);
-            ViewListen=(TextView)itemView.findViewById(R.id.ViewListen);
-
+            songImage=(ImageView)itemView.findViewById(R.id.imageView);
+            nameArtist=(TextView)itemView.findViewById(R.id.txtName);
+            nameSong=(TextView)itemView.findViewById(R.id.txtAuthor);
+            downloadTxt =(TextView)itemView.findViewById(R.id.txtDownload);
+            likedTxt =(TextView)itemView.findViewById(R.id.txtLike);
+            viewTxt = (TextView)itemView.findViewById(R.id.txtView);
         }
     }
 }

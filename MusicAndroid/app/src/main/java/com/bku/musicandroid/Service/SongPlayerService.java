@@ -2,20 +2,29 @@ package com.bku.musicandroid.Service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.bku.musicandroid.Activity.MainScreenActivity;
 import com.bku.musicandroid.R;
 import com.bku.musicandroid.Model.SongPlayerOfflineInfo;
+import com.bku.musicandroid.Utility.Constants;
 import com.bku.musicandroid.Utility.UtilitySongOfflineClass;
 
 import java.io.IOException;
@@ -37,15 +46,18 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
     private int currentPosition;
     private int totalDuration;
     private boolean isUserChangePosition = false;
-    private boolean isAutoToAnotherSong = false;
+    private boolean isChangeSongFromService = false;
     private String lastFilePath = "";
 
     private Notification notification;
+    private NotificationCompat.Builder builder;
     private RemoteViews remoteViews;
     private NotificationManager notificationManager;
+    private BroadcastReceiver musicPlayerBroadcastReceiver;
 
-    public static int NOTIF_ID = 12;
+    public static final int NOTIF_ID = 1209;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onCreate() {
         super.onCreate();
@@ -56,18 +68,93 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         remoteViews = new RemoteViews(getPackageName(), R.layout.layout_song_player_notification);
 
-        notification = new NotificationCompat.Builder(getApplicationContext(), "MY_ID")
-                .setOngoing(true)
-                .setSmallIcon(R.drawable.ic_audiotrack_dark)
-                .setCustomBigContentView(remoteViews)
-                .build();
+        buildNotification();
 
+        setNotificationListeners();
+
+        musicPlayerBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                if (action != null) {
+                    if (action.equalsIgnoreCase(Constants.ACTION.PLAY_OR_PAUSE_ACTION)) {
+                        if (isPause) {
+                            remoteViews.setImageViewResource(R.id.imgPlay, R.drawable.btn_playback_play);
+                            isPause = false;
+                            mp.start();
+                        } else {
+                            remoteViews.setImageViewResource(R.id.imgPlay, R.drawable.ic_player_pause);
+                            isPause = true;
+                            mp.pause();
+                        }
+                    } else if (action.equalsIgnoreCase(Constants.ACTION.PREV_ACTION)) {
+                        isChangeSongFromService = true;
+                        isUserChangePosition = true;
+                        currentPosition = 0;
+                        if (isShuffle) {
+                            //Tron cung mang nghia repeat all
+                            Random rand = new Random();
+                            int nTempPosition;
+                            do {
+                                nTempPosition = rand.nextInt((listSong.size() - 1));
+                            } while (nTempPosition == nPosition);
+                            nPosition = nTempPosition;
+                            playSong();
+                        } else if (nPosition == 0) {
+                            nPosition = listSong.size() - 1;
+                            playSong();
+                        } else {
+                            nPosition--;
+                            playSong();
+                        }
+
+                    } else if (action.equalsIgnoreCase(Constants.ACTION.NEXT_ACTION)) {
+                        isChangeSongFromService = true;
+                        isUserChangePosition = true;
+                        currentPosition = 0;
+                        if (isShuffle) {
+                            //Tron cung mang nghia repeat all
+                            Random rand = new Random();
+                            int nTempPosition;
+                            do {
+                                nTempPosition = rand.nextInt((listSong.size() - 1));
+                            } while (nTempPosition == nPosition);
+                            nPosition = nTempPosition;
+                            playSong();
+                        } else if (nPosition == listSong.size() - 1) {
+                            nPosition = 0;
+                            playSong();
+                        } else {
+                            nPosition++;
+                            playSong();
+                        }
+                    } else if (action.equalsIgnoreCase(Constants.ACTION.CLOSE_ACTION)) {
+//                        serviceIsRunning = false;
+                        isPause = true;
+                        mp.pause();
+                        return;
+                    }
+
+                    setNotificationInfo();
+                    notificationManager.notify(NOTIF_ID, notification);
+                }
+            }
+        };
 
 
     }
 
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constants.ACTION.PLAY_OR_PAUSE_ACTION);
+        intentFilter.addAction(Constants.ACTION.PREV_ACTION);
+        intentFilter.addAction(Constants.ACTION.NEXT_ACTION);
+        intentFilter.addAction(Constants.ACTION.CLOSE_ACTION);
+
+        registerReceiver(musicPlayerBroadcastReceiver, intentFilter);
+
         Bundle bundle;
         if (intent != null && (bundle = intent.getExtras()) != null
                 && (nPosition = bundle.getInt("position", -1)) != -1) {
@@ -84,16 +171,25 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    while (true) {
+                    while (MainScreenActivity.isRunning ) {
                         try {
                             Thread.sleep(100);
                             currentPosition = mp.getCurrentPosition();
                             sendDataToActivity();
                             // Return default
-                            isAutoToAnotherSong = false;
+                            isChangeSongFromService = false;
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+
+                    }
+                    try {
+                        unregisterReceiver(musicPlayerBroadcastReceiver);
+                    } catch (Exception e) {
+                        Log.d("exception", e.toString());
+                    } finally {
+                        notificationManager.cancel(NOTIF_ID);
+                        stopSelf();
                     }
 
                 }
@@ -111,9 +207,14 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+    }
+
+    @Override
+    public boolean stopService(Intent name) {
         mp.stop();
         mp.release();
-
+        return super.stopService(name);
     }
 
     @Nullable
@@ -129,7 +230,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
         if (mediaPlayer.getDuration() - mediaPlayer.getCurrentPosition() <= 1000) { // End song, we accept 1s of delay
-            isAutoToAnotherSong = true;
+            isChangeSongFromService = true;
             currentPosition = 0;
             if (isRepeatOne) {
                 lastFilePath = "";
@@ -183,6 +284,9 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
         if (isPause) {
             mp.pause();
         }
+        {
+
+        }
     }
 
     /**
@@ -194,20 +298,26 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
 
         String songName = song.getSongName();
         // Name too long so we will epitomize it
-        if (songName.length() >= 30){
+        if (songName.length() >= 30) {
             songName = songName.substring(0, 26) + "...";
         }
         remoteViews.setTextViewText(R.id.txtSongName, songName);
 
         String songArtists = song.getSongArtists();
         // Name too long so we will epitomize it
-        if (songArtists.length() >= 30){
+        if (songArtists.length() >= 30) {
             songArtists = songName.substring(0, 26) + "...";
         }
         remoteViews.setTextViewText(R.id.txtArtistName, songArtists);
 
         Bitmap imgSong = BitmapFactory.decodeByteArray(song.getSongImage(), 0, song.getSongImage().length);
         remoteViews.setImageViewBitmap(R.id.imgSongs, imgSong);
+
+        if (isPause) {
+            remoteViews.setImageViewResource(R.id.imgPlay, R.drawable.btn_playback_play);
+        } else {
+            remoteViews.setImageViewResource(R.id.imgPlay, R.drawable.ic_player_pause);
+        }
     }
 
     /**
@@ -225,9 +335,44 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
         i.putExtra("totalDuration", totalDuration);
         i.putExtra("isUserChangePosition", isUserChangePosition);
 
-        i.putExtra("isAutoToAnotherSong", isAutoToAnotherSong);
+        i.putExtra("isChangeSongFromService", isChangeSongFromService);
 
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
+    }
+
+    /**
+     * Created by Son on 5/13/2018.
+     */
+    private void setNotificationListeners() {
+        Intent playOrPauseIntent = new Intent(Constants.ACTION.PLAY_OR_PAUSE_ACTION);
+        PendingIntent pPlay = PendingIntent.getBroadcast(getApplicationContext(), 0, playOrPauseIntent, 0);
+        remoteViews.setOnClickPendingIntent(R.id.imgPlay, pPlay);
+
+
+        Intent prevIntent = new Intent(Constants.ACTION.PREV_ACTION);
+        PendingIntent pPrev = PendingIntent.getBroadcast(getApplicationContext(), 0, prevIntent, 0);
+        remoteViews.setOnClickPendingIntent(R.id.imgPrev, pPrev);
+
+        Intent nextIntent = new Intent(Constants.ACTION.NEXT_ACTION);
+        PendingIntent pNext = PendingIntent.getBroadcast(getApplicationContext(), 0, nextIntent, 0);
+        remoteViews.setOnClickPendingIntent(R.id.imgNext, pNext);
+
+
+    }
+
+    /**
+     * Created by Son on 5/13/2018.
+     */
+    private void buildNotification() {
+        Intent closeIntent = new Intent(Constants.ACTION.CLOSE_ACTION);
+        PendingIntent pClose = PendingIntent.getBroadcast(getApplicationContext(), 0, closeIntent, 0);
+
+        builder = new NotificationCompat.Builder(getApplicationContext(), "MY_ID")
+                .setOngoing(true)
+                .setSmallIcon(R.drawable.ic_audiotrack_dark)
+                .setCustomBigContentView(remoteViews)
+                .setDeleteIntent(pClose);
+        notification = builder.build();
     }
 
 
