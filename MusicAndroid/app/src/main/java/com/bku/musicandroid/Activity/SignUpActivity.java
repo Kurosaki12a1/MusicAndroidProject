@@ -45,13 +45,13 @@ public class SignUpActivity extends Activity {
     private String password;
     private String confirmpass;
     public String username;
-    private EditText email_txt;
-    private EditText password_txt;
-    private EditText confirmpass_txt;
-    private EditText username_txt;
-    private Button signup_btn;
+    private EditText emailTxt;
+    private EditText passwordTxt;
+    private EditText confirmpassTxt;
+    private EditText usernameTxt;
+    private Button signUpBtn;
     private FirebaseAuth auth;
-    private boolean valid_flag;
+    private boolean validFlag;
     private ProgressDialog progressDialog;
 
     @Override
@@ -60,20 +60,20 @@ public class SignUpActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.setContentView(R.layout.activity_sign_up);
-        signup_btn=findViewById(R.id.sign_up_btn);
+        signUpBtn=findViewById(R.id.sign_up_btn);
         Log.d("2abc","check: "+email+password+"20"+confirmpass);
-        signup_btn.setOnClickListener(new View.OnClickListener() {
+        signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signup_btn=findViewById(R.id.sign_up_btn);
-                email_txt=findViewById(R.id.email_txt);
-                password_txt = findViewById(R.id.password_txt);
-                confirmpass_txt = findViewById(R.id.confirmpass_txt);
-                username_txt=findViewById(R.id.username_txt);
-                email=email_txt.getText().toString().trim();
-                password=password_txt.getText().toString().trim();
-                confirmpass=confirmpass_txt.getText().toString().trim();
-                username=username_txt.getText().toString().trim();
+                signUpBtn=findViewById(R.id.sign_up_btn);
+                emailTxt=findViewById(R.id.email_txt);
+                passwordTxt = findViewById(R.id.password_txt);
+                confirmpassTxt = findViewById(R.id.confirmpass_txt);
+                usernameTxt=findViewById(R.id.username_txt);
+                email=emailTxt.getText().toString().trim();
+                password=passwordTxt.getText().toString().trim();
+                confirmpass=confirmpassTxt.getText().toString().trim();
+                username=usernameTxt.getText().toString().trim();
                 progressDialog = new ProgressDialog(SignUpActivity.this);
                 progressDialog.setTitle("Sign up");
                 progressDialog.setMessage("Signing in, please wait...");
@@ -84,7 +84,7 @@ public class SignUpActivity extends Activity {
             }
         });
     }
-    private void sign_up(final String email, String password, String confirmpass, final String fullname) {
+    private void signUp(final String email, String password, String confirmpass, final String fullname) {
         auth = FirebaseAuth.getInstance();
         Log.d(TAG, "createAccount:" + email);
      //   validateForm();
@@ -148,7 +148,7 @@ public class SignUpActivity extends Activity {
                             progressDialog.dismiss();
                             Toast.makeText(getApplicationContext(), "Sign up failed."+task.getException(),
                                     Toast.LENGTH_SHORT).show();
-                            email_txt.setError("The email address is already in use by another account.");
+                            emailTxt.setError("The email address is already in use by another account.");
                             //     updateUI(null);
                         }
 
@@ -160,15 +160,15 @@ public class SignUpActivity extends Activity {
     }
 
     private void validateForm() {
-        valid_flag = true;
-        email_txt=findViewById(R.id.email_txt);
-        password_txt = findViewById(R.id.password_txt);
-        confirmpass_txt = findViewById(R.id.confirmpass_txt);
-        username_txt=findViewById(R.id.username_txt);
-        email=email_txt.getText().toString().trim();
-        password=password_txt.getText().toString().trim();
-        confirmpass=confirmpass_txt.getText().toString().trim();
-        username=username_txt.getText().toString().trim();
+        validFlag = true;
+        emailTxt=findViewById(R.id.email_txt);
+        passwordTxt = findViewById(R.id.password_txt);
+        confirmpassTxt = findViewById(R.id.confirmpass_txt);
+        usernameTxt=findViewById(R.id.username_txt);
+        email=emailTxt.getText().toString().trim();
+        password=passwordTxt.getText().toString().trim();
+        confirmpass=confirmpassTxt.getText().toString().trim();
+        username=usernameTxt.getText().toString().trim();
         Log.d("1abc", "pass: "+password+" Confirm: "+confirmpass+" email: "+email+" username: "+username);
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference();
@@ -176,26 +176,26 @@ public class SignUpActivity extends Activity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (TextUtils.isEmpty(email)) {
-                    email_txt.setError("Required.");
-                    valid_flag = false;
+                    emailTxt.setError("Required.");
+                    validFlag = false;
                 } else {
-                    email_txt.setError(null);
+                    emailTxt.setError(null);
                 }
 
                 if (TextUtils.isEmpty(password)||password.length()<6) {
-                    password_txt.setError("Too short");
-                    valid_flag = false;
+                    passwordTxt.setError("Too short");
+                    validFlag = false;
                 }
                 else {
-                    password_txt.setError(null);
+                    passwordTxt.setError(null);
                 }
                 if (confirmpass.length()<6 || !confirmpass.equals(password)) {
-                    confirmpass_txt.setError("Not right");
+                    confirmpassTxt.setError("Not right");
                     Log.d("1abc","toi day"+confirmpass+" "+password+"1");
-                    valid_flag = false;
+                    validFlag = false;
                 }
                 else {
-                    confirmpass_txt.setError(null);
+                    confirmpassTxt.setError(null);
                 }
                 Log.d("1abc","1");
                 Pattern p = Pattern.compile("[^A-Za-z0-9_]", Pattern.CASE_INSENSITIVE);
@@ -203,25 +203,25 @@ public class SignUpActivity extends Activity {
                 boolean b = m.find();
 
                 if (username.length()<6 || b ) {
-                    username_txt.setError("Username is too short or contains special character");
-                    valid_flag = false;
+                    usernameTxt.setError("Username is too short or contains special character");
+                    validFlag = false;
                 }
                 else {
-                    username_txt.setError(null);
+                    usernameTxt.setError(null);
                 }
                 //   Users user = dataSnapshot.getValue(Users.class);
                 for (DataSnapshot imageSnapshot: dataSnapshot.getChildren()) {
                     Users user = imageSnapshot.getValue(Users.class);
                     if(user.userName.equals(username)){
-                        username_txt.setError("Username already existed");
-                        valid_flag=false;
-                        Log.w("1abc", "Valid Flag: " + valid_flag);
+                        usernameTxt.setError("Username already existed");
+                        validFlag=false;
+                        Log.w("1abc", "Valid Flag: " + validFlag);
                         break;
                     }
                     Log.w("1abc", "Username of Username: " + user.userName);
                 }
-                if(valid_flag==true){
-                    sign_up(  email,  password,  confirmpass,  username);
+                if(validFlag==true){
+                    signUp(  email,  password,  confirmpass,  username);
 
                 }else {
                     progressDialog.dismiss();
@@ -239,7 +239,7 @@ public class SignUpActivity extends Activity {
 
         Log.d("1abc","2");
 
-        Log.d("1abc","3"+valid_flag);
+        Log.d("1abc","3"+validFlag);
         //Check if username is available
         /*
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
