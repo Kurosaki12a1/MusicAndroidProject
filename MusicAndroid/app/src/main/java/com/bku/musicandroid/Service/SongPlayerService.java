@@ -44,9 +44,8 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
     private Notification notification;
     private RemoteViews remoteViews;
     private NotificationManager notificationManager;
-    private boolean isRunning = true;
 
-    public static final int NOTIF_ID = 12;
+    public static final int NOTIF_ID = 1209;
 
     @Override
     public void onCreate() {
@@ -86,7 +85,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    while (isRunning) {
+                    while (MainScreenActivity.isRunning) {
                         try {
                             Thread.sleep(100);
                             currentPosition = mp.getCurrentPosition();
@@ -97,6 +96,8 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
                             e.printStackTrace();
                         }
                     }
+                    notificationManager.cancel(NOTIF_ID);
+                    stopSelf();
 
                 }
             });
@@ -113,12 +114,14 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
     @Override
     public void onDestroy() {
         super.onDestroy();
-        isRunning = false;
-        notificationManager.cancel(NOTIF_ID);
+
+    }
+
+    @Override
+    public boolean stopService(Intent name) {
         mp.stop();
         mp.release();
-
-
+        return super.stopService(name);
     }
 
     @Nullable

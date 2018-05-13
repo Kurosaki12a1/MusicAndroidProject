@@ -6,27 +6,15 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.net.Uri;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bku.musicandroid.Service.SongPlayerService;
-import com.bku.musicandroid.Utility.CircleTransform;
+
 import com.bku.musicandroid.Fragments.ExploreFragment;
 import com.bku.musicandroid.Fragments.HomeFragment;
 import com.bku.musicandroid.Fragments.LibraryFragment;
@@ -35,18 +23,10 @@ import com.bku.musicandroid.Fragments.SongGenreFragment;
 import com.bku.musicandroid.Adapter.MainFragmentPagerAdapter;
 import com.bku.musicandroid.R;
 import com.bku.musicandroid.Fragments.SongsFragment;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import devlight.io.library.ntb.NavigationTabBar;
 
@@ -59,6 +39,7 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
         ExploreFragment.OnFragmentInteractionListener, SearchFragment.OnFragmentInteractionListener,
         LibraryFragment.OnFragmentInteractionListener, SongsFragment.OnFragmentInteractionListener, SongGenreFragment.OnFragmentInteractionListener {
     private static final String TAG = "MainScreenActivity";
+    public static boolean isRunning = true;
 
     private Context mContext = MainScreenActivity.this;
     ViewPager mainViewPager;
@@ -219,6 +200,8 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
     @Override
     protected void onDestroy() {
         super.onDestroy();
+//        stopService(new Intent(MainScreenActivity.this, SongPlayerService.class));
+        isRunning = false;
     }
 }
 
