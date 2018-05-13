@@ -147,7 +147,6 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        serviceIsRunning = true;
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Constants.ACTION.PLAY_OR_PAUSE_ACTION);
         intentFilter.addAction(Constants.ACTION.PREV_ACTION);
