@@ -1,0 +1,214 @@
+package com.bku.musicandroid.Fragments;
+
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatButton;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.TextView;
+
+import com.bku.musicandroid.Activity.ChangePasswordActivity;
+import com.bku.musicandroid.Activity.EditProfileActivity;
+import com.bku.musicandroid.Activity.UploadSongActivity;
+import com.bku.musicandroid.R;
+import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
+/**
+ * Created by Welcome on 5/13/2018.
+ */
+
+public class ProfileFragment extends Fragment {
+
+    private ImageView profileImage,backGroundImage;
+    private TextView  txtBar,txtName;
+    private AppCompatButton menu;
+    String userId="";
+    FirebaseAuth mAuth;
+
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
+    private ProfileFragment.OnFragmentInteractionListener mListener;
+
+    public ProfileFragment() {
+        mAuth=FirebaseAuth.getInstance();
+        userId=mAuth.getCurrentUser().getUid();
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment HomeFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static ProfileFragment newInstance(String param1, String param2) {
+        ProfileFragment fragment = new ProfileFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_profile, container, false);
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof ProfileFragment.OnFragmentInteractionListener) {
+            mListener = (ProfileFragment.OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        bindView();
+        DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("All_Users_Info_Database");
+        databaseReference.child("users").child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Glide.with(getContext()).load(dataSnapshot.child("avatarURL").getValue(String.class)).into(profileImage);
+                txtBar.setText("Hi , "+ dataSnapshot.child("userName").getValue(String.class) + " !");
+                txtName.setText(dataSnapshot.child("fullName").getValue(String.class));
+                if(dataSnapshot.hasChild("backgroundURL")){
+                    Glide.with(getContext()).load(dataSnapshot.child("backgroundURL").getValue(String.class)).into(backGroundImage);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowMenu();
+            }
+        });
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    public void bindView(){
+        profileImage=getView().findViewById(R.id.profile_image);
+        backGroundImage=getView().findViewById(R.id.profile_background);
+        txtBar=getView().findViewById(R.id.username);
+        txtName=getView().findViewById(R.id.nameUser);
+        menu=getView().findViewById(R.id.profileMenu);
+    }
+    private void ShowMenu(){
+        PopupMenu MenuPopUp =new PopupMenu(getContext(),menu);
+        MenuPopUp.getMenuInflater().inflate(R.menu.drawer_menu,MenuPopUp.getMenu());
+        MenuPopUp.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.nav_upload:
+                    {
+                        Intent intent = new Intent(getContext(), UploadSongActivity.class);
+                        startActivity(intent);
+
+                        break;
+                    }
+                    case R.id.nav_setting:
+                    {
+                        Intent intent=new Intent(getContext(), ChangePasswordActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
+
+                    case R.id.nav_editProfile:
+                    {
+                        Intent intent = new Intent(getContext(),EditProfileActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
+
+                    case R.id.nav_logout:{
+                        signOut();
+                        break;
+
+                    }
+
+                }
+                return false;
+            }
+        });
+        MenuPopUp.show();
+    }
+    public void signOut() {
+        mAuth.signOut();
+    }
+}

@@ -111,7 +111,8 @@ public class SignUpActivity extends Activity {
                             DatabaseReference usersRef = ref.child("All_Users_Info_Database").child("users");
                             String userId = usersRef.push().getKey();
                             final Map<String, Object> dataMap = new HashMap<String, Object>();
-                            Users temp=new Users(username, email, "Default_fullname","Default_avatarURL","Default_Dateofbirth");
+                            String defaultAvatarURL="https://firebasestorage.googleapis.com/v0/b/android-music-app-player.appspot.com/o/user_default.png?alt=media&token=adf8a1cb-e636-47d2-93de-31275e4024ed";
+                            Users temp=new Users(username, email, "Default_fullname",defaultAvatarURL,"Default_Dateofbirth","");
                             usersRef.child(user.getUid()).setValue(temp);
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(username).build();

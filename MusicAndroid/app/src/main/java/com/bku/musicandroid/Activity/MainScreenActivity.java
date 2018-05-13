@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bku.musicandroid.Fragments.ProfileFragment;
 import com.bku.musicandroid.Utility.CircleTransform;
 import com.bku.musicandroid.Fragments.ExploreFragment;
 import com.bku.musicandroid.Fragments.HomeFragment;
@@ -56,7 +57,8 @@ import devlight.io.library.ntb.NavigationTabBar;
 
 public class MainScreenActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener,
         ExploreFragment.OnFragmentInteractionListener, SearchFragment.OnFragmentInteractionListener,
-        LibraryFragment.OnFragmentInteractionListener, SongsFragment.OnFragmentInteractionListener, SongGenreFragment.OnFragmentInteractionListener {
+        LibraryFragment.OnFragmentInteractionListener, SongsFragment.OnFragmentInteractionListener, SongGenreFragment.OnFragmentInteractionListener ,
+        ProfileFragment.OnFragmentInteractionListener{
     private static final String TAG = "MainScreenActivity";
     private Context mContext = MainScreenActivity.this;
     ViewPager mainViewPager;
@@ -120,6 +122,14 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
                         .title("Library")
                         .build()
         );
+        models.add(
+                new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.ic_profile_transparent),
+                        Color.parseColor(colors[4]))
+                        .title("Profile")
+                        .build()
+        );
+
 
         navigationTabBar.setModels(models);
         navigationTabBar.setViewPager(mainViewPager,0);
@@ -157,8 +167,11 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
                 else if(position==2){
                     txtStatus.setText("SEARCH");
                 }
-                else{
+                else if(position==3){
                     txtStatus.setText("LIBRARY");
+                }
+                else{
+                    txtStatus.setText("PROFILE");
                 }
             }
 

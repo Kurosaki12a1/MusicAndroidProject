@@ -13,4 +13,5 @@
     <color name="btn_login_bg">#eceef1</color>
     <color name="colorGray">#888888</color>
     <color name="colorGreen">#7CFC00</color>
+    <color name="link_blue">#4d94ff</color>
 </resources>
