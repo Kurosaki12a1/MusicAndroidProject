@@ -20,6 +20,7 @@ import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bku.musicandroid.Activity.ActivityPlayListOnline;
 import com.bku.musicandroid.Activity.ChangePasswordActivity;
 import com.bku.musicandroid.Activity.EditProfileActivity;
 import com.bku.musicandroid.Activity.UploadSongActivity;
@@ -48,7 +49,7 @@ import javax.net.ssl.HttpsURLConnection;
 public class ProfileFragment extends Fragment {
 
     private ImageView profileImage,backGroundImage;
-    private TextView  txtBar,txtName;
+    private TextView  txtBar,txtName,playList;
     private AppCompatButton menu;
     String userId="";
     FirebaseAuth mAuth;
@@ -166,7 +167,13 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-
+        playList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(getContext(),ActivityPlayListOnline.class);
+                getContext().startActivity(intent);
+            }
+        });
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,6 +190,7 @@ public class ProfileFragment extends Fragment {
         txtName=getView().findViewById(R.id.nameUser);
         menu=getView().findViewById(R.id.profileMenu);
         rlayout = getView().findViewById(R.id.mainRel);
+        playList=getView().findViewById(R.id.PlayList);
     }
     private void ShowMenu(){
         PopupMenu MenuPopUp =new PopupMenu(getContext(),menu);

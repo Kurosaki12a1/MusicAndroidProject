@@ -9,39 +9,43 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bku.musicandroid.R;
 import com.bku.musicandroid.Activity.SongOnlinePlayerActivity;
 import com.bku.musicandroid.Model.SongPlayerOnlineInfo;
+import com.bku.musicandroid.R;
 import com.bku.musicandroid.Utility.UtilitySongOnlineClass;
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Welcome on 4/29/2018.
+ * Created by Welcome on 5/14/2018.
  */
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
+public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHolder>  {
 
     static Context context;
-    List<SongPlayerOnlineInfo> ListSong;
+    ArrayList<SongPlayerOnlineInfo> ListSong;
 
-    public SearchAdapter(Context context, List<SongPlayerOnlineInfo>listSong){
-
-        this.ListSong=listSong;
+    public PlayListAdapter(Context context,ArrayList<SongPlayerOnlineInfo> lst)
+    {
         this.context=context;
+        this.ListSong=new ArrayList<>(lst);
+        this.ListSong=lst;
+        UtilitySongOnlineClass utilitySongOnlineClass=UtilitySongOnlineClass.getInstance();
+        utilitySongOnlineClass.setItemOfList(lst);
     }
-
     @Override
-    public SearchAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PlayListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_song_online_list, parent, false);
 
-        SearchAdapter.ViewHolder viewHolder = new SearchAdapter.ViewHolder(view);
+        PlayListAdapter.ViewHolder viewHolder = new PlayListAdapter.ViewHolder(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder( SearchAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(PlayListAdapter.ViewHolder holder, int position) {
+        final int nTempPosition=position;
         final SongPlayerOnlineInfo songPlayerOnlineInfo=ListSong.get(position);
         holder.nameArtist.setText(songPlayerOnlineInfo.getSongArtists());
         Glide.with(context).load(songPlayerOnlineInfo.getImageSongURL()).into(holder.songImage);
@@ -64,22 +68,21 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UtilitySongOnlineClass utilitySongOnlineClass=UtilitySongOnlineClass.getInstance();
-                utilitySongOnlineClass.setItem(songPlayerOnlineInfo);
-                Intent intent=new Intent(context,SongOnlinePlayerActivity.class);
+                Intent intent = new Intent(context, SongOnlinePlayerActivity.class);
+                intent.putExtra("currentPosition",nTempPosition);
+
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(intent);
             }
         });
-
     }
-
 
     @Override
     public int getItemCount() {
         return ListSong.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView songImage,addPlayList;
         public TextView nameSong,userUpload,nameArtist,DownLoad,Liked,ViewListen;

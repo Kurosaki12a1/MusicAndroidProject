@@ -186,23 +186,6 @@ public class SearchFragment extends Fragment  {
         }
         else {
             dataSearch="userName";
-           /* DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference(USER_DATABASE);
-            databaseReference.child("users").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for(DataSnapshot singleSnapshot: dataSnapshot.getChildren()){
-                        if(singleSnapshot.child("userName").getValue().toString().toLowerCase().contains(keyword)){
-                            getUserId= singleSnapshot.getKey();
-                            break;
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });*/
         }
         if(keyword.length()==0){
 
