@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bku.musicandroid.Activity.AddSongToPlayListPopUp;
 import com.bku.musicandroid.R;
 import com.bku.musicandroid.Activity.SongOnlinePlayerActivity;
 import com.bku.musicandroid.Model.SongPlayerOnlineInfo;
@@ -57,7 +58,20 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         holder.addPlayList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent=new Intent(context, AddSongToPlayListPopUp.class);
 
+                intent.putExtra("nameSong",songPlayerOnlineInfo.getSongName());
+                intent.putExtra("nameArtist",songPlayerOnlineInfo.getSongArtists());
+                intent.putExtra("userUpload",songPlayerOnlineInfo.getUserName());
+                intent.putExtra("viewListen",songPlayerOnlineInfo.getView());
+                intent.putExtra("Download",songPlayerOnlineInfo.getDownload());
+                intent.putExtra("Liked",songPlayerOnlineInfo.getLiked());
+                intent.putExtra("songId",songPlayerOnlineInfo.getSongId());
+                intent.putExtra("songGenre",songPlayerOnlineInfo.getSongGenre());
+                intent.putExtra("ImageSongURL",songPlayerOnlineInfo.getImageSongURL());
+                intent.putExtra("songURL",songPlayerOnlineInfo.getSongURL());
+                intent.putExtra("userId",songPlayerOnlineInfo.getUserId());
+                context.startActivity(intent);
             }
         });
 

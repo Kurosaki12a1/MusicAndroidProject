@@ -67,10 +67,11 @@ public class PlayListActivity extends AppCompatActivity {
         mAuth=FirebaseAuth.getInstance();
         final String userId=mAuth.getCurrentUser().getUid();
 
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             playListId=extras.getString("PlayListId");
-            getPlayListInfo(playListId);
+            getPlayListInfo(playListId,userId);
         }
 
         lstSong=new ArrayList<>();
@@ -98,9 +99,13 @@ public class PlayListActivity extends AppCompatActivity {
         databaseReference1.child(playListId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                lstSong=new ArrayList<>();
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                     lstSong.add(singleSnapshot.getValue(SongPlayerOnlineInfo.class));
                 }
+                PlayListAdapter playListAdapter=new PlayListAdapter(PlayListActivity.this,lstSong);
+                playListAdapter.notifyDataSetChanged();
+                recyclerView.setAdapter(playListAdapter);
             }
 
             @Override
@@ -109,9 +114,7 @@ public class PlayListActivity extends AppCompatActivity {
             }
         });
 
-        PlayListAdapter searchAdapter=new PlayListAdapter(this,lstSong);
-        searchAdapter.notifyDataSetChanged();
-        recyclerView.setAdapter(searchAdapter);
+
 
         liked.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,16 +132,16 @@ public class PlayListActivity extends AppCompatActivity {
         });
 
         //increase 1 view when click to this acitivity
-        upView(playListId);
 
 
+        upView(playListId,userId);
 
     }
 
-    //So like se dua tren so child tren firebase 
+    //So like se dua tren so child tren firebase
     private void LikedSong(String userId,String playListId) {
         final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(Liked_Path).child(playListId);
-        final DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference(PlayList_Database).child(playListId);
+        final DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference(PlayList_Database).child(userId).child(playListId);
         databaseReference.child(userId).setValue("Liked This PlayList");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -157,7 +160,7 @@ public class PlayListActivity extends AppCompatActivity {
 
     private void UnLikedSong(String userId,String playListId) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(Liked_Path).child(playListId);
-        final DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference(PlayList_Database).child(playListId);
+        final DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference(PlayList_Database).child(userId).child(playListId);
         databaseReference.child(userId).removeValue(); //remove
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -174,12 +177,15 @@ public class PlayListActivity extends AppCompatActivity {
 
     }
 
-    private void getPlayListInfo(String playListId){
-        DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference(PlayList_Database).child(playListId);
+    private void getPlayListInfo(final String playListId, final String userId){
+        DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference(PlayList_Database).child(userId).child(playListId);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                playListOnlineInfo=new PlayListOnlineInfo();
                 playListOnlineInfo=dataSnapshot.getValue(PlayListOnlineInfo.class);
+                namePlayList.setText(playListOnlineInfo.getPlayListName());
+
             }
 
             @Override
@@ -189,9 +195,9 @@ public class PlayListActivity extends AppCompatActivity {
         });
 
     }
-    protected void upView(String playListId){
+    protected void upView(String playListId,String userId){
 
-        final DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference(PlayList_Database).child(playListId);
+        final DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference(PlayList_Database).child(userId).child(playListId);
         DatabaseReference databaseReference1=FirebaseDatabase.getInstance().getReference(View_Database).child(playListId);
         databaseReference1.push().setValue("Id of View");
         databaseReference1.addValueEventListener(new ValueEventListener() {

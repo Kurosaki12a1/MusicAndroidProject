@@ -30,6 +30,7 @@ public class ActivityPlayListOnline extends AppCompatActivity {
 
     public static final String PlayList_Path="All_PlayList_Info_Database";
 
+
     private ImageView backArrow,createPlayList;
     RecyclerView recyclerView;
 
@@ -62,10 +63,13 @@ public class ActivityPlayListOnline extends AppCompatActivity {
         databaseReference.child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                lst=new ArrayList<>();
                 for(DataSnapshot singleSnapshot :dataSnapshot.getChildren()) {
                     lst.add(singleSnapshot.getValue(PlayListOnlineInfo.class));
                 }
-
+                ViewListOfPlayListAdapter viewListOfPlayListAdapter=new ViewListOfPlayListAdapter(ActivityPlayListOnline.this,lst);
+                viewListOfPlayListAdapter.notifyDataSetChanged();
+                recyclerView.setAdapter(viewListOfPlayListAdapter);
             }
 
             @Override
@@ -73,10 +77,7 @@ public class ActivityPlayListOnline extends AppCompatActivity {
 
             }
         });
-        ViewListOfPlayListAdapter viewListOfPlayListAdapter=new ViewListOfPlayListAdapter(this,lst);
-        viewListOfPlayListAdapter.notifyDataSetChanged();
-        recyclerView.setAdapter(viewListOfPlayListAdapter);
-        recyclerView.invalidate();
+
 
         //set adapter and recylceview
 
@@ -85,6 +86,7 @@ public class ActivityPlayListOnline extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent =new Intent(ActivityPlayListOnline.this,CreatePlayListPopUp.class);
                 startActivity(intent);
+
             }
         });
     }

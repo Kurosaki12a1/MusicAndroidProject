@@ -27,6 +27,8 @@ import org.w3c.dom.Text;
 public class CreatePlayListPopUp extends Activity {
     public static final String PlayList_Path="All_PlayList_Info_Database";
     public static final String Database_Path="All_Users_Info_Database";
+    public static final String Liked_Path="All_Liked_PlayList_Database";
+    public static final String View_Path="All_View_PlayList_Database";
 
     private EditText inputName;
     private TextView confirm,cancel;
@@ -82,8 +84,13 @@ public class CreatePlayListPopUp extends Activity {
                 else{
                     DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference(PlayList_Path).child(userId);
                     String keyPlayList=databaseReference.push().getKey();
-                    PlayListOnlineInfo playListOnlineInfo=new PlayListOnlineInfo(keyPlayList,inputName.getText().toString().trim(),username,"0","0");
+                    PlayListOnlineInfo playListOnlineInfo=new PlayListOnlineInfo(keyPlayList,inputName.getText().toString().trim(),userId,username,"0","0");
                     databaseReference.child(keyPlayList).setValue(playListOnlineInfo);
+                    DatabaseReference databaseReference1=FirebaseDatabase.getInstance().getReference(View_Path).child(keyPlayList);
+                    databaseReference1.setValue("View Of This PlayList");
+                    DatabaseReference databaseReference2=FirebaseDatabase.getInstance().getReference(Liked_Path).child(keyPlayList);
+                    databaseReference2.setValue("Liked Of This PlayList");
+
                     Intent intent=new Intent(CreatePlayListPopUp.this,ActivityPlayListOnline.class);
                     startActivity(intent);
                 }

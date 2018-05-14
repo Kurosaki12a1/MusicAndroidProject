@@ -9,53 +9,49 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bku.musicandroid.Activity.AddSongToPlayListPopUp;
 import com.bku.musicandroid.Activity.PlayListActivity;
 import com.bku.musicandroid.Model.PlayListOnlineInfo;
 import com.bku.musicandroid.Model.SongPlayerOnlineInfo;
 import com.bku.musicandroid.R;
-import com.bku.musicandroid.Utility.UtilitySongOnlineClass;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Welcome on 5/14/2018.
  */
 
-public class ViewListOfPlayListAdapter extends RecyclerView.Adapter<ViewListOfPlayListAdapter.ViewHolder>  {
-
+public class AddSongToPlayListAdapter extends RecyclerView.Adapter<AddSongToPlayListAdapter.ViewHolder> {
     static Context context;
-    ArrayList<PlayListOnlineInfo> ListPlayList;
-
+    SongPlayerOnlineInfo song;
+    ArrayList<PlayListOnlineInfo> lst;
 
     public static final String Database_Path="All_PLayList_Info_Database";
     public static final String Song_List="All_Song_Of_PlayList_Database";
     public static final String Liked_Path="All_Liked_PlayList_Database";
     public static final String View_Path="All_View_PlayList_Database";
 
-    public ViewListOfPlayListAdapter(Context context, ArrayList<PlayListOnlineInfo> lst){
+    public AddSongToPlayListAdapter(Context context,SongPlayerOnlineInfo song,ArrayList<PlayListOnlineInfo>list){
         this.context=context;
-        this.ListPlayList=new ArrayList<>(lst);
-        this.ListPlayList=lst;
+        this.song=song;
+        this.lst=new ArrayList<>(list);
+        this.lst=list;
     }
-
     @Override
-    public ViewListOfPlayListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AddSongToPlayListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_view_playlist_online, parent, false);
 
-        ViewListOfPlayListAdapter.ViewHolder viewHolder = new ViewListOfPlayListAdapter.ViewHolder(view);
+        AddSongToPlayListAdapter.ViewHolder viewHolder = new AddSongToPlayListAdapter.ViewHolder(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ViewListOfPlayListAdapter.ViewHolder holder,  int position) {
+    public void onBindViewHolder(AddSongToPlayListAdapter.ViewHolder holder, int position) {
         final int nTempPosition=position;
-        final PlayListOnlineInfo playListOnlineInfo=ListPlayList.get(position);
+        final PlayListOnlineInfo playListOnlineInfo=lst.get(position);
         holder.namePlayList.setText(playListOnlineInfo.getPlayListName());
         holder.userUpload.setText(playListOnlineInfo.getUserName());
         holder.Liked.setText(playListOnlineInfo.getLiked());
@@ -63,32 +59,29 @@ public class ViewListOfPlayListAdapter extends RecyclerView.Adapter<ViewListOfPl
         holder.deletePlayList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ListPlayList.remove(nTempPosition);
+                lst.remove(nTempPosition);
                 notifyItemRemoved(nTempPosition);
                 removePlayList(playListOnlineInfo.getPlayListId(),playListOnlineInfo.getUserId());
-                notifyItemRangeChanged(nTempPosition,ListPlayList.size());
+                notifyItemRangeChanged(nTempPosition,lst.size());
             }
         });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context,PlayListActivity.class);
-                intent.putExtra("currentPosition",nTempPosition);
-                intent.putExtra("PlayListId",playListOnlineInfo.getPlayListId());
-                context.startActivity(intent);
+                DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference(Song_List);
+                databaseReference.child(playListOnlineInfo.getPlayListId()).child(song.getSongId()).setValue(song);
+                ((AddSongToPlayListPopUp)context).finish();
             }
         });
-
     }
 
     @Override
     public int getItemCount() {
-        return ListPlayList.size();
+        return lst.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
         private TextView namePlayList,userUpload,ViewListen,Liked;
         private ImageView deletePlayList;
 
@@ -101,9 +94,8 @@ public class ViewListOfPlayListAdapter extends RecyclerView.Adapter<ViewListOfPl
             deletePlayList=itemView.findViewById(R.id.deletePlayList);
         }
     }
-
     private void removePlayList(String id,String key){
-        DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference(Database_Path);
+        DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference(Database_Path);
         databaseReference.child(key).child(id).removeValue();
 
         DatabaseReference databaseReference1=FirebaseDatabase.getInstance().getReference(Liked_Path);
@@ -114,5 +106,9 @@ public class ViewListOfPlayListAdapter extends RecyclerView.Adapter<ViewListOfPl
 
         DatabaseReference databaseReference3=FirebaseDatabase.getInstance().getReference(View_Path);
         databaseReference3.child(id).removeValue();
+
+    }
+    private void OnClickListener(){
+
     }
 }

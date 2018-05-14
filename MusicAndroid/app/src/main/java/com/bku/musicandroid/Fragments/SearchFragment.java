@@ -195,6 +195,7 @@ public class SearchFragment extends Fragment  {
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    listSong=new ArrayList<>();
                     for(DataSnapshot singleSnapshot: dataSnapshot.getChildren()){
                         if(singleSnapshot.child(dataSearch).getValue().toString().toLowerCase().contains(keyword)){
                             listSong.add(singleSnapshot.getValue(SongPlayerOnlineInfo.class));
