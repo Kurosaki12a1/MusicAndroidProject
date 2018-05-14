@@ -41,7 +41,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
     private boolean isPause = false;
     private boolean isRepeatAll = false;
     private boolean isUserChangePosition = false;
-    private boolean isAutoToAnotherSong = false;
+    private boolean isChangeSongFromService = false;
     private int totalDuration = 0;
     private int currentPosition = 0;
     private TimerOfSong timerOfSong;
@@ -87,7 +87,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
                 isPause = intent.getBooleanExtra("isPause", false);
                 currentPosition = intent.getIntExtra("currentPosition", 0);
                 totalDuration = intent.getIntExtra("totalDuration", 0);
-                isAutoToAnotherSong = intent.getBooleanExtra("isAutoToAnotherSong", false);
+                isChangeSongFromService = intent.getBooleanExtra("isChangeSongFromService", false);
 
                 if (!isPause) {
                     play.setImageResource(R.drawable.ic_player_pause);
@@ -96,7 +96,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
                 }
 
                 // Update new song info UI when auto move to another song
-                if (isAutoToAnotherSong) {
+                if (isChangeSongFromService) {
                     getCurrentInfoSong(nPosition);
                     updateSongInfoUI();
                     avatarSong.setRotation(0.0f);

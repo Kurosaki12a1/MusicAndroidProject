@@ -192,9 +192,7 @@ public class SongGenreFragment extends Fragment {
 
         @Override
         protected ArrayList<SongPlayerOnlineInfo> doInBackground(ArrayList<SongPlayerOnlineInfo>... arrayLists) {
-            //   publishProgress(arrayLists);
-            //   OfflineMusicManager offlineMusicManager = new OfflineMusicManager(getContext());
-            //   arrayLists[0] = offlineMusicManager.scanAllOfflineMusic();
+
             progressLoadMusic.setVisibility(View.VISIBLE);
             dataRef.addValueEventListener(new ValueEventListener() {
                 @Override
