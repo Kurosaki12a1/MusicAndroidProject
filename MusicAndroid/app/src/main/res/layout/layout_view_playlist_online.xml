@@ -1,70 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="140dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/colorTabBackgroundLighter"
+    android:padding="20dp"
     >
 
-    <ImageView
-        android:id="@+id/songImage"
-        android:layout_width="75dp"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="20dp"
-        />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/songImage"
         android:layout_centerVertical="true">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:textSize="12sp"
+            android:textSize="18sp"
             android:textColor="@color/colorWhite"
-            android:id="@+id/nameSong"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/nameSong"
-            android:layout_marginStart="10dp"
-            android:textSize="12sp"
-            android:layout_centerVertical="true"
-            android:textColor="@color/colorWhite"
-            android:id="@+id/nameArtist"
+            android:id="@+id/namePlayList"
             />
 
         <TextView
             android:id="@+id/userUpload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/nameArtist"
+            android:layout_below="@+id/namePlayList"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:textColor="@color/colorWhite"
-            android:textSize="12sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/userUpload"
-            android:textSize="12sp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
-            android:id="@+id/DownLoad"
-            android:textColor="@color/colorWhite"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/DownLoad"
-            android:textSize="12sp"
+            android:textSize="18sp"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:id="@+id/ViewListen"
@@ -74,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ViewListen"
-            android:textSize="12sp"
+            android:textSize="18sp"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:id="@+id/Liked"
@@ -84,8 +56,8 @@
             android:background="@color/colorWhite"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/ic_add_playlist"
-            android:id="@+id/addPlayList"
+            android:src="@drawable/ic_trash"
+            android:id="@+id/deletePlayList"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="10dp"/>

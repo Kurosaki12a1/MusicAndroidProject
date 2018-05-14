@@ -36,10 +36,17 @@
         <activity android:name=".Activity.UploadSongActivity"
             android:label="@string/app_name"
             />
+        <activity android:name=".Activity.EditProfileActivity"
+            android:label="@string/app_name"
+            />
         <activity android:name=".Activity.SongOfflinePlayerActivity"
             />
         <activity android:name=".Activity.SongOnlinePlayerActivity"
             />
+        <activity android:name=".Activity.ActivityPlayListOnline"/>
+        <activity android:name=".Activity.AddSongToPlayListPopUp"/>
+        <activity android:name=".Activity.CreatePlayListPopUp"/>
+        <activity android:name=".Activity.PlayListActivity"/>
         <service android:name=".Service.SongPlayerService"/>
     </application>
 

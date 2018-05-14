@@ -13,13 +13,15 @@ public class Users {
     public String userName;
     public String email;
     public String avatarURL;
+    public String backgroundURL;
 
-    public Users(String newUserName, String newEmail, String newFullName,String newAvatarURL,String newDateOfBirth) {
+    public Users(String newUserName, String newEmail, String newFullName,String newAvatarURL,String newDateOfBirth,String backgroundURL) {
         this.userName=newUserName;
         this.email=newEmail;
         this.fullName=newFullName;
         this.avatarURL=newAvatarURL;
         this.dateOfBirth=newDateOfBirth;
+        this.backgroundURL=backgroundURL;
     }
 
     public Users(){
@@ -36,6 +38,7 @@ public class Users {
 
     public String getDateOfBirth(){return dateOfBirth;}
 
+    public String getBackgroundURL(){return backgroundURL;}
 
 
 

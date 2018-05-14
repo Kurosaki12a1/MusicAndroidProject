@@ -91,7 +91,7 @@ public class ChangePasswordActivity extends Activity {
                                 newpass_txt.setError(null);
                             }
                             if (confirmnewpass.length() < 6 || !confirmnewpass.equals(newpass)) {
-                                confirmnewpass_txt.setError("Không đúng");
+                                confirmnewpass_txt.setError("Mật Khẩu bé hơn 6 ký tự hay không trùng khớp mật khẩu");
                                 valid_flag = false;
                             } else {
                                 confirmnewpass_txt.setError(null);
@@ -104,6 +104,7 @@ public class ChangePasswordActivity extends Activity {
                                         if (task.isSuccessful()) {
                                             Toast.makeText(getApplicationContext(), "Mật khẩu đã được cập nhật.", Toast.LENGTH_SHORT).show();
                                             Log.d(TAG, "Password updated");
+                                            finish();
                                         } else {
                                             Toast.makeText(getApplicationContext(), "Lỗi xảy ra, mật khẩu chưa cập nhật.", Toast.LENGTH_SHORT).show();
                                             Log.d(TAG, "Error password not updated");
