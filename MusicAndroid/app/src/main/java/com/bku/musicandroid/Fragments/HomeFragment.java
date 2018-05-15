@@ -198,7 +198,7 @@ public class HomeFragment extends Fragment {
                         for (DataSnapshot songSnapshot : dataSnapshot.getChildren()) {
                             SongPlayerOnlineInfo song = songSnapshot.getValue(SongPlayerOnlineInfo.class);
                             if (song != null) { //Test for Pop
-                                Log.d("1abc","Song INfo: "+song.getUserName()+song.getSongName());
+                                Log.d("1abc","Song INfo: "+song.getUserName()+song.getSongName()+"   "+song.getDownload());
                                 songList.add(song);
                             }
 
