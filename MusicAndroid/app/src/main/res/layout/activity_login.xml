@@ -63,7 +63,7 @@
             android:layout_height="match_parent"
             android:textColor="@color/colorAccent"
             android:layout_marginTop="5dp"
-            android:text="@string/rememberPassword"/>
+            android:text="Remember password"/>
     </LinearLayout>
 
     <Button
@@ -74,8 +74,8 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/roundshapebtn"
-        android:text="Đăng nhập"
-        android:textColor="@color/common_google_signin_btn_text_light" />
+        android:text="Login"
+        android:textColor="@color/colorWhite" />
 
     <TextView
         android:id="@+id/forgot_pass_txt"
@@ -84,7 +84,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:clickable="true"
-        android:text="Quên mật khẩu?"
+        android:text="Forget password?"
         android:textColor="@color/colorAccent" />
 
     <TextView
@@ -95,7 +95,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:clickable="true"
-        android:text="Chưa có tài khoản? Hãy đăng ký!"
+        android:text="Don't have account? Sign up now!"
         android:textColor="@color/colorAccent" />
 
     <com.google.android.gms.common.SignInButton

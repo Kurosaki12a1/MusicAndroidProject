@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bku.musicandroid.Activity.ActivityPlayListOnline;
 import com.bku.musicandroid.Activity.ChangePasswordActivity;
@@ -34,6 +35,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -55,10 +57,10 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class ProfileFragment extends Fragment {
 
-    private ImageView profileImage,backGroundImage;
-    private TextView  txtBar,txtName,playList, signOutTxt;
+    private ImageView profileImage, backGroundImage;
+    private TextView txtBar, txtName, playList, signOutTxt, changePasswordTxt;
     private AppCompatButton menu;
-    String userId="";
+    String userId = "";
     FirebaseAuth mAuth;
     private GoogleApiClient mGoogleApiClient;
     private GoogleSignInClient mGoogleSignInClient;
@@ -75,8 +77,8 @@ public class ProfileFragment extends Fragment {
     private ProfileFragment.OnFragmentInteractionListener mListener;
 
     public ProfileFragment() {
-        mAuth=FirebaseAuth.getInstance();
-        userId=mAuth.getCurrentUser().getUid();
+        mAuth = FirebaseAuth.getInstance();
+        userId = mAuth.getCurrentUser().getUid();
         //khong co cai nay thi khoi resize image
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -158,14 +160,14 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         bindView();
-        DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("All_Users_Info_Database");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("All_Users_Info_Database");
         databaseReference.child("users").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Glide.with(getContext()).load(dataSnapshot.child("avatarURL").getValue(String.class)).into(profileImage);
-                txtBar.setText("Hi , "+ dataSnapshot.child("userName").getValue(String.class) + " !");
+                txtBar.setText("Hi , " + dataSnapshot.child("userName").getValue(String.class) + " !");
                 txtName.setText(dataSnapshot.child("fullName").getValue(String.class));
-                if(dataSnapshot.hasChild("backgroundURL")){
+                if (dataSnapshot.hasChild("backgroundURL")) {
                     Glide.with(getContext()).load(dataSnapshot.child("backgroundURL").getValue(String.class)).centerCrop().into(backGroundImage);
                 }
             }
@@ -178,7 +180,7 @@ public class ProfileFragment extends Fragment {
         playList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(getContext(),ActivityPlayListOnline.class);
+                Intent intent = new Intent(getContext(), ActivityPlayListOnline.class);
                 getContext().startActivity(intent);
             }
         });
@@ -193,51 +195,58 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 signOut();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
+            }
+        });
+        changePasswordTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+                    startActivity(intent);
             }
         });
         super.onViewCreated(view, savedInstanceState);
     }
 
-    public void bindView(){
-        profileImage=getView().findViewById(R.id.profile_image);
-        backGroundImage=getView().findViewById(R.id.profile_background);
-        txtBar=getView().findViewById(R.id.username);
-        txtName=getView().findViewById(R.id.nameUser);
-        menu=getView().findViewById(R.id.profileMenu);
+    public void bindView() {
+        profileImage = getView().findViewById(R.id.profile_image);
+        backGroundImage = getView().findViewById(R.id.profile_background);
+        txtBar = getView().findViewById(R.id.username);
+        txtName = getView().findViewById(R.id.nameUser);
+        menu = getView().findViewById(R.id.profileMenu);
         rlayout = getView().findViewById(R.id.mainRel);
-        playList=getView().findViewById(R.id.PlayList);
+        playList = getView().findViewById(R.id.PlayList);
         signOutTxt = getView().findViewById(R.id.SignOutBtn);
+        changePasswordTxt = getView().findViewById(R.id.ChangePassBtn);
     }
-    private void ShowMenu(){
-        PopupMenu MenuPopUp =new PopupMenu(getContext(),menu);
-        MenuPopUp.getMenuInflater().inflate(R.menu.drawer_menu,MenuPopUp.getMenu());
+
+    private void ShowMenu() {
+        PopupMenu MenuPopUp = new PopupMenu(getContext(), menu);
+        MenuPopUp.getMenuInflater().inflate(R.menu.drawer_menu, MenuPopUp.getMenu());
         MenuPopUp.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.nav_upload:
-                    {
+                switch (item.getItemId()) {
+                    case R.id.nav_upload: {
                         Intent intent = new Intent(getContext(), UploadSongActivity.class);
                         startActivity(intent);
 
                         break;
                     }
-                    case R.id.nav_setting:
-                    {
-                        Intent intent=new Intent(getContext(), ChangePasswordActivity.class);
+                    case R.id.nav_setting: {
+                        Intent intent = new Intent(getContext(), ChangePasswordActivity.class);
                         startActivity(intent);
                         break;
                     }
 
-                    case R.id.nav_editProfile:
-                    {
-                        Intent intent = new Intent(getContext(),EditProfileActivity.class);
+                    case R.id.nav_editProfile: {
+                        Intent intent = new Intent(getContext(), EditProfileActivity.class);
                         startActivity(intent);
                         break;
                     }
 
-                    case R.id.nav_logout:{
+                    case R.id.nav_logout: {
                         signOut();
                         break;
 
@@ -253,7 +262,7 @@ public class ProfileFragment extends Fragment {
         mAuth.signOut();
     } */
 
-    public void signOut () {
+    public void signOut() {
         if (mAuth.getInstance().getCurrentUser().getProviderId() == "google.com") {
             signOutGoogle();
         } else {
@@ -262,7 +271,7 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    private void signOutGoogle () {
+    private void signOutGoogle() {
         // Firebase sign out
         FirebaseUser user = mAuth.getCurrentUser();
         mAuth.getInstance().signOut();
@@ -277,7 +286,7 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    public void signOutEmailPass () {
+    public void signOutEmailPass() {
         FirebaseUser user = mAuth.getCurrentUser();
         mAuth.getInstance().signOut();
         if (mAuth.getCurrentUser() == null) {

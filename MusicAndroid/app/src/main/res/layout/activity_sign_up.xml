@@ -110,7 +110,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="40dp"
         android:background="@drawable/roundshapebtn"
-        android:text="Đăng ký"
-        android:textColor="@color/common_google_signin_btn_text_light" />
+        android:text="Sign up"
+        android:textColor="@color/colorWhite" />
 
 </LinearLayout>

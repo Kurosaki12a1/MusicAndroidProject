@@ -322,11 +322,9 @@ public class LoginActivity extends Activity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Boolean flag_gg = true;
                         String usernamegg = usernameGoogle_txt.getText().toString();
-                        Log.d("1abc", "1");
                         Pattern p = Pattern.compile("[^A-Za-z0-9_]", Pattern.CASE_INSENSITIVE);
                         Matcher m = p.matcher(usernamegg);
                         boolean b = m.find();
-                        Log.d("1abc","Username checking add: "+usernamegg);
                         if (usernamegg.length() < 6 || b) {
                             usernameGoogle_txt.setError("Username is too short or contains special character");
                             flag_gg = false;
@@ -360,7 +358,6 @@ public class LoginActivity extends Activity {
                     @Override
                     public void onCancelled(DatabaseError error) {
                         // Failed to read value
-                        Log.w("1abc", "Failed to read value.", error.toException());
                         progressDialog.dismiss();
                         Toast.makeText(getApplicationContext(), "Error: " + error.toException(), Toast.LENGTH_SHORT).show();
                     }
@@ -405,9 +402,7 @@ public class LoginActivity extends Activity {
         FirebaseUser user = mAuth.getCurrentUser();
         mAuth.getInstance().signOut();
         if (mAuth.getCurrentUser() == null) {
-            Log.d("1abc", "sign_out");
         }
-        Log.d("1abc", "Sign_Out" + mAuth.getCurrentUser());
 
     }
 
@@ -418,7 +413,6 @@ public class LoginActivity extends Activity {
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            Log.d("1abc","ABC: "+mGoogleApiClient.isConnected());
             if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
                 mGoogleApiClient.clearDefaultAccountAndReconnect();
             }
@@ -439,11 +433,9 @@ public class LoginActivity extends Activity {
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         // [START_EXCLUDE silent]
         // showProgressDialog();
         // [END_EXCLUDE]
-        Log.w("1abc", "Googlesignin Auth withgg");
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -497,7 +489,6 @@ public class LoginActivity extends Activity {
                             });
 
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Log.d(TAG, "signInWithCredential: ID " + user.getUid());
                             //          updateUI(user);
                         } else {
                             progressDialog.dismiss();

@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorAppBackground">#0A071E</color>
+    <color name="colorTabChangePassword">#4E405A</color>
     <color name="colorTabBackground">#CF203F</color>
     <color name="colorTabBackgroundLighter">#423752</color>
     <color name="colorWhite">#FFFFFF</color>
