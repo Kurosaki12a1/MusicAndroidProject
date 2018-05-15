@@ -10,6 +10,7 @@ import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,10 +24,16 @@ import android.widget.TextView;
 import com.bku.musicandroid.Activity.ActivityPlayListOnline;
 import com.bku.musicandroid.Activity.ChangePasswordActivity;
 import com.bku.musicandroid.Activity.EditProfileActivity;
+import com.bku.musicandroid.Activity.LoginActivity;
 import com.bku.musicandroid.Activity.UploadSongActivity;
 import com.bku.musicandroid.R;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,11 +56,12 @@ import javax.net.ssl.HttpsURLConnection;
 public class ProfileFragment extends Fragment {
 
     private ImageView profileImage,backGroundImage;
-    private TextView  txtBar,txtName,playList;
+    private TextView  txtBar,txtName,playList, signOutTxt;
     private AppCompatButton menu;
     String userId="";
     FirebaseAuth mAuth;
-
+    private GoogleApiClient mGoogleApiClient;
+    private GoogleSignInClient mGoogleSignInClient;
     RelativeLayout rlayout;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -180,6 +188,14 @@ public class ProfileFragment extends Fragment {
                 ShowMenu();
             }
         });
+        signOutTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOut();
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -191,6 +207,7 @@ public class ProfileFragment extends Fragment {
         menu=getView().findViewById(R.id.profileMenu);
         rlayout = getView().findViewById(R.id.mainRel);
         playList=getView().findViewById(R.id.PlayList);
+        signOutTxt = getView().findViewById(R.id.SignOutBtn);
     }
     private void ShowMenu(){
         PopupMenu MenuPopUp =new PopupMenu(getContext(),menu);
@@ -232,10 +249,42 @@ public class ProfileFragment extends Fragment {
         });
         MenuPopUp.show();
     }
-    public void signOut() {
+   /* public void signOut() {
         mAuth.signOut();
+    } */
+
+    public void signOut () {
+        if (mAuth.getInstance().getCurrentUser().getProviderId() == "google.com") {
+            signOutGoogle();
+        } else {
+            signOutEmailPass();
+        }
+
     }
 
+    private void signOutGoogle () {
+        // Firebase sign out
+        FirebaseUser user = mAuth.getCurrentUser();
+        mAuth.getInstance().signOut();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
+        // Google sign out
+        mGoogleSignInClient.signOut();
+
+    }
+
+    public void signOutEmailPass () {
+        FirebaseUser user = mAuth.getCurrentUser();
+        mAuth.getInstance().signOut();
+        if (mAuth.getCurrentUser() == null) {
+            Log.d("1abc", "sign_out");
+        }
+        Log.d("1abc", "Sign_Out" + mAuth.getCurrentUser());
+    }
    /* private void setBitMapFit(Bitmap bitmap,int width){
 
         int currentBitmapWidth = bitmap.getWidth();
