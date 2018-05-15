@@ -419,7 +419,7 @@ public class SongOnlinePlayerActivity extends AppCompatActivity   implements See
                 input = connection.getInputStream();
                 output = new FileOutputStream(  Environment.getExternalStorageDirectory()+"/"+strSongName+".mp3");
 
-                byte data[] = new byte[4096];
+                byte data[] = new byte[1024];
                 long total = 0;
                 int count;
                 while ((count = input.read(data)) != -1) {

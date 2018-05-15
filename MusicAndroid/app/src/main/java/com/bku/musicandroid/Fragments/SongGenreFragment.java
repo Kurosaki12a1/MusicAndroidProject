@@ -21,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bku.musicandroid.Adapter.SongGenreRecycleAdapter;
-import com.bku.musicandroid.Model.OfflineMusicManager;
 import com.bku.musicandroid.R;
 import com.bku.musicandroid.Model.SongPlayerOnlineInfo;
 import com.google.firebase.database.DataSnapshot;
@@ -53,7 +52,6 @@ public class SongGenreFragment extends Fragment {
     private SongGenreRecycleAdapter songInfoOnlineAdapter;
     private RecyclerView listSongGenre;
     private ArrayList<SongPlayerOnlineInfo> listSong;
-    private OfflineMusicManager offlineMusicManager;
     private ProgressBar progressLoadMusic;
     private TextView songGenreTxt;
     private String genreSong;
@@ -161,7 +159,6 @@ public class SongGenreFragment extends Fragment {
         songGenreTxt =getView().findViewById(R.id.song_genre_txt);
         songGenreTxt.setText(genreSong);
         listSong = new ArrayList<>();
-        offlineMusicManager = new OfflineMusicManager(getContext());
         GetOnlineGenreSong asyncTask = new GetOnlineGenreSong();
         for(int i = 0; i<listSong.size();i++){
             Log.d("1abc","List Song: "+listSong.get(i).getSongName());

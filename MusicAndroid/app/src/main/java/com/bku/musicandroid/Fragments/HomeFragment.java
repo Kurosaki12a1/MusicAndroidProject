@@ -185,9 +185,6 @@ public class HomeFragment extends Fragment {
 
         @Override
         protected ArrayList<SongPlayerOnlineInfo> doInBackground(ArrayList<SongPlayerOnlineInfo>... arrayLists) {
-            //   publishProgress(arrayLists);
-            //   OfflineMusicManager offlineMusicManager = new OfflineMusicManager(getContext());
-            //   arrayLists[0] = offlineMusicManager.scanAllOfflineMusic();
             progressLoadMusicLike.setVisibility(View.VISIBLE);
             progressLoadMusicDownload.setVisibility(View.VISIBLE);
             progressLoadMusicListen.setVisibility(View.VISIBLE);
