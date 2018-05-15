@@ -24,6 +24,7 @@
         android:layout_height="match_parent"
         android:scrollbarSize="10dp"
         android:layout_below="@+id/song"
+        android:layout_alignParentBottom="true"
         android:scrollbarThumbVertical="@drawable/custom_scroll"
         android:divider="@drawable/custom_divider"/>
     <ProgressBar

@@ -17,6 +17,7 @@
     <string name="rememberPassword">Nhớ mật khẩu</string>
     <string name="explore">Explore</string>
     <string name="search">Search</string>
+    <string name="profle">Profile</string>
 
 
     <string-array name="nav_item_activity_titles">
