@@ -42,7 +42,6 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
         LibraryFragment.OnFragmentInteractionListener, SongsFragment.OnFragmentInteractionListener, SongGenreFragment.OnFragmentInteractionListener ,
         ProfileFragment.OnFragmentInteractionListener{
     private static final String TAG = "MainScreenActivity";
-    public static boolean isRunning = true;
 
     private Context mContext = MainScreenActivity.this;
     ViewPager mainViewPager;
@@ -214,8 +213,8 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        stopService(new Intent(MainScreenActivity.this, SongPlayerService.class));
-        isRunning = false;
     }
+
+
 }
 

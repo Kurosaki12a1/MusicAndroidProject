@@ -41,11 +41,11 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
     private boolean isPause = false;
     private boolean isRepeatAll = false;
     private boolean isUserChangePosition = false;
-    private boolean isChangeSongFromService = false;
-    private int totalDuration = 0;
+    private int totalDuration = 100;
     private int currentPosition = 0;
     private TimerOfSong timerOfSong;
     private BroadcastReceiver receiver;
+    private String lastSongPath = "";
     //Chinh thoi gian display song :^
 
     int nPosition = 0;
@@ -80,14 +80,13 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                nPosition = intent.getIntExtra("position", 0);
-                isRepeatOne = intent.getBooleanExtra("isRepeatOne", false);
-                isRepeatAll = intent.getBooleanExtra("isRepeatAll", false);
-                isShuffle = intent.getBooleanExtra("isShuffle", false);
-                isPause = intent.getBooleanExtra("isPause", false);
-                currentPosition = intent.getIntExtra("currentPosition", 0);
-                totalDuration = intent.getIntExtra("totalDuration", 0);
-                isChangeSongFromService = intent.getBooleanExtra("isChangeSongFromService", false);
+                nPosition = intent.getIntExtra("position", nPosition);
+                isRepeatOne = intent.getBooleanExtra("isRepeatOne", isRepeatOne);
+                isRepeatAll = intent.getBooleanExtra("isRepeatAll", isRepeatAll);
+                isShuffle = intent.getBooleanExtra("isShuffle", isShuffle);
+                isPause = intent.getBooleanExtra("isPause", isPause);
+                currentPosition = intent.getIntExtra("currentPosition", currentPosition);
+                totalDuration = intent.getIntExtra("totalDuration", totalDuration);
 
                 if (!isPause) {
                     play.setImageResource(R.drawable.ic_player_pause);
@@ -96,7 +95,8 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
                 }
 
                 // Update new song info UI when auto move to another song
-                if (isChangeSongFromService) {
+                if (!lastSongPath.equals(listSong.get(nPosition).getPathFileSong())) {
+                    lastSongPath = listSong.get(nPosition).getPathFileSong();
                     getCurrentInfoSong(nPosition);
                     updateSongInfoUI();
                     avatarSong.setRotation(0.0f);
@@ -156,6 +156,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
             @Override
             public void onClick(View v) {
                 isUserChangePosition = true;
+                isPause = false;
                 if (nPosition == 0) {
                     playSong();
                 } else {
@@ -182,6 +183,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
             @Override
             public void onClick(View v) {
                 isUserChangePosition = true;
+                isPause = false;
 
                 if(nPosition==listSong.size()-1){
                     playSong();
