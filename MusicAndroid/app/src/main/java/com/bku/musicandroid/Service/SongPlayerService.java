@@ -49,6 +49,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
     private String lastFilePath = "";
 
     private boolean mediaPlayerPrepared = false;
+    private boolean serviceIsRunning = true;
 
     private Notification notification;
     private NotificationCompat.Builder builder;
@@ -150,7 +151,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (MainScreenActivity.isRunning) {
+                while (serviceIsRunning) {
                     try {
                         Thread.sleep(100);
                         if (mediaPlayerPrepared) {
@@ -187,6 +188,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
         intentFilter.addAction(Constants.ACTION.NEXT_ACTION);
         intentFilter.addAction(Constants.ACTION.CLOSE_ACTION);
 
+        serviceIsRunning = true;
         registerReceiver(musicPlayerBroadcastReceiver, intentFilter);
 
         Bundle bundle;
@@ -213,7 +215,8 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
     @Override
     public void onDestroy() {
         super.onDestroy();
-        
+        serviceIsRunning = false;
+
     }
 
     @Override
