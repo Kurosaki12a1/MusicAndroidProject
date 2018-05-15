@@ -61,6 +61,12 @@ public class SongPlayerOnlineInfo extends SongPlayerInfo {
     public String getImageSongURL(){return imageSongURL;}
     public String getSongGenre(){return songGenre;}
     public String getLiked(){return liked;}
+
+    @Override
+    public String getPath() {
+        return getSongURL();
+    }
+
     public String getSongId(){return songId;}
     public String getUserName(){return userName;}
     public String getDownload(){return download;}

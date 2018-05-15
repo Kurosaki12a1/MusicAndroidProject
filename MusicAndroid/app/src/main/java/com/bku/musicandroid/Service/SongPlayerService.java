@@ -21,11 +21,17 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.bku.musicandroid.Activity.LoginActivity;
 import com.bku.musicandroid.Activity.MainScreenActivity;
+import com.bku.musicandroid.Model.SongPlayerInfo;
+import com.bku.musicandroid.Model.SongPlayerOnlineInfo;
 import com.bku.musicandroid.R;
 import com.bku.musicandroid.Model.SongPlayerOfflineInfo;
 import com.bku.musicandroid.Utility.Constants;
 import com.bku.musicandroid.Utility.UtilitySongOfflineClass;
+import com.bku.musicandroid.Utility.UtilitySongOnlineClass;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.NotificationTarget;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,11 +44,12 @@ import java.util.Random;
 public class SongPlayerService extends Service implements MediaPlayer.OnCompletionListener {
     private int nPosition;
     private MediaPlayer mp;
-    private ArrayList<SongPlayerOfflineInfo> listSong;
+    private ArrayList<? extends SongPlayerInfo> listSong;
     private boolean isRepeatOne;
     private boolean isShuffle;
     private boolean isPause;
     private boolean isRepeatAll;
+    private boolean isOnline;
     private int currentPosition;
     private int totalDuration;
     private boolean isUserChangePosition = false;
@@ -60,7 +67,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
     public void onTaskRemoved(Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
         notificationManager.cancel(NOTIF_ID);
-        stopSelf();
+        stopThisService();
     }
 
     private NotificationManager notificationManager;
@@ -73,7 +80,8 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
     public void onCreate() {
         super.onCreate();
         mp = new MediaPlayer();
-        listSong = new ArrayList<>(UtilitySongOfflineClass.getInstance().getList());
+//        listSong = new ArrayList<>(UtilitySongOfflineClass.getInstance().getList());
+//        listSong = UtilitySongOfflineClass.getInstance().getList();
         mp.setOnCompletionListener(this);
 
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -151,7 +159,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (serviceIsRunning) {
+                while (serviceIsRunning && !LoginActivity.isAtLogin) {
                     try {
                         Thread.sleep(100);
                         if (mediaPlayerPrepared) {
@@ -170,7 +178,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
                     Log.d("exception", e.toString());
                 } finally {
                     notificationManager.cancel(NOTIF_ID);
-                    stopSelf();
+                    stopThisService();
                 }
 
             }
@@ -192,15 +200,23 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
         registerReceiver(musicPlayerBroadcastReceiver, intentFilter);
 
         Bundle bundle;
-        if (intent != null && (bundle = intent.getExtras()) != null
-                && (nPosition = bundle.getInt("position", -1)) != -1) {
+        if (intent != null && (bundle = intent.getExtras()) != null) {
             // Get the data from activity
+            nPosition = bundle.getInt("position", 0);
             isRepeatOne = bundle.getBoolean("isRepeatOne", false);
             isPause = bundle.getBoolean("isPause", false);
             isRepeatAll = bundle.getBoolean("isRepeatAll", false);
             isShuffle = bundle.getBoolean("isShuffle", false);
             currentPosition = bundle.getInt("currentPosition", 0);
             isUserChangePosition = bundle.getBoolean("isUserChangePosition", false);
+            isOnline = bundle.getBoolean("isOnline", false);
+
+            if (!isOnline) {
+                listSong = UtilitySongOfflineClass.getInstance().getList();
+            } else {
+                listSong = UtilitySongOnlineClass.getInstance().getItemOfList();
+            }
+
             playSong();
 
 
@@ -218,12 +234,6 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
 
     }
 
-    @Override
-    public boolean stopService(Intent name) {
-        mp.stop();
-        mp.release();
-        return super.stopService(name);
-    }
 
     @Nullable
     @Override
@@ -271,17 +281,18 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
      */
 
     void playSong() {
-        if (!lastFilePath.equals(listSong.get(nPosition).getPathFileSong())) {
+        if (!lastFilePath.equals(listSong.get(nPosition).getPath())) {
             // Only need to do these steps if we're going to playing new songs
-            lastFilePath = listSong.get(nPosition).getPathFileSong();
+            lastFilePath = listSong.get(nPosition).getPath();
             mediaPlayerPrepared = false;
             mp.release();
             mp = new MediaPlayer();
             mp.setOnCompletionListener(this);
             mp.reset();
             try {
-                mp.setDataSource(listSong.get(nPosition).getPathFileSong());
-                mp.prepare();
+                mp.setDataSource(listSong.get(nPosition).getPath());
+//                mp.prepare();
+                mp.prepareAsync();
                 mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mediaPlayer) {
@@ -312,7 +323,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
      */
 
     private void setNotificationInfo() {
-        SongPlayerOfflineInfo song = listSong.get(nPosition);
+        SongPlayerInfo song = listSong.get(nPosition);
 
         String songName = song.getSongName();
         // Name too long so we will epitomize it
@@ -328,8 +339,16 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
         }
         remoteViews.setTextViewText(R.id.txtArtistName, songArtists);
 
-        Bitmap imgSong = BitmapFactory.decodeByteArray(song.getSongImage(), 0, song.getSongImage().length);
-        remoteViews.setImageViewBitmap(R.id.imgSongs, imgSong);
+        if (!isOnline) {
+            Bitmap imgSong = BitmapFactory.decodeByteArray(song.getSongImage(), 0, song.getSongImage().length);
+            remoteViews.setImageViewBitmap(R.id.imgSongs, imgSong);
+
+        } else {
+            NotificationTarget notificationTarget = new NotificationTarget(getApplicationContext(),
+                    remoteViews, R.id.imgSongs, notification, NOTIF_ID);
+            Glide.with(getApplicationContext()).load(((SongPlayerOnlineInfo) song).getImageSongURL())
+                    .asBitmap().centerCrop().into(notificationTarget);
+        }
 
         if (isPause) {
             remoteViews.setImageViewResource(R.id.imgPlay, R.drawable.btn_playback_play);
@@ -390,6 +409,15 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
                 .setCustomBigContentView(remoteViews)
                 .setDeleteIntent(pClose);
         notification = builder.build();
+    }
+
+    /**
+     * Created by Son on 5/13/2018.
+     */
+    private void stopThisService() {
+        stopSelf();
+//        mp.stop();
+        mp.release();
     }
 
 

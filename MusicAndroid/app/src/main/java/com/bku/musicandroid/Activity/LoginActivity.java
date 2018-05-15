@@ -69,6 +69,8 @@ public class LoginActivity extends Activity {
     private AppCompatCheckBox chkRememberPassword;
     private static final int RC_SIGN_IN = 9001;
 
+    public static boolean isAtLogin = false;
+
     /**
      * Function: onResume
      * Created by: SonPhan 26/04/2018
@@ -82,6 +84,8 @@ public class LoginActivity extends Activity {
         emailTxt.setText(sharedPreferences.getString("Email",""));
         passTxt.setText(sharedPreferences.getString("Password",""));
         chkRememberPassword.setChecked(sharedPreferences.getBoolean("IsChecked", false));
+
+        isAtLogin = true;
 
     }
 
@@ -106,6 +110,8 @@ public class LoginActivity extends Activity {
             editor.putString("Password", "");
         }
         editor.apply();
+
+        isAtLogin = false;
     }
 
     @Override
