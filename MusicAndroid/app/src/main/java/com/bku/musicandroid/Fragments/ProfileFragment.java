@@ -28,6 +28,7 @@ import com.bku.musicandroid.Activity.EditProfileActivity;
 import com.bku.musicandroid.Activity.LoginActivity;
 import com.bku.musicandroid.Activity.UploadSongActivity;
 import com.bku.musicandroid.R;
+import com.bku.musicandroid.Service.SongPlayerService;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -202,8 +203,9 @@ public class ProfileFragment extends Fragment {
         changePasswordTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
-                    startActivity(intent);
+                Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+                startActivity(intent);
+
             }
         });
         super.onViewCreated(view, savedInstanceState);

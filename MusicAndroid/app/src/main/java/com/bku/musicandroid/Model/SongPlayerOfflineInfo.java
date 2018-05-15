@@ -76,4 +76,9 @@ public class SongPlayerOfflineInfo extends SongPlayerInfo implements Serializabl
     }
 
     public String getPathFileSong(){return fileSong.getAbsolutePath();}
+
+    @Override
+    public String getPath() {
+        return getPathFileSong();
+    }
 }

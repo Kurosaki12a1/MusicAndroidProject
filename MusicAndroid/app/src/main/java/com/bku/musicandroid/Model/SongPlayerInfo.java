@@ -3,7 +3,7 @@ package com.bku.musicandroid.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class SongPlayerInfo  {
+public abstract class SongPlayerInfo  {
 
     protected String songArtists;
 
@@ -40,6 +40,8 @@ public class SongPlayerInfo  {
     public void setSongName(String songName) {
         this.songName = songName;
     }
+
+    public abstract String getPath();
 
 
 

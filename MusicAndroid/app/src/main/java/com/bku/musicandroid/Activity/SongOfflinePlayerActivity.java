@@ -69,7 +69,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
             nPosition = extras.getInt("currentPosition");
             utilitySongOfflineClass = UtilitySongOfflineClass.getInstance();
             listSong = new ArrayList<>(utilitySongOfflineClass.getList());
-            listSong = utilitySongOfflineClass.getList();
+//            listSong = utilitySongOfflineClass.getList();
         }
 
 
@@ -158,6 +158,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
                 isUserChangePosition = true;
                 isPause = false;
                 if (nPosition == 0) {
+                    nPosition = listSong.size() - 1;
                     playSong();
                 } else {
                     if(isShuffle)
@@ -186,6 +187,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
                 isPause = false;
 
                 if(nPosition==listSong.size()-1){
+                    nPosition = 0;
                     playSong();
                 }
                 else {
@@ -328,11 +330,6 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("MusicPlayerUpdate"));
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-    }
 
     /**
      * Created by Son on 5/11/2018.
@@ -393,8 +390,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
             try {
                 avatarSong.setRotation(avatarSong.getRotation() + 1.0f);
 
-            } catch (Exception e) {
-            }
+            } catch (Exception e) { }
 
         }
     }
