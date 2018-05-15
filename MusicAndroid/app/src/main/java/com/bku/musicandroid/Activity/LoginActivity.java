@@ -470,7 +470,7 @@ public class LoginActivity extends Activity {
                                 String email = user.getEmail();
                                 Log.d("1abc", fullname + " " + email);
                                 Users temp;
-                                temp = new Users("-1", user.getEmail(), user.getDisplayName(), "Default_avatarURL", "Default_Dateofbirth");
+                                temp = new Users("-1", user.getEmail(), user.getDisplayName(), "Default_avatarURL", "Default_Dateofbirth","");
                                 usersRef.child(user.getUid()).setValue(temp);
                             }
                             FirebaseUser user1 = mAuth.getCurrentUser();

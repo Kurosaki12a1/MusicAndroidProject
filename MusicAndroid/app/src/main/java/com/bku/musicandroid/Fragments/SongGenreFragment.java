@@ -192,9 +192,7 @@ public class SongGenreFragment extends Fragment {
 
         @Override
         protected ArrayList<SongPlayerOnlineInfo> doInBackground(ArrayList<SongPlayerOnlineInfo>... arrayLists) {
-         //   publishProgress(arrayLists);
-         //   OfflineMusicManager offlineMusicManager = new OfflineMusicManager(getContext());
-         //   arrayLists[0] = offlineMusicManager.scanAllOfflineMusic();
+
             progressLoadMusic.setVisibility(View.VISIBLE);
             dataRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -202,11 +200,11 @@ public class SongGenreFragment extends Fragment {
                     if (dataSnapshot.getValue() != null) {
                         listSong.clear();
                         for (DataSnapshot songSnapshot : dataSnapshot.getChildren()) {
-                                SongPlayerOnlineInfo song = songSnapshot.getValue(SongPlayerOnlineInfo.class);
-                                if (song != null && song.getSongGenre().equals(genreSong)) { //Test for Pop
-                                    Log.d("1abc","Song INfo: "+song.getUserName()+song.getSongName());
-                                    listSong.add(song);
-                                }
+                            SongPlayerOnlineInfo song = songSnapshot.getValue(SongPlayerOnlineInfo.class);
+                            if (song != null && song.getSongGenre().equals(genreSong)) { //Test for Pop
+                                Log.d("1abc","Song INfo: "+song.getUserName()+song.getSongName());
+                                listSong.add(song);
+                            }
 
                         }
                         Toast.makeText(getActivity(),"Loading done",Toast.LENGTH_SHORT).show();
@@ -226,7 +224,7 @@ public class SongGenreFragment extends Fragment {
 
                 }
             });
-        //    publishProgress(arrayLists);
+            //    publishProgress(arrayLists);
             return arrayLists[0];
         }
     }

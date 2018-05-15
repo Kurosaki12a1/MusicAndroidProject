@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.bku.musicandroid.Fragments.ExploreFragment;
 import com.bku.musicandroid.Fragments.HomeFragment;
 import com.bku.musicandroid.Fragments.LibraryFragment;
+import com.bku.musicandroid.Fragments.ProfileFragment;
 import com.bku.musicandroid.Fragments.SearchFragment;
 
 /**
@@ -32,15 +33,17 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
             return new ExploreFragment();
         } else if (position == 2){
             return new SearchFragment();
-        } else {
+        } else if(position==3){
             return new LibraryFragment();
+        } else {
+            return new ProfileFragment();
         }
     }
 
     // This determines the number of tabs
     @Override
     public int getCount() {
-        return 4;
+        return 5;
     }
 
     // This determines the title for each tab

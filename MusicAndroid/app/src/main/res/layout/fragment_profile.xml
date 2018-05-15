@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/mainRel"
+    android:background="@color/colorTabBackgroundLighter">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relLayout1"
+
+        >
+
+        <include layout="@layout/snippet_top_profilebar"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@+id/relLayout1"
+        android:id="@+id/relLayout2"
+        android:background="@drawable/custom_border_linear_layout"
+
+        >
+
+        <ImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_background"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:adjustViewBounds="true"
+
+            />
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_image"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            app:civ_border_width="2dp"
+
+
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            app:civ_border_color="#4d94ff"/>
+
+
+
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/linLayout1"
+        android:layout_below="@+id/relLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:background="@drawable/custom_border_linear_layout">
+
+        <TextView
+            android:id="@+id/nameUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your Full Name"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linLayout2"
+        android:layout_below="@+id/linLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/custom_border_linear_layout"
+        android:padding="20dp"
+        >
+
+        <ImageView
+            android:background="@color/colorWhite"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_playlist"
+            android:layout_centerVertical="true"/>
+        <TextView
+            android:id="@+id/PlayList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your PlayList Online"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:padding="10dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linLayout3"
+        android:layout_below="@+id/linLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/custom_border_linear_layout"
+        android:padding="20dp"
+        >
+
+        <ImageView
+
+            android:background="@color/colorWhite"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_heart"
+            android:layout_centerVertical="true"/>
+        <TextView
+            android:id="@+id/YourLikedSong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your Favorite Song"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:padding="10dp"/>
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>
+</ScrollView>

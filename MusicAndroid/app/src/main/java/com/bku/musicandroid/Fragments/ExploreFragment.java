@@ -262,8 +262,8 @@ public class ExploreFragment extends Fragment {
         fragmentTransaction.replace(R.id.fragmentExplorer, songGenreFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commitAllowingStateLoss();
-      //  fragmentManager.executePendingTransactions();
-    //    fragmentTransaction.commit();
+        //  fragmentManager.executePendingTransactions();
+        //    fragmentTransaction.commit();
     }
 
 
