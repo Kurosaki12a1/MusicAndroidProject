@@ -207,7 +207,6 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
             setNotificationInfo();
             notificationManager.notify(NOTIF_ID, notification);
 
-
         }
         return START_STICKY;
     }

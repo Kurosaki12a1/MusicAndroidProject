@@ -151,10 +151,10 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
                     txtStatus.setText(R.string.search);
                 }
                 else if(position==3){
-                    txtStatus.setText("LIBRARY");
+                    txtStatus.setText(R.string.library);
                 }
                 else{
-                    txtStatus.setText("PROFILE");
+                    txtStatus.setText(R.string.profle);
                 }
             }
 
