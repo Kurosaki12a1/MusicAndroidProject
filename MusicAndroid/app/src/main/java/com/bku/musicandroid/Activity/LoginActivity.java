@@ -21,12 +21,14 @@ import android.widget.Toast;
 
 import com.bku.musicandroid.R;
 import com.bku.musicandroid.Model.Users;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -62,6 +64,7 @@ public class LoginActivity extends Activity {
     private Dialog dialog;
     private Dialog usernameDialog;
     private GoogleSignInClient mGoogleSignInClient;
+    private GoogleApiClient mGoogleApiClient;
     private SharedPreferences sharedPreferences;
     private AppCompatCheckBox chkRememberPassword;
     private static final int RC_SIGN_IN = 9001;
@@ -125,8 +128,12 @@ public class LoginActivity extends Activity {
                 .requestEmail()
                 .build();
         // [END config_signin]
-
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        mGoogleApiClient.connect();
+
         ///////////////////////////////////////
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
@@ -221,29 +228,15 @@ public class LoginActivity extends Activity {
                                 startActivity(intent);
                                 finish();
                             }
-                            ////Success login
-                            //   Intent mainIntent = new Intent(LoginActivity.this, MainScreenActivity.class);
-                            //  startActivity(mainIntent);
                         } else {
                             // If sign in fails, display a message to the user.
                             progressDialog.dismiss(); //Log in done, close the progress dialog
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(getApplicationContext(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            // updateUI(null);
                         }
-
-                        // [START_EXCLUDE]
-                        //  if (!task.isSuccessful()) {
-                        //      Toast.makeText(getApplicationContext(), "Error. Cannot Authentication",
-                        //              Toast.LENGTH_SHORT).show();
-                        // mStatusTextView.setText(R.string.auth_failed);
-                        //  }
-                        //   hideProgressDialog();
-                        // [END_EXCLUDE]
                     }
                 });
-        // [END sign_in_with_email]
     }
 
     private boolean validateForm() {
@@ -425,6 +418,10 @@ public class LoginActivity extends Activity {
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
+            Log.d("1abc","ABC: "+mGoogleApiClient.isConnected());
+            if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+                mGoogleApiClient.clearDefaultAccountAndReconnect();
+            }
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
@@ -437,9 +434,6 @@ public class LoginActivity extends Activity {
                 progressDialog.dismiss();
                 Toast.makeText(getApplicationContext(),"Google Sign In Failed: "+e.getMessage(),Toast.LENGTH_SHORT).show();
                 Log.w("1abc", "Google sign in failed", e);
-                // [START_EXCLUDE]
-                //        updateUI(null);
-                // [END_EXCLUDE]
             }
         }
     }
@@ -510,18 +504,11 @@ public class LoginActivity extends Activity {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(getApplicationContext(), "Sign In Fails", Toast.LENGTH_SHORT).show();
-                            //            Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-                            //        updateUI(null);
                         }
 
-                        // [START_EXCLUDE]
-                        //       hideProgressDialog();
-                        // [END_EXCLUDE]
                     }
                 });
     }
-    // [END auth_with_google]
-
     // [START signin]
     public void signInGoogle() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();

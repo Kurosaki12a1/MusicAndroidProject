@@ -9,6 +9,7 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingBottom="40dp"
     android:id="@+id/mainRel"
     android:background="@color/colorTabBackgroundLighter">
 
@@ -136,6 +137,33 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/linLayout4"
+        android:layout_below="@+id/linLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/custom_border_linear_layout"
+        android:padding="20dp"
+        >
+
+        <ImageView
+
+            android:background="@color/colorWhite"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/sign_out2"
+            android:layout_centerVertical="true"/>
+        <TextView
+            android:id="@+id/SignOutBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign Out"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:padding="10dp"/>
+
+    </LinearLayout>
 
 
 
