@@ -46,7 +46,6 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
     private int currentPosition;
     private int totalDuration;
     private boolean isUserChangePosition = false;
-    private boolean isChangeSongFromService = false;
     private String lastFilePath = "";
 
     private boolean mediaPlayerPrepared = false;
@@ -54,6 +53,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
     private Notification notification;
     private NotificationCompat.Builder builder;
     private RemoteViews remoteViews;
+
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
@@ -82,6 +82,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
 
         setNotificationListeners();
 
+        // Receive from notification interactions
         musicPlayerBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -98,8 +99,8 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
                             mp.pause();
                         }
                     } else if (action.equalsIgnoreCase(Constants.ACTION.PREV_ACTION)) {
-//                        isChangeSongFromService = true;
                         isUserChangePosition = true;
+                        isPause = false;
                         currentPosition = 0;
                         if (isShuffle) {
                             //Tron cung mang nghia repeat all
@@ -109,18 +110,16 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
                                 nTempPosition = rand.nextInt((listSong.size() - 1));
                             } while (nTempPosition == nPosition);
                             nPosition = nTempPosition;
-                            playSong();
                         } else if (nPosition == 0) {
                             nPosition = listSong.size() - 1;
-                            playSong();
                         } else {
                             nPosition--;
-                            playSong();
                         }
+                        playSong();
 
                     } else if (action.equalsIgnoreCase(Constants.ACTION.NEXT_ACTION)) {
-//                        isChangeSongFromService = true;
                         isUserChangePosition = true;
+                        isPause = false;
                         currentPosition = 0;
                         if (isShuffle) {
                             //Tron cung mang nghia repeat all
@@ -130,28 +129,24 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
                                 nTempPosition = rand.nextInt((listSong.size() - 1));
                             } while (nTempPosition == nPosition);
                             nPosition = nTempPosition;
-                            playSong();
                         } else if (nPosition == listSong.size() - 1) {
                             nPosition = 0;
-                            playSong();
                         } else {
                             nPosition++;
-                            playSong();
                         }
+                        playSong();
                     } else if (action.equalsIgnoreCase(Constants.ACTION.CLOSE_ACTION)) {
-//                        serviceIsRunning = false;
                         isPause = true;
                         mp.pause();
                         return;
                     }
-
                     setNotificationInfo();
                     notificationManager.notify(NOTIF_ID, notification);
                 }
             }
         };
 
-        // Thread to send data back to activity to update UI if needed after every 1s
+        // Thread to send data back to activity to update UI if needed after every 0.1s
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -162,8 +157,6 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
                             currentPosition = mp.getCurrentPosition();
 
                             sendDataToActivity();
-                            // Return default
-//                            isChangeSongFromService = false;
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -220,13 +213,13 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
     @Override
     public void onDestroy() {
         super.onDestroy();
-
+        
     }
 
     @Override
     public boolean stopService(Intent name) {
         mp.stop();
-//        mp.release();
+        mp.release();
         return super.stopService(name);
     }
 
@@ -242,11 +235,10 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
      */
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-        if (mediaPlayer.getDuration() - mediaPlayer.getCurrentPosition() <= 2000) { // End song, we accept 2s of delay
+        if (mediaPlayer.getDuration() - mediaPlayer.getCurrentPosition() <= 500) { // End song, we accept 0.5s of delay
             currentPosition = 0;
             if (isRepeatOne) {
                 lastFilePath = "";
-                playSong();
             } else if (isShuffle) {
                 //Tron cung mang nghia repeat all
                 Random rand = new Random();
@@ -255,21 +247,17 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
                     nTempPosition = rand.nextInt((listSong.size() - 1));
                 } while (nTempPosition == nPosition);
                 nPosition = nTempPosition;
-                playSong();
             } else {
                 //no repeatone or no shuffler->play next song
                 if (nPosition < listSong.size() - 1) {
 
                     nPosition++;
-                    playSong();
                 } else if (isRepeatAll) {
                     // play first song
                     nPosition = 0;
-                    playSong();
-                    //     nPosition=0;
                 }
-//                isChangeSongFromService = true;
             }
+            playSong();
             setNotificationInfo();
             buildNotification();
             notificationManager.notify(NOTIF_ID, notification);
@@ -282,11 +270,12 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
 
     void playSong() {
         if (!lastFilePath.equals(listSong.get(nPosition).getPathFileSong())) {
-            isChangeSongFromService = true;
-            lastFilePath = listSong.get(nPosition).getPathFileSong(); // Only need to do these steps if we're going to playing new songs
+            // Only need to do these steps if we're going to playing new songs
+            lastFilePath = listSong.get(nPosition).getPathFileSong();
             mediaPlayerPrepared = false;
             mp.release();
             mp = new MediaPlayer();
+            mp.setOnCompletionListener(this);
             mp.reset();
             try {
                 mp.setDataSource(listSong.get(nPosition).getPathFileSong());
@@ -302,12 +291,9 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
                 });
             } catch (IOException e) {
                 e.printStackTrace();
-                Log.d("Crash position", String.valueOf(nPosition));
-                Log.d("Crash path", listSong.get(nPosition).getPathFileSong());
             }
         }
 
-//        mp.start();
         if (isUserChangePosition) {
             mp.seekTo(currentPosition);
             isUserChangePosition = false; // Return to default
@@ -365,7 +351,6 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
         i.putExtra("totalDuration", totalDuration);
         i.putExtra("isUserChangePosition", isUserChangePosition);
 
-        i.putExtra("isChangeSongFromService", isChangeSongFromService);
 
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
     }

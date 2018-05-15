@@ -215,7 +215,9 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
     protected void onDestroy() {
         super.onDestroy();
 //        stopService(new Intent(MainScreenActivity.this, SongPlayerService.class));
-        isRunning = false;
+//        isRunning = false;
     }
+
+
 }
 

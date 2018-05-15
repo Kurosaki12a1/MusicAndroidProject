@@ -358,6 +358,7 @@ public class LoginActivity extends Activity {
                             usersRef.setValue(usernamegg);
                             Intent intent = new Intent(getApplicationContext(), MainScreenActivity.class);
                             startActivity(intent);
+                            finish();
                         } else {
                             progressDialog.dismiss();
                         }
@@ -552,6 +553,7 @@ public class LoginActivity extends Activity {
         if(mAuth.getCurrentUser()!=null){
             Intent intent=new Intent(LoginActivity.this,MainScreenActivity.class);
             startActivity(intent);
+            finish();
         }
     }
 }
