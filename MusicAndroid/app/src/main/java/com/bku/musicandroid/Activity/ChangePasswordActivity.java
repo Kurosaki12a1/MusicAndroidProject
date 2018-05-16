@@ -32,7 +32,7 @@ public class ChangePasswordActivity extends Activity {
     private EditText newpassTxt;
     private EditText confirmNewPassTxt;
     private Button changePass_btn;
-    private SignInButton login_google_btn;
+    private SignInButton loginGoogleBtn;
     private FirebaseAuth mAuth;
     private ProgressDialog progressDialog;
     private Dialog dialog;
