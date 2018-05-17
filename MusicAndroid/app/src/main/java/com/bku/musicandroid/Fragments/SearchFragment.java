@@ -54,7 +54,7 @@ public class SearchFragment extends Fragment  {
     private EditText searchBar;
     private Spinner searchOption;
     private RecyclerView recyclerView;
-    private List<SongPlayerOnlineInfo> listSong;
+    private ArrayList<SongPlayerOnlineInfo> listSong;
     private SearchAdapter mAdapter;
     private OnFragmentInteractionListener mListener;
     String [] optionSearch= {

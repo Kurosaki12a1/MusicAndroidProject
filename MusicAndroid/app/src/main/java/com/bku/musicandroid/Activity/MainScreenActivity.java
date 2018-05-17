@@ -1,20 +1,27 @@
 package com.bku.musicandroid.Activity;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bku.musicandroid.Fragments.ProfileFragment;
+import com.bku.musicandroid.Model.SongPlayerInfo;
 import com.bku.musicandroid.Utility.CircleTransform;
 
 import com.bku.musicandroid.Fragments.ExploreFragment;
@@ -25,6 +32,9 @@ import com.bku.musicandroid.Fragments.SongGenreFragment;
 import com.bku.musicandroid.Adapter.MainFragmentPagerAdapter;
 import com.bku.musicandroid.R;
 import com.bku.musicandroid.Fragments.SongsFragment;
+import com.bku.musicandroid.Utility.Constants;
+import com.bku.musicandroid.Utility.UtilitySongOfflineClass;
+import com.bku.musicandroid.Utility.UtilitySongOnlineClass;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -48,6 +58,18 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
     MainFragmentPagerAdapter mainFragmentPagerAdapter;
     TextView txtStatus;
 
+    ImageView imgPlay;
+    LinearLayout layoutMusicControl;
+    BroadcastReceiver receiver;
+    ArrayList<? extends SongPlayerInfo> listSong;
+    TextView txtSongName;
+    String lastSongPath = "";
+    int nPosition;
+    boolean isOnline;
+    boolean isPause;
+    boolean isRepeatAll;
+    boolean isRepeatOne;
+    boolean isShuffle;
     // Firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -63,8 +85,78 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
         txtStatus=(TextView)findViewById(R.id.txtTab);
         mainFragmentPagerAdapter = new MainFragmentPagerAdapter(this, getSupportFragmentManager());
         mainViewPager.setAdapter(mainFragmentPagerAdapter);
+
+        imgPlay = findViewById(R.id.imgPlay);
+        layoutMusicControl = findViewById(R.id.layoutMusicControl);
+        txtSongName = findViewById(R.id.txtSongName);
+        txtSongName.setSelected(true);
+
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                nPosition = intent.getIntExtra("position", 0);
+                isOnline = intent.getBooleanExtra("isOnline", false);
+                isPause = intent.getBooleanExtra("isPause", false);
+                isRepeatAll = intent.getBooleanExtra("isRepeatAll", isRepeatAll);
+                isRepeatOne = intent.getBooleanExtra("isRepeatOne", isRepeatOne);
+                isShuffle = intent.getBooleanExtra("isShuffle", isShuffle);
+
+                if (isOnline) {
+                    listSong = UtilitySongOnlineClass.getInstance().getItemOfList();
+                } else {
+                    listSong = UtilitySongOfflineClass.getInstance().getList();
+                }
+
+                if (!isPause) {
+                    imgPlay.setImageResource(R.drawable.ic_player_pause);
+                } else {
+                    imgPlay.setImageResource(R.drawable.btn_playback_play);
+                }
+
+                // Update new song info UI when auto move to another song
+                if (!lastSongPath.equals(listSong.get(nPosition).getPath())) {
+                    layoutMusicControl.setVisibility(View.VISIBLE);
+                    lastSongPath = listSong.get(nPosition).getPath();
+                    txtSongName.setText(listSong.get(nPosition).getSongName());
+                }
+            }
+        };
+
+        imgPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Constants.ACTION.PLAY_OR_PAUSE_ACTION);
+                sendBroadcast(i);
+            }
+        });
+
+        layoutMusicControl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i;
+                if (isOnline) {
+                    i = new Intent(MainScreenActivity.this, SongOnlinePlayerActivity.class);
+                } else {
+                    i = new Intent(MainScreenActivity.this, SongOfflinePlayerActivity.class);
+                }
+                i.putExtra("currentPosition", nPosition);
+                i.putExtra("isPause", isPause);
+                i.putExtra("isRepeatAll", isRepeatAll);
+                i.putExtra("isRepeatOne", isRepeatOne);
+                i.putExtra("isShuffle", isShuffle);
+                startActivity(i);
+            }
+        });
+
         initUI();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("MusicPlayerUpdate"));
     }
 
     @Override
@@ -166,6 +258,13 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
 
 
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+    }
+
     private void checkCurrentUser(FirebaseUser user){
         Log.d(TAG, "checkCurrentUser: checking if user is logged in");
         if(user == null){

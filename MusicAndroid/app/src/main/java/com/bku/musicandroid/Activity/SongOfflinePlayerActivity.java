@@ -69,6 +69,10 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
             nPosition = extras.getInt("currentPosition");
             utilitySongOfflineClass = UtilitySongOfflineClass.getInstance();
             listSong = new ArrayList<>(utilitySongOfflineClass.getList());
+            isPause = extras.getBoolean("isPause", false);
+            isRepeatAll = extras.getBoolean("isRepeatAll", false);
+            isRepeatOne = extras.getBoolean("isRepeatOne", false);
+            isShuffle = extras.getBoolean("isShuffle", false);
 //            listSong = utilitySongOfflineClass.getList();
         }
 
@@ -92,6 +96,12 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
                     play.setImageResource(R.drawable.ic_player_pause);
                 } else {
                     play.setImageResource(R.drawable.btn_playback_play);
+                }
+
+                if (isRepeatOne) {
+                    repeatOne.setImageResource(R.drawable.exo_controls_repeat_one);
+                } else {
+                    repeatOne.setImageResource(R.drawable.exo_controls_repeat_all);
                 }
 
                 // Update new song info UI when auto move to another song
