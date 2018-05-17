@@ -401,10 +401,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="Country"
+                        android:text="Vpop"
                         android:textColor="@color/colorWhite"
                         android:textSize="20dp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
             //Row 8
