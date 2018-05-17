@@ -1,10 +1,12 @@
 package com.bku.musicandroid.Activity;
 
+import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -30,6 +32,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -302,8 +305,7 @@ public class SongOnlinePlayerActivity extends AppCompatActivity   implements See
         download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final DownloadTask downloadTask=new DownloadTask(SongOnlinePlayerActivity.this);
-                downloadTask.execute(strSongURL);
+                Download(strSongName,strSongURL);
 
             }
         });
@@ -466,74 +468,22 @@ public class SongOnlinePlayerActivity extends AppCompatActivity   implements See
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("MusicPlayerUpdate"));
     }
 
-    private class DownloadTask extends AsyncTask<String, Integer, String> {
-
-        private Context context;
-
-        public DownloadTask(Context context) {
-            this.context = context;
+    private void Download(String songName,String songURL){
+        File folder = new File(Environment.getExternalStorageDirectory() + "/Download");
+        if (!folder.exists()) {
+            folder.mkdir();
         }
-
-        @Override
-        protected String doInBackground(String... sUrl) {
-            InputStream input = null;
-            OutputStream output = null;
-            HttpURLConnection connection = null;
-            try {
-                URL url = new URL(sUrl[0]);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.connect();
-
-                // expect HTTP 200 OK, so we don't mistakenly save error report
-                // instead of the file
-                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                    return "Server returned HTTP " + connection.getResponseCode()
-                            + " " + connection.getResponseMessage();
-                }
-
-                // this will be useful to display download percentage
-                // might be -1: server did not report the length
-                int fileLength = connection.getContentLength();
-
-                // download the file
-                input = connection.getInputStream();
-                output = new FileOutputStream(  Environment.getExternalStorageDirectory()+"/"+strSongName+".mp3");
-
-                byte data[] = new byte[1024];
-                long total = 0;
-                int count;
-                while ((count = input.read(data)) != -1) {
-                    // allow canceling with back button
-                    if (isCancelled()) {
-                        input.close();
-                        return null;
-                    }
-                    total += count;
-                    // publishing the progress....
-                    if (fileLength > 0) // only if total length is known
-                        publishProgress((int) (total * 100 / fileLength));
-                    output.write(data, 0, count);
-                }
-            } catch (Exception e) {
-                return e.toString();
-            } finally {
-                try {
-                    if (output != null)
-                        output.close();
-                    if (input != null)
-                        input.close();
-                } catch (IOException ignored) {
-                }
-
-                if (connection != null)
-                    connection.disconnect();
-            }
-            return null;
+        DownloadManager mManager = (DownloadManager) this.getSystemService(Context.DOWNLOAD_SERVICE);
+        DownloadManager.Request mRqRequest = new DownloadManager.Request(
+                Uri.parse(songURL));
+        mRqRequest.setDescription("Downloading Song name " + songName);
+        mRqRequest.setDestinationInExternalPublicDir("/Download", songName+".mp3");
+        //mRqRequest.setDestinationUri(Uri.parse("/Download"));
+        mRqRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        if (mManager != null) {
+          mManager.enqueue(mRqRequest);
         }
-        @Override
-        protected void onPostExecute(String params){
-            updateDownLoad();
-        }
+        updateDownLoad();
     }
 
     @Override
