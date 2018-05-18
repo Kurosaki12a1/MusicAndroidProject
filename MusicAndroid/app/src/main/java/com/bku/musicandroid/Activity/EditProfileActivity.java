@@ -148,6 +148,7 @@ public class EditProfileActivity extends AppCompatActivity {
         saveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                saveChanges.setEnabled(false);
                 saveProfile(userId);
             }
         });
@@ -269,9 +270,9 @@ public class EditProfileActivity extends AppCompatActivity {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
 
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                            double progress = 50+(50.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                             // Setting progressDialog Title.
-
+                            Toast.makeText(EditProfileActivity.this,"Your Profile is updating " + progress,Toast.LENGTH_SHORT).show();
                             if(progress>=100) {
                                 Intent intent = new Intent(EditProfileActivity.this, MainScreenActivity.class);
                                 startActivity(intent);
@@ -325,7 +326,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
                             double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                             // Setting progressDialog Title.
-
+                            Toast.makeText(EditProfileActivity.this,"Your Profile is updating " + progress,Toast.LENGTH_SHORT).show();
                             if(progress>=100) {
                                 Intent intent = new Intent(EditProfileActivity.this, MainScreenActivity.class);
                                 startActivity(intent);
@@ -376,10 +377,10 @@ public class EditProfileActivity extends AppCompatActivity {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
 
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                            double progress = (50.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                             // Setting progressDialog Title.
-
-                            if(progress>=100) {
+                            Toast.makeText(EditProfileActivity.this,"Your Profile is updating " + progress,Toast.LENGTH_SHORT).show();
+                            if(progress>=50) {
                                 finalSaveSettings(userId);
                             }
                         }

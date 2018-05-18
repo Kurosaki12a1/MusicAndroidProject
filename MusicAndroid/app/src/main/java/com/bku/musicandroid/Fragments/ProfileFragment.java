@@ -59,7 +59,7 @@ import javax.net.ssl.HttpsURLConnection;
 public class ProfileFragment extends Fragment {
 
     private ImageView profileImage, backGroundImage;
-    private TextView txtBar, txtName, playList, signOutTxt, changePasswordTxt;
+    private TextView txtBar, txtName, playList, signOutTxt, changePasswordTxt,EditProfile,UpLoad;
     private AppCompatButton menu;
     String userId = "";
     FirebaseAuth mAuth;
@@ -185,12 +185,7 @@ public class ProfileFragment extends Fragment {
                 getContext().startActivity(intent);
             }
         });
-        menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShowMenu();
-            }
-        });
+
         signOutTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -208,6 +203,22 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+
+        EditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        UpLoad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), UploadSongActivity.class);
+                startActivity(intent);
+            }
+        });
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -221,9 +232,11 @@ public class ProfileFragment extends Fragment {
         playList = getView().findViewById(R.id.PlayList);
         signOutTxt = getView().findViewById(R.id.SignOutBtn);
         changePasswordTxt = getView().findViewById(R.id.ChangePassBtn);
+        EditProfile=getView().findViewById(R.id.EditProfile);
+        UpLoad=getView().findViewById(R.id.UpLoad);
     }
 
-    private void ShowMenu() {
+   /* private void ShowMenu() {
         PopupMenu MenuPopUp = new PopupMenu(getContext(), menu);
         MenuPopUp.getMenuInflater().inflate(R.menu.drawer_menu, MenuPopUp.getMenu());
         MenuPopUp.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -259,7 +272,7 @@ public class ProfileFragment extends Fragment {
             }
         });
         MenuPopUp.show();
-    }
+    }*/
    /* public void signOut() {
         mAuth.signOut();
     } */

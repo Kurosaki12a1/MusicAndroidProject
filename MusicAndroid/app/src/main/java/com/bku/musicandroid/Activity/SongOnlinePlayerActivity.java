@@ -305,6 +305,7 @@ public class SongOnlinePlayerActivity extends AppCompatActivity   implements See
         download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+              //  download.setImageDrawable(getResources().getDrawable(R.drawable.ic_downloaded_state));
                 Download(strSongName,strSongURL);
 
             }

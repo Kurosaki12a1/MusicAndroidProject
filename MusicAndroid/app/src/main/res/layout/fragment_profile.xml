@@ -19,8 +19,7 @@
 
         >
 
-        <include layout="@layout/snippet_top_profilebar"
-            />
+        <include layout="@layout/snippet_top_profilebar" />
 
     </RelativeLayout>
 
@@ -137,8 +136,65 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linLayout4"
+        android:id="@+id/linLayout6"
         android:layout_below="@+id/linLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/custom_border_linear_layout"
+        android:padding="20dp"
+        >
+
+        <ImageView
+
+            android:background="@color/colorWhite"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_upload"
+            android:layout_centerVertical="true"/>
+        <TextView
+            android:id="@+id/UpLoad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Upload Song Online"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:padding="10dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linLayout7"
+        android:layout_below="@+id/linLayout6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/custom_border_linear_layout"
+        android:padding="20dp"
+        >
+
+        <ImageView
+
+            android:background="@color/colorWhite"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_edit_profile"
+            android:layout_centerVertical="true"/>
+        <TextView
+            android:id="@+id/EditProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit Your Profile"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:padding="10dp"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/linLayout4"
+        android:layout_below="@+id/linLayout7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
