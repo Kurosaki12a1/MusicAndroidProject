@@ -1,5 +1,6 @@
 package com.bku.musicandroid.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
@@ -41,7 +42,7 @@ public class PlayListActivity extends AppCompatActivity {
     public static final String View_Database="All_View_PlayList_Database";
     RecyclerView recyclerView;
     private TextView namePlayList;
-    private ImageView liked,backGround;
+    private ImageView liked,backGround,backArrow;
 
     ArrayList<SongPlayerOnlineInfo> lstSong;
 
@@ -62,6 +63,7 @@ public class PlayListActivity extends AppCompatActivity {
         liked=(ImageView)findViewById(R.id.Liked);
         backGround=(ImageView)findViewById(R.id.blurFrame);
         recyclerView=(RecyclerView)findViewById(R.id.recyclerView);
+        backArrow=(ImageView)findViewById(R.id.backArrow);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAuth=FirebaseAuth.getInstance();
@@ -74,6 +76,14 @@ public class PlayListActivity extends AppCompatActivity {
             getPlayListInfo(playListId,userId);
         }
 
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PlayListActivity.this,ActivityPlayListOnline.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         lstSong=new ArrayList<>();
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(Liked_Path);

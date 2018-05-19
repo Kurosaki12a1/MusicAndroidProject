@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bku.musicandroid.Activity.ActivityPlayListOnline;
+import com.bku.musicandroid.Activity.AddSongToPlayListPopUp;
 import com.bku.musicandroid.Activity.PlayListActivity;
 import com.bku.musicandroid.Model.PlayListOnlineInfo;
 import com.bku.musicandroid.Model.SongPlayerOnlineInfo;
@@ -77,6 +79,7 @@ public class ViewListOfPlayListAdapter extends RecyclerView.Adapter<ViewListOfPl
                 intent.putExtra("currentPosition",nTempPosition);
                 intent.putExtra("PlayListId",playListOnlineInfo.getPlayListId());
                 context.startActivity(intent);
+                ((ActivityPlayListOnline)context).finish();
             }
         });
 
