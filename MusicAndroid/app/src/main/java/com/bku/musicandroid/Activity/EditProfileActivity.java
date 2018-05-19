@@ -1,5 +1,6 @@
 package com.bku.musicandroid.Activity;
 
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -56,6 +57,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private int Image_BackGround_Request_Code=96;
 
     String avatarURL="" ,backGroundAvatarURL="";
+    ProgressDialog progressDialog;
     private boolean isHideProfilePhoto=false;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +86,7 @@ public class EditProfileActivity extends AppCompatActivity {
         accountId.setEnabled(false);
         backGroundPhoto.setVisibility(View.INVISIBLE);
 
-
+        progressDialog = new ProgressDialog(EditProfileActivity.this);
         DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("All_Users_Info_Database");
         databaseReference.child("users").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -148,6 +150,7 @@ public class EditProfileActivity extends AppCompatActivity {
         saveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                saveChanges.setEnabled(false);
                 saveProfile(userId);
             }
         });
@@ -225,6 +228,8 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void saveProfile(final String userId){
+        progressDialog.setTitle("Your Profile is updating...");
+        progressDialog.show();
         StorageReference storageReference= FirebaseStorage.getInstance().getReference();
         if(FilePathUri == null && FilePathUri1!=null){
             StorageReference storageReference2nd = storageReference.child(  System.currentTimeMillis() + "." + GetFileExtension(FilePathUri1));
@@ -269,12 +274,15 @@ public class EditProfileActivity extends AppCompatActivity {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
 
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                            double progress = 50+(50.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                             // Setting progressDialog Title.
 
+                            //Toast.makeText(EditProfileActivity.this,"Your Profile is updating " + progress,Toast.LENGTH_SHORT).show();
                             if(progress>=100) {
+                                progressDialog.dismiss();
                                 Intent intent = new Intent(EditProfileActivity.this, MainScreenActivity.class);
                                 startActivity(intent);
+                                finish();
                             }
                         }
                     });
@@ -325,10 +333,12 @@ public class EditProfileActivity extends AppCompatActivity {
 
                             double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                             // Setting progressDialog Title.
-
+                          //  Toast.makeText(EditProfileActivity.this,"Your Profile is updating " + progress,Toast.LENGTH_SHORT).show();
                             if(progress>=100) {
+                                progressDialog.dismiss();
                                 Intent intent = new Intent(EditProfileActivity.this, MainScreenActivity.class);
                                 startActivity(intent);
+                                finish();
                             }
                         }
                     });
@@ -376,10 +386,10 @@ public class EditProfileActivity extends AppCompatActivity {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
 
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                            double progress = (50.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                             // Setting progressDialog Title.
-
-                            if(progress>=100) {
+                            Toast.makeText(EditProfileActivity.this,"Your Profile is updating " + progress,Toast.LENGTH_SHORT).show();
+                            if(progress>=50) {
                                 finalSaveSettings(userId);
                             }
                         }
@@ -440,8 +450,10 @@ public class EditProfileActivity extends AppCompatActivity {
                         // Setting progressDialog Title.
 
                         if (progress >= 100) {
+                            progressDialog.dismiss();
                             Intent intent = new Intent(EditProfileActivity.this, MainScreenActivity.class);
                             startActivity(intent);
+                            finish();
                         }
                     }
                 });

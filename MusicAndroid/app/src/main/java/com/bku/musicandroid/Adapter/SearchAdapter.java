@@ -16,6 +16,7 @@ import com.bku.musicandroid.Model.SongPlayerOnlineInfo;
 import com.bku.musicandroid.Utility.UtilitySongOnlineClass;
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,9 +26,9 @@ import java.util.List;
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
 
     static Context context;
-    List<SongPlayerOnlineInfo> ListSong;
+    ArrayList<SongPlayerOnlineInfo> ListSong;
 
-    public SearchAdapter(Context context, List<SongPlayerOnlineInfo>listSong){
+    public SearchAdapter(Context context, ArrayList<SongPlayerOnlineInfo>listSong){
 
         this.ListSong=listSong;
         this.context=context;
@@ -79,7 +80,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             @Override
             public void onClick(View v) {
                 UtilitySongOnlineClass utilitySongOnlineClass=UtilitySongOnlineClass.getInstance();
-                utilitySongOnlineClass.setItem(songPlayerOnlineInfo);
+//                utilitySongOnlineClass.setItem(songPlayerOnlineInfo);
+                utilitySongOnlineClass.setItemOfList(ListSong);
                 Intent intent=new Intent(context,SongOnlinePlayerActivity.class);
                 context.startActivity(intent);
             }

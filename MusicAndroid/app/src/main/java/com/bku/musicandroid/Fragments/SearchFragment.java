@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -27,6 +28,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 /**
  * Created by SonPhan on 3/24/2018.
@@ -54,7 +57,7 @@ public class SearchFragment extends Fragment  {
     private EditText searchBar;
     private Spinner searchOption;
     private RecyclerView recyclerView;
-    private List<SongPlayerOnlineInfo> listSong;
+    private ArrayList<SongPlayerOnlineInfo> listSong;
     private SearchAdapter mAdapter;
     private OnFragmentInteractionListener mListener;
     String [] optionSearch= {
@@ -251,6 +254,8 @@ public class SearchFragment extends Fragment  {
         }
         return false;
     }
+
+
 
 
 }

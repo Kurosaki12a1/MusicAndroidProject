@@ -224,7 +224,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
             notificationManager.notify(NOTIF_ID, notification);
 
         }
-        return START_STICKY;
+        return START_REDELIVER_INTENT;
     }
 
     @Override
@@ -371,7 +371,7 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
         i.putExtra("currentPosition", currentPosition);
         i.putExtra("totalDuration", totalDuration);
         i.putExtra("isUserChangePosition", isUserChangePosition);
-
+        i.putExtra("isOnline", isOnline);
 
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
     }
