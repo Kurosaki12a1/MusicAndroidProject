@@ -161,7 +161,14 @@ public class LibraryFragment extends Fragment {
 
             }
         });
+        layoutPlaylists.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToPlaylist();
+            }
+        });
     }
+
 
     /**
      * Function: requestPermissionAndGoToSongList
@@ -180,6 +187,20 @@ public class LibraryFragment extends Fragment {
         }
 
 
+    }
+    /**
+     * Function: goToPlaylist
+     * Created by: SonPhan 19/05/2018
+     * Purpose: Go to playlist
+     * Description:
+     */
+    private void goToPlaylist() {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+        fragmentTransaction.replace(R.id.fragmentLibrary, new OfflinePlaylistFragment());
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commitAllowingStateLoss();
+        fragmentManager.executePendingTransactions();
     }
 
     /**

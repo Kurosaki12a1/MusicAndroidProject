@@ -18,6 +18,9 @@
     <string name="explore">Explore</string>
     <string name="search">Search</string>
     <string name="profle">Profile</string>
+    <string name="playlist_name">Tên playlist:</string>
+    <string name="example">Example</string>
+    <string name="song_count">Số bài hát:</string>
 
 
     <string-array name="nav_item_activity_titles">

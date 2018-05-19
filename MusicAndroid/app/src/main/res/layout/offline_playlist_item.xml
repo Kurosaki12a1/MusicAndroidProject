@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorAppBackground"
+    android:padding="10dp">
+    <TextView
+        android:id="@+id/hintPlaylistName"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:text="@string/playlist_name"/>
+    <TextView
+        android:id="@+id/txtPlaylistName"
+        android:layout_toEndOf="@+id/hintPlaylistName"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/colorWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/example" />
+    <TextView
+        android:id="@+id/hintSongCount"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:text="@string/song_count"
+        android:layout_below="@+id/hintPlaylistName"
+        android:layout_marginTop="10dp"/>
+    <TextView
+        android:id="@+id/txtSongCount"
+        android:layout_below="@+id/txtPlaylistName"
+        android:layout_toEndOf="@id/hintSongCount"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/colorWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/example" />
+    <ImageView
+        android:id="@+id/imgDelete"
+        android:layout_alignParentEnd="true"
+        android:background="@color/colorWhite"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/ic_trash"/>
+
+</RelativeLayout>
