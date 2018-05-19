@@ -204,7 +204,7 @@ public class SongGenreFragment extends Fragment {
                             }
 
                         }
-                        Toast.makeText(getActivity(),"Loading done",Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getActivity(),"Loading done",Toast.LENGTH_SHORT).show();
                         songInfoOnlineAdapter = new SongGenreRecycleAdapter(getActivity(), listSong);
                         listSongGenre.setAdapter(songInfoOnlineAdapter);
                         Log.d("1abc","list song length: "+listSong.size());

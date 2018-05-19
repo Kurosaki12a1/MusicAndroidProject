@@ -12,10 +12,5 @@ public class Constants {
         public static String NEXT_ACTION = "action.next";
         public static String CLOSE_ACTION = "action.close";
     }
-//    public static String STARTFOREGROUND_ACTION = "action.startforeground";
-//    public static String STOPFOREGROUND_ACTION = "action.stopforeground";
 
-//    public interface NOTIFICATION_ID {
-//        public static int FOREGROUND_SERVICE = 101;
-//    }
 }
