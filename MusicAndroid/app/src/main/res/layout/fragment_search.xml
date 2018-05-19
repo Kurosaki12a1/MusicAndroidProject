@@ -25,6 +25,7 @@
             android:background="@color/colorTabBackgroundLighter"
             android:hint="Search..."
             android:textColorHint="@color/colorWhite"
+            android:lines="1"
             android:inputType="text"
             android:textSize="15sp"
             android:textColor="@color/colorWhite"
