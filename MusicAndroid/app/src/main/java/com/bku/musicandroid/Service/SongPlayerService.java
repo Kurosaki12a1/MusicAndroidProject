@@ -297,9 +297,9 @@ public class SongPlayerService extends Service implements MediaPlayer.OnCompleti
                     @Override
                     public void onPrepared(MediaPlayer mediaPlayer) {
                         mediaPlayerPrepared = true;
-                        mp.start();
-                        mp.seekTo(0);
-                        totalDuration = mp.getDuration();
+                        totalDuration = mediaPlayer.getDuration();
+                        mediaPlayer.start();
+
                     }
                 });
             } catch (IOException e) {

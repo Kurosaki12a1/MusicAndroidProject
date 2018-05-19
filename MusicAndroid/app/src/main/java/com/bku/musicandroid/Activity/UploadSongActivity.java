@@ -259,6 +259,7 @@ public class UploadSongActivity extends AppCompatActivity {
                                 intent.putExtra("liked",0);
                                 intent.putExtra("songURL",taskSnapshot.getDownloadUrl().toString());*/
                                 startActivity(intent);
+                                finish();
                             }
 
                         }

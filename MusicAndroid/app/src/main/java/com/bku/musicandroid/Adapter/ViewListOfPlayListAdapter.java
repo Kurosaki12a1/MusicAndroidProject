@@ -33,7 +33,7 @@ public class ViewListOfPlayListAdapter extends RecyclerView.Adapter<ViewListOfPl
     ArrayList<PlayListOnlineInfo> ListPlayList;
 
 
-    public static final String Database_Path="All_PLayList_Info_Database";
+    public static final String Database_Path="All_PlayList_Info_Database";
     public static final String Song_List="All_Song_Of_PlayList_Database";
     public static final String Liked_Path="All_Liked_PlayList_Database";
     public static final String View_Path="All_View_PlayList_Database";
