@@ -5,15 +5,38 @@ package com.bku.musicandroid.Model;
  */
 
 public class OfflinePlaylist {
+    public static final String TABLE_NAME = "playlist";
+
+    public static final String COLUMN_ID = "id";
+    public static final String COLUMN_NAME = "name";
+    public static final String COLUMN_SONG_COUNT = "song_count";
+
+
+    // Create table SQL query
+    public static final String CREATE_TABLE =
+            "CREATE TABLE " + TABLE_NAME + "("
+                    + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + COLUMN_NAME + " TEXT,"
+                    + COLUMN_SONG_COUNT + " INTEGER "
+                    + ")";
     private int id;
     private String name;
     private int songCount;
 
+    public OfflinePlaylist() {
+    }
+
+    /**
+     * Created by Son on 5/19/2018.
+     */
     public OfflinePlaylist(String name, int songCount) {
         this.name = name;
         this.songCount = songCount;
     }
 
+    /**
+     * Created by Son on 5/19/2018.
+     */
     public OfflinePlaylist(String name) {
 //        new OfflinePlaylist(name, 0);
         this.name = name;

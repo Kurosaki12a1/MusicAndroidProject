@@ -3,6 +3,7 @@ package com.bku.musicandroid.Fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.bku.musicandroid.Adapter.OfflinePlaylistRecycleAdapter;
+import com.bku.musicandroid.Database.OfflineDatabaseHelper;
 import com.bku.musicandroid.Model.OfflinePlaylist;
 import com.bku.musicandroid.R;
 
@@ -30,6 +32,7 @@ public class OfflinePlaylistFragment extends Fragment {
     RecyclerView lvPlaylist;
     FloatingActionButton btnAddPlaylist;
     OfflinePlaylistRecycleAdapter adapter;
+    OfflineDatabaseHelper db;
 
 
     public OfflinePlaylistFragment() {
@@ -42,11 +45,20 @@ public class OfflinePlaylistFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_offline_playlist, container, false);
 
+        db = new OfflineDatabaseHelper(getContext());
+
         bindView(view);
 
         return view;
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //Restore from db
+        restoreFromDb();
+    }
 
     /**
      * Created by Son on 5/19/2018.
@@ -56,6 +68,7 @@ public class OfflinePlaylistFragment extends Fragment {
         lvPlaylist.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new OfflinePlaylistRecycleAdapter(getContext());
         lvPlaylist.setAdapter(adapter);
+
 
         btnAddPlaylist = view.findViewById(R.id.btnAddPlaylist);
         btnAddPlaylist.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +84,12 @@ public class OfflinePlaylistFragment extends Fragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String input = edtPlaylistName.getText().toString();
                         OfflinePlaylist o = new OfflinePlaylist(input);
+
+                        int id = db.insertPlaylist(o);
+                        o.setId(id);
+
                         adapter.add(o);
+
                     }
                 });
 
@@ -85,6 +103,11 @@ public class OfflinePlaylistFragment extends Fragment {
                 builder.show();
             }
         });
+    }
+
+    private void restoreFromDb() {
+        ArrayList<OfflinePlaylist> listPlaylist = new ArrayList<>(db.getAllPlaylist());
+        adapter.setListPlaylist(listPlaylist);
     }
 
 }
