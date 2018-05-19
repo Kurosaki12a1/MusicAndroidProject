@@ -103,7 +103,7 @@ public class PlayListActivity extends AppCompatActivity {
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                     lstSong.add(singleSnapshot.getValue(SongPlayerOnlineInfo.class));
                 }
-                PlayListAdapter playListAdapter=new PlayListAdapter(PlayListActivity.this,lstSong);
+                PlayListAdapter playListAdapter=new PlayListAdapter(PlayListActivity.this,lstSong,playListId);
                 playListAdapter.notifyDataSetChanged();
                 recyclerView.setAdapter(playListAdapter);
             }

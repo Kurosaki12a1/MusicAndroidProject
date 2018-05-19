@@ -93,6 +93,7 @@ public class CreatePlayListPopUp extends Activity {
 
                     Intent intent=new Intent(CreatePlayListPopUp.this,ActivityPlayListOnline.class);
                     startActivity(intent);
+                    finish();
                 }
             }
         });

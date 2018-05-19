@@ -253,11 +253,6 @@ public class UploadSongActivity extends AppCompatActivity {
                             progressBar.setProgress((int)progress+1);
                             if(progress>=100){
                                 Intent intent=new Intent(UploadSongActivity.this,MainScreenActivity.class);
-                                /*intent.putExtra("songName",songName.getText().toString());
-                                intent.putExtra("songArtists",singerName.getText().toString());
-                                intent.putExtra("imageSongURL",imageSong);
-                                intent.putExtra("liked",0);
-                                intent.putExtra("songURL",taskSnapshot.getDownloadUrl().toString());*/
                                 startActivity(intent);
                                 finish();
                             }

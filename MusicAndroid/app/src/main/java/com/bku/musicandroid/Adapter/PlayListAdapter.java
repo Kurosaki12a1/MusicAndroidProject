@@ -15,6 +15,8 @@ import com.bku.musicandroid.Model.SongPlayerOnlineInfo;
 import com.bku.musicandroid.R;
 import com.bku.musicandroid.Utility.UtilitySongOnlineClass;
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +29,14 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
 
     static Context context;
     ArrayList<SongPlayerOnlineInfo> ListSong;
-
-    public PlayListAdapter(Context context,ArrayList<SongPlayerOnlineInfo> lst)
+    private String playListId;
+    public static final String Song_List="All_Song_Of_PlayList_Database";
+    public PlayListAdapter(Context context,ArrayList<SongPlayerOnlineInfo> lst,String playListId)
     {
         this.context=context;
         this.ListSong=new ArrayList<>(lst);
         this.ListSong=lst;
+        this.playListId=playListId;
         UtilitySongOnlineClass utilitySongOnlineClass=UtilitySongOnlineClass.getInstance();
         utilitySongOnlineClass.setItemOfList(lst);
     }
@@ -59,11 +63,16 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
         strTemp="Liked : "+songPlayerOnlineInfo.getLiked();
         holder.Liked.setText(strTemp);
 
+        holder.addPlayList.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_trash));
         holder.addPlayList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(context, AddSongToPlayListPopUp.class);
-
+                ListSong.remove(nTempPosition);
+                notifyItemRemoved(nTempPosition);
+                notifyItemRangeChanged(nTempPosition,ListSong.size());
+                DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference(Song_List);
+                databaseReference.child(playListId).child(songPlayerOnlineInfo.getSongId()).removeValue();
+             /*   Intent intent=new Intent(context, AddSongToPlayListPopUp.class);
                 intent.putExtra("nameSong",songPlayerOnlineInfo.getSongName());
                 intent.putExtra("nameArtist",songPlayerOnlineInfo.getSongArtists());
                 intent.putExtra("userUpload",songPlayerOnlineInfo.getUserName());
@@ -75,14 +84,18 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
                 intent.putExtra("ImageSongURL",songPlayerOnlineInfo.getImageSongURL());
                 intent.putExtra("songURL",songPlayerOnlineInfo.getSongURL());
                 intent.putExtra("userId",songPlayerOnlineInfo.getUserId());
-                context.startActivity(intent);
+                context.startActivity(intent);*/
             }
         });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Todo phan son se lam
+                UtilitySongOnlineClass utilitySongOnlineClass=UtilitySongOnlineClass.getInstance();
+                utilitySongOnlineClass.setItemOfList(ListSong);
+                Intent intent=new Intent(context,SongOnlinePlayerActivity.class);
+                intent.putExtra("currentPosition",nTempPosition);
+                context.startActivity(intent);
             }
         });
     }

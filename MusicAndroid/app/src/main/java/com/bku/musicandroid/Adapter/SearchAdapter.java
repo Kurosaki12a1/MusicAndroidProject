@@ -43,7 +43,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder( SearchAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(SearchAdapter.ViewHolder holder, final int position) {
         final SongPlayerOnlineInfo songPlayerOnlineInfo=ListSong.get(position);
         holder.nameArtist.setText(songPlayerOnlineInfo.getSongArtists());
         Glide.with(context).load(songPlayerOnlineInfo.getImageSongURL()).into(holder.songImage);
@@ -83,6 +83,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 //                utilitySongOnlineClass.setItem(songPlayerOnlineInfo);
                 utilitySongOnlineClass.setItemOfList(ListSong);
                 Intent intent=new Intent(context,SongOnlinePlayerActivity.class);
+                intent.putExtra("currentPosition",position);
                 context.startActivity(intent);
             }
         });
