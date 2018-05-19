@@ -136,34 +136,8 @@
                 android:layout_gravity="start"
                 android:orientation="vertical">
 
-                <!--<TextView
-                    android:id="@+id/song_title"
-                    style="@style/TextAppearance.AppCompat.Body1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="100dp"
-                    android:width="800dp"
-                    android:ellipsize="marquee"
-                    android:fadingEdge="horizontal"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:scrollHorizontally="true"
-                    android:singleLine="true"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/song_artist"
-                    style="@style/TextAppearance.AppCompat.Body1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:width="800dp"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:paddingTop="3dp"
-                    android:textSize="14sp" />-->
-
-
                 <ImageView
-                    android:layout_alignEnd="@+id/repeatAll"
+                    android:layout_alignEnd="@+id/frameContainer"
                     android:id="@+id/shuffle"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
@@ -171,23 +145,28 @@
                     android:scaleType="center"
                     android:src="@drawable/exo_controls_shuffle" />
 
-                <ImageView
-                    android:id="@+id/repeatAll"
-                    android:layout_alignParentEnd="true"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/exo_controls_repeat_all"
-                    android:scaleType="center"
-                    android:visibility="visible"/>
+                <FrameLayout
+                    android:id="@+id/frameContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true">
 
-                <ImageView
-                    android:layout_alignParentEnd="true"
-                    android:id="@+id/repeatOne"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/exo_controls_repeat_one"
-                    android:visibility="gone"
-                    android:scaleType="center" />
+                    <ImageView
+                        android:id="@+id/repeatAll"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:scaleType="center"
+                        android:src="@drawable/exo_controls_repeat_all"
+                        android:visibility="visible" />
+
+                    <ImageView
+                        android:id="@+id/repeatOne"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:scaleType="center"
+                        android:src="@drawable/exo_controls_repeat_one"
+                        android:visibility="gone" />
+                </FrameLayout>
 
             </RelativeLayout>
 
