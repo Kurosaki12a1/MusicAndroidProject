@@ -42,8 +42,16 @@
 
 
 
-
     </RelativeLayout>
+    <ImageView
+        android:layout_marginTop="5dp"
+        android:id="@+id/imgAdd"
+        android:background="@color/colorWhite"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/ic_add_playlist"
+        android:layout_alignParentEnd="true"
+        />
 
 
 </RelativeLayout>
