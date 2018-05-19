@@ -59,10 +59,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activity.AddSongToPlayListPopUp"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.LikedPopUp"/>
         <activity
             android:name=".Activity.CreatePlayListPopUp"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.LikedPopUp"/>
         <activity
             android:name=".Activity.PlayListActivity"
             android:screenOrientation="portrait" />
