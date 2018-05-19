@@ -99,9 +99,11 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
                 }
 
                 if (isRepeatOne) {
-                    repeatOne.setImageResource(R.drawable.exo_controls_repeat_one);
+                    repeatOne.setVisibility(View.VISIBLE);
+                    repeatAll.setVisibility(View.INVISIBLE);
                 } else {
-                    repeatOne.setImageResource(R.drawable.exo_controls_repeat_all);
+                    repeatOne.setVisibility(View.INVISIBLE);
+                    repeatAll.setVisibility(View.VISIBLE);
                 }
 
                 // Update new song info UI when auto move to another song

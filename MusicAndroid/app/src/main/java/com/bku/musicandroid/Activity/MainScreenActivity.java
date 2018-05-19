@@ -75,6 +75,7 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
     private FirebaseAuth.AuthStateListener mAuthListener;
     //Navigation Drawer
 
+
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
