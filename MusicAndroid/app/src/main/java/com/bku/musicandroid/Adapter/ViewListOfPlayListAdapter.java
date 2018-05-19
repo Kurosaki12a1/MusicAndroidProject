@@ -33,7 +33,7 @@ public class ViewListOfPlayListAdapter extends RecyclerView.Adapter<ViewListOfPl
     ArrayList<PlayListOnlineInfo> ListPlayList;
 
 
-    public static final String Database_Path="All_PLayList_Info_Database";
+    public static final String Database_Path="All_PlayList_Info_Database";
     public static final String Song_List="All_Song_Of_PlayList_Database";
     public static final String Liked_Path="All_Liked_PlayList_Database";
     public static final String View_Path="All_View_PlayList_Database";
@@ -56,10 +56,10 @@ public class ViewListOfPlayListAdapter extends RecyclerView.Adapter<ViewListOfPl
     public void onBindViewHolder(ViewListOfPlayListAdapter.ViewHolder holder,  int position) {
         final int nTempPosition=position;
         final PlayListOnlineInfo playListOnlineInfo=ListPlayList.get(position);
-        holder.namePlayList.setText(playListOnlineInfo.getPlayListName());
-        holder.userUpload.setText(playListOnlineInfo.getUserName());
-        holder.Liked.setText(playListOnlineInfo.getLiked());
-        holder.ViewListen.setText(playListOnlineInfo.getView());
+        holder.namePlayList.setText("Playlist Name : " +playListOnlineInfo.getPlayListName());
+        holder.userUpload.setText("User Upload : " +playListOnlineInfo.getUserName());
+        holder.Liked.setText("Liked : " +playListOnlineInfo.getLiked());
+        holder.ViewListen.setText("Listened : " +playListOnlineInfo.getView());
         holder.deletePlayList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

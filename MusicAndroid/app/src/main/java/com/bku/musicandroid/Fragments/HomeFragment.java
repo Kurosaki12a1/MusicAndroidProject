@@ -195,6 +195,7 @@ public class HomeFragment extends Fragment {
                         songList.clear();
                         topLikeList.clear();
                         topDownloadList.clear();
+                        topListenList.clear();
                         for (DataSnapshot songSnapshot : dataSnapshot.getChildren()) {
                             SongPlayerOnlineInfo song = songSnapshot.getValue(SongPlayerOnlineInfo.class);
                             if (song != null) { //Test for Pop

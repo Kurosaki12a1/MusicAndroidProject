@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.bku.musicandroid.Adapter.SongGenreRecycleAdapter;
 import com.bku.musicandroid.R;
 import com.bku.musicandroid.Model.SongPlayerOnlineInfo;
+import com.bku.musicandroid.Utility.UtilitySongOnlineClass;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -201,10 +202,11 @@ public class SongGenreFragment extends Fragment {
                             if (song != null && song.getSongGenre().equals(genreSong)) { //Test for Pop
                                 Log.d("1abc","Song INfo: "+song.getUserName()+song.getSongName());
                                 listSong.add(song);
+
                             }
 
                         }
-                        Toast.makeText(getActivity(),"Loading done",Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(getActivity(),"Loading done",Toast.LENGTH_SHORT).show();
                         songInfoOnlineAdapter = new SongGenreRecycleAdapter(getActivity(), listSong);
                         listSongGenre.setAdapter(songInfoOnlineAdapter);
                         Log.d("1abc","list song length: "+listSong.size());

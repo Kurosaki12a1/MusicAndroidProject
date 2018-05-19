@@ -259,6 +259,7 @@ public class UploadSongActivity extends AppCompatActivity {
                                 intent.putExtra("liked",0);
                                 intent.putExtra("songURL",taskSnapshot.getDownloadUrl().toString());*/
                                 startActivity(intent);
+                                finish();
                             }
 
                         }
@@ -269,6 +270,7 @@ public class UploadSongActivity extends AppCompatActivity {
             Toast.makeText(UploadSongActivity.this, "Please Select Music or Add Music Name", Toast.LENGTH_LONG).show();
 
         }
+
     }
 
 }

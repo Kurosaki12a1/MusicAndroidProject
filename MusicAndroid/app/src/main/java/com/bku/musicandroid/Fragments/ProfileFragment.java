@@ -217,6 +217,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), UploadSongActivity.class);
                 startActivity(intent);
+
             }
         });
         super.onViewCreated(view, savedInstanceState);
