@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Environment;
 
 import com.bku.musicandroid.Model.SongPlayerOfflineInfo;
+import com.bku.musicandroid.Utility.UtilitySongOfflineClass;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -57,6 +58,7 @@ public class OfflineMusicManager {
                 return t1.getSongName().compareTo(t2.getSongName());
             }
         });
+        UtilitySongOfflineClass.getInstance().setListAllSongOffline(listSong);
         return listSong;
     }
 

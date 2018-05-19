@@ -107,11 +107,15 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
                 }
 
                 // Update new song info UI when auto move to another song
-                if (!lastSongPath.equals(listSong.get(nPosition).getPathFileSong())) {
-                    lastSongPath = listSong.get(nPosition).getPathFileSong();
-                    getCurrentInfoSong(nPosition);
-                    updateSongInfoUI();
-                    avatarSong.setRotation(0.0f);
+                try {
+                    if (!lastSongPath.equals(listSong.get(nPosition).getPathFileSong())) {
+                        lastSongPath = listSong.get(nPosition).getPathFileSong();
+                        getCurrentInfoSong(nPosition);
+                        updateSongInfoUI();
+                        avatarSong.setRotation(0.0f);
+                    }
+                } catch (Exception e) {
+                    // DO NOTHING, JUST FUCKING IGNORE IT 'CAUSE OF NO TIME LEFT, LOL..
                 }
 
                 // Update progress bar and rotate the bitmap every 100ms

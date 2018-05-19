@@ -9,23 +9,34 @@ import java.util.ArrayList;
  */
 
 public class UtilitySongOfflineClass {
-    private static UtilitySongOfflineClass instance=null;
+    private static UtilitySongOfflineClass instance = null;
 
-    private ArrayList<SongPlayerOfflineInfo> list;
+    private ArrayList<SongPlayerOfflineInfo> currentList;
+
+    private ArrayList<SongPlayerOfflineInfo> listAllSongOffline;
 
     public ArrayList<SongPlayerOfflineInfo> getList() {
-        return this.list;
+        return this.currentList;
+    }
+
+    public ArrayList<SongPlayerOfflineInfo> getListAllSongOffline() {
+        return this.listAllSongOffline;
     }
 
     public void setList(ArrayList<SongPlayerOfflineInfo> list) {
-        this.list=new ArrayList<>(list);
-        this.list = list;
+        this.currentList = new ArrayList<>(list);
+//        this.list = list;
     }
 
-    private UtilitySongOfflineClass(){}
+    public void setListAllSongOffline(ArrayList<SongPlayerOfflineInfo> list) {
+        this.listAllSongOffline = new ArrayList<>(list);
+    }
 
-    public static UtilitySongOfflineClass getInstance(){
-        if(instance == null){
+    private UtilitySongOfflineClass() {
+    }
+
+    public static UtilitySongOfflineClass getInstance() {
+        if (instance == null) {
             instance = new UtilitySongOfflineClass();
         }
         return instance;

@@ -1,44 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/fragmentPlaylist"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorAppBackground"
-    tools:context=".Fragments.SongsFragment">
+    tools:context=".Fragments.OfflineSongInPlaylistFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/playlist"
+        android:id="@+id/txtPlaylistName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:layout_alignParentStart="true"
         android:background="@color/colorTabBackgroundLighter"
-        android:text="@string/playlists"
+        android:text="@string/songs"
         android:textStyle="bold"
         android:textColor="@color/colorWhite"
-        android:textSize="18sp"/>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/lvPlaylist"
+        android:textSize="18dp"/>
+    <ListView
+        android:id="@+id/lvSong"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbarSize="10dp"
-        android:layout_below="@+id/playlist"
+        android:layout_below="@+id/txtPlaylistName"
         android:layout_alignParentBottom="true"
         android:scrollbarThumbVertical="@drawable/custom_scroll"
         android:divider="@drawable/custom_divider"/>
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/btnAddPlaylist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:clickable="true"
-        app:elevation="0dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:src="@drawable/ic_add"/>
+    <ProgressBar
+        android:id="@+id/progressLoadMusic"
+        android:layout_below="@id/song"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:visibility="invisible" />
 
 
 </RelativeLayout>

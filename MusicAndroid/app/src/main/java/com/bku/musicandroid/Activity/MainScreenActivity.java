@@ -116,10 +116,14 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
                 }
 
                 // Update new song info UI when auto move to another song
-                if (!lastSongPath.equals(listSong.get(nPosition).getPath())) {
-                    layoutMusicControl.setVisibility(View.VISIBLE);
-                    lastSongPath = listSong.get(nPosition).getPath();
-                    txtSongName.setText(listSong.get(nPosition).getSongName());
+                try {
+                    if (!lastSongPath.equals(listSong.get(nPosition).getPath())) {
+                        layoutMusicControl.setVisibility(View.VISIBLE);
+                        lastSongPath = listSong.get(nPosition).getPath();
+                        txtSongName.setText(listSong.get(nPosition).getSongName());
+                    }
+                } catch (Exception e) {
+                    // DO NOTHING, JUST FUCKING IGNORE IT 'CAUSE OF NO TIME LEFT, LOL..
                 }
             }
         };

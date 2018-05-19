@@ -17,12 +17,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bku.musicandroid.Activity.ChooseOfflinePlaylistActivity;
 import com.bku.musicandroid.Activity.SongOfflinePlayerActivity;
+import com.bku.musicandroid.Database.OfflineDatabaseHelper;
 import com.bku.musicandroid.R;
 import com.bku.musicandroid.Model.SongPlayerInfo;
 import com.bku.musicandroid.Model.SongPlayerOfflineInfo;
 import com.bku.musicandroid.Utility.UtilitySongOfflineClass;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,23 +33,27 @@ public class SongInfoOfflineListAdapter extends ArrayAdapter<SongPlayerOfflineIn
     private ArrayList<SongPlayerOfflineInfo> listSongInfo;
     private final LayoutInflater inflater;
     private final int resource;
+    private final boolean inPlaylistLayout;
     byte[] data1;
     Context context;
-    UtilitySongOfflineClass utilitySongOfflineClass;
+    OfflineDatabaseHelper db;
 
-    public SongInfoOfflineListAdapter(@NonNull Activity context, int resource, @NonNull List<SongPlayerOfflineInfo> objects) {
+    public SongInfoOfflineListAdapter(@NonNull Activity context, int resource, @NonNull List<SongPlayerOfflineInfo> objects, boolean inPlaylistLayout) {
         super(context, resource, objects);
         this.context=context;
+        this.inPlaylistLayout = inPlaylistLayout;
         inflater = context.getLayoutInflater();
-        this.listSongInfo = new ArrayList<SongPlayerOfflineInfo>(objects);
+        this.listSongInfo = new ArrayList<>(objects);
         this.resource = resource;
+
+        db = new OfflineDatabaseHelper(context);
 
     }
 
     public void setDataSet(ArrayList<SongPlayerOfflineInfo> objects){
             this.listSongInfo = objects;
-            utilitySongOfflineClass = UtilitySongOfflineClass.getInstance();
-            utilitySongOfflineClass.setList(objects);
+//            utilitySongOfflineClass = UtilitySongOfflineClass.getInstance();
+//            utilitySongOfflineClass.setList(objects);
     }
 
     @Override
@@ -74,12 +81,16 @@ public class SongInfoOfflineListAdapter extends ArrayAdapter<SongPlayerOfflineIn
             viewHolder.txtSongName = convertView.findViewById(R.id.nameSong);
             viewHolder.txtArtistName = convertView.findViewById(R.id.nameArtist);
             viewHolder.songImage=convertView.findViewById(R.id.songImage);
+            viewHolder.imgAdd = convertView.findViewById(R.id.imgAdd);
             convertView.setTag(viewHolder);
 
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        final SongPlayerInfo songPlayerInfo = getItem(position);
+        if (inPlaylistLayout) {
+            viewHolder.imgAdd.setImageResource(R.drawable.ic_trash);
+        }
+        final SongPlayerOfflineInfo songPlayerInfo = getItem(position);
         viewHolder.txtSongName.setText(songPlayerInfo.getSongName());
         viewHolder.txtArtistName.setText(songPlayerInfo.getSongArtists());
         data1=songPlayerInfo.getSongImage();
@@ -89,6 +100,7 @@ public class SongInfoOfflineListAdapter extends ArrayAdapter<SongPlayerOfflineIn
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                UtilitySongOfflineClass.getInstance().setList(listSongInfo);
                 Intent intent=new Intent(context,SongOfflinePlayerActivity.class);
                 intent.putExtra("currentPosition",position);
 
@@ -97,6 +109,26 @@ public class SongInfoOfflineListAdapter extends ArrayAdapter<SongPlayerOfflineIn
                 context.startActivity(intent);
             }
         });
+
+        viewHolder.imgAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!inPlaylistLayout) {
+                    Intent intent = new Intent(context, ChooseOfflinePlaylistActivity.class);
+//                intent.putExtra("song", songPlayerInfo);
+                    intent.putExtra("position", position);
+                    context.startActivity(intent);
+                } else {
+
+                    db.deleteSongFromPlaylist(songPlayerInfo.getId(), songPlayerInfo.getPlaylistId());
+
+                    listSongInfo.remove(position);
+                    notifyDataSetChanged();
+                }
+            }
+        });
+
+
 
         return convertView;
     }
@@ -110,6 +142,7 @@ public class SongInfoOfflineListAdapter extends ArrayAdapter<SongPlayerOfflineIn
     public class ViewHolder{
         TextView txtSongName, txtArtistName;
         ImageView songImage;
+        ImageView imgAdd;
 
     }
 

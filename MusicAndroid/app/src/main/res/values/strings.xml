@@ -21,6 +21,7 @@
     <string name="playlist_name">Tên playlist:</string>
     <string name="example">Example</string>
     <string name="song_count">Số bài hát:</string>
+    <string name="choose_playlist">Choose playlist</string>
 
 
     <string-array name="nav_item_activity_titles">

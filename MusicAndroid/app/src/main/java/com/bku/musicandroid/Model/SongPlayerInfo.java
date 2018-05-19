@@ -3,7 +3,9 @@ package com.bku.musicandroid.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public abstract class SongPlayerInfo  {
+import java.io.Serializable;
+
+public abstract class SongPlayerInfo implements Serializable {
 
     protected String songArtists;
 
