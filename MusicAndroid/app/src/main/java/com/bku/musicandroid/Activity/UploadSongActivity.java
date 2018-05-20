@@ -33,6 +33,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 /**
  * Created by Thinh on 4/22/2018.
@@ -160,7 +161,10 @@ public class UploadSongActivity extends AppCompatActivity {
                 FilePathUri = data.getData();
                 //This below code will get image of audio
                 MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-                retriever.setDataSource(data.getData().getPath());
+//                File file = new File(FilePathUri.getPath());
+//                String filePath = file.getAbsolutePath();
+//                retriever.setDataSource(FilePathUri.getPath());
+                retriever.setDataSource(this, FilePathUri);
                 //if there is image of audio
                 if (retriever.getEmbeddedPicture() != null) {
                     byte[] data1 = retriever.getEmbeddedPicture();
