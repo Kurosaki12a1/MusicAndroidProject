@@ -22,6 +22,7 @@ import com.bku.musicandroid.Model.OfflinePlaylist;
 import com.bku.musicandroid.Model.SongPlayerOfflineInfo;
 import com.bku.musicandroid.R;
 import com.bku.musicandroid.Utility.UtilitySongOfflineClass;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -92,7 +93,7 @@ public class OfflinePlaylistRecycleAdapter extends RecyclerView.Adapter<OfflineP
                 if (isAddAction) {
                     SongPlayerOfflineInfo song = UtilitySongOfflineClass.getInstance().getListAllSongOffline().get(_position);
                     db.insertSongIntoPlaylist(song, aPlaylist.getId());
-                    Toast.makeText(ctx, "Added to playlist " + aPlaylist.getName(), Toast.LENGTH_LONG).show();
+                    TastyToast.makeText(ctx, "Added to playlist " + aPlaylist.getName(), Toast.LENGTH_LONG, TastyToast.SUCCESS).show();
                     ((Activity) ctx).finish();
                 } else {
                     goToSongsPlaylist(aPlaylist.getId(), aPlaylist.getName());

@@ -34,6 +34,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.io.IOException;
 
@@ -43,43 +44,44 @@ import java.io.IOException;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    private  ImageView backArrow,saveChanges,profilePhoto,backGroundPhoto,eyes;
+    private ImageView backArrow, saveChanges, profilePhoto, backGroundPhoto, eyes;
 
-    private EditText username,fullname,dateofbirth,email,accountId;
+    private EditText username, fullname, dateofbirth, email, accountId;
 
-    private TextView changePhoto,changeBackGround;
+    private TextView changePhoto, changeBackGround;
 
     private FirebaseAuth mAuth;
 
-    Uri FilePathUri,FilePathUri1;
+    Uri FilePathUri, FilePathUri1;
 
-    private int Image_Request_Code=69;
-    private int Image_BackGround_Request_Code=96;
+    private int Image_Request_Code = 69;
+    private int Image_BackGround_Request_Code = 96;
 
-    String avatarURL="" ,backGroundAvatarURL="";
+    String avatarURL = "", backGroundAvatarURL = "";
     ProgressDialog progressDialog;
-    private boolean isHideProfilePhoto=false;
+    private boolean isHideProfilePhoto = false;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.acitivity_edit_profile);
 
-        backArrow=(ImageView) findViewById(R.id.backArrow);
-        saveChanges=(ImageView)findViewById(R.id.saveChanges);
-        profilePhoto=(ImageView)findViewById(R.id.profile_photo);
-        backGroundPhoto=(ImageView)findViewById(R.id.backGround);
-        eyes=(ImageView)findViewById(R.id.viewEyes);
+        backArrow = (ImageView) findViewById(R.id.backArrow);
+        saveChanges = (ImageView) findViewById(R.id.saveChanges);
+        profilePhoto = (ImageView) findViewById(R.id.profile_photo);
+        backGroundPhoto = (ImageView) findViewById(R.id.backGround);
+        eyes = (ImageView) findViewById(R.id.viewEyes);
 
-        username=(EditText)findViewById(R.id.username);
-        fullname=(EditText)findViewById(R.id.display_name);
-        dateofbirth=(EditText)findViewById(R.id.dateOfBirth);
-        email=(EditText) findViewById(R.id.email);
-        accountId=(EditText)findViewById(R.id.accountID);
+        username = (EditText) findViewById(R.id.username);
+        fullname = (EditText) findViewById(R.id.display_name);
+        dateofbirth = (EditText) findViewById(R.id.dateOfBirth);
+        email = (EditText) findViewById(R.id.email);
+        accountId = (EditText) findViewById(R.id.accountID);
 
-        changePhoto=(TextView)findViewById(R.id.changeProfilePhoto);
-        changeBackGround=(TextView)findViewById(R.id.changeBackGround);
+        changePhoto = (TextView) findViewById(R.id.changeProfilePhoto);
+        changeBackGround = (TextView) findViewById(R.id.changeBackGround);
 
-        mAuth=FirebaseAuth.getInstance();
-        final String userId=mAuth.getCurrentUser().getUid();
+        mAuth = FirebaseAuth.getInstance();
+        final String userId = mAuth.getCurrentUser().getUid();
 
         username.setEnabled(false);
         email.setEnabled(false);
@@ -87,7 +89,7 @@ public class EditProfileActivity extends AppCompatActivity {
         backGroundPhoto.setVisibility(View.INVISIBLE);
 
         progressDialog = new ProgressDialog(EditProfileActivity.this);
-        DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("All_Users_Info_Database");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("All_Users_Info_Database");
         databaseReference.child("users").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -95,11 +97,11 @@ public class EditProfileActivity extends AppCompatActivity {
                 fullname.setText(dataSnapshot.child("fullName").getValue(String.class));
                 email.setText(dataSnapshot.child("email").getValue(String.class));
                 dateofbirth.setText(dataSnapshot.child("dateOfBirth").getValue(String.class));
-                avatarURL=dataSnapshot.child("avatarURL").getValue(String.class);
+                avatarURL = dataSnapshot.child("avatarURL").getValue(String.class);
                 accountId.setText("Your Account ID : " + dataSnapshot.getKey());
                 Glide.with(EditProfileActivity.this).load(dataSnapshot.child("avatarURL").getValue(String.class)).into(profilePhoto);
-                if(dataSnapshot.hasChild("backgroundURL")){
-                    backGroundAvatarURL=dataSnapshot.child("backgroundURL").getValue(String.class);
+                if (dataSnapshot.hasChild("backgroundURL")) {
+                    backGroundAvatarURL = dataSnapshot.child("backgroundURL").getValue(String.class);
                     Glide.with(EditProfileActivity.this).load(dataSnapshot.child("backgroundURL").getValue(String.class)).into(backGroundPhoto);
                 }
             }
@@ -127,13 +129,12 @@ public class EditProfileActivity extends AppCompatActivity {
         eyes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isHideProfilePhoto){
-                    isHideProfilePhoto=false;
+                if (isHideProfilePhoto) {
+                    isHideProfilePhoto = false;
                     backGroundPhoto.setVisibility(View.INVISIBLE);
                     profilePhoto.setVisibility(View.VISIBLE);
-                }
-                else{
-                    isHideProfilePhoto=true;
+                } else {
+                    isHideProfilePhoto = true;
                     backGroundPhoto.setVisibility(View.VISIBLE);
                     profilePhoto.setVisibility(View.INVISIBLE);
                 }
@@ -158,7 +159,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
-    private void chooseImage(){
+    private void chooseImage() {
         Intent intent = new Intent();
 
         // Setting intent type as image to select image from phone storage.
@@ -167,7 +168,7 @@ public class EditProfileActivity extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Please Select Image"), Image_Request_Code);
     }
 
-    private void chooseImageBackGround(){
+    private void chooseImageBackGround() {
         Intent intent = new Intent();
 
         // Setting intent type as image to select image from phone storage.
@@ -192,13 +193,11 @@ public class EditProfileActivity extends AppCompatActivity {
                 // Setting up bitmap selected image into ImageView.
                 profilePhoto.setImageBitmap(bitmap);
 
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
 
                 e.printStackTrace();
             }
-        }
-        else if(requestCode == Image_BackGround_Request_Code && resultCode == RESULT_OK && data != null && data.getData() != null){
+        } else if (requestCode == Image_BackGround_Request_Code && resultCode == RESULT_OK && data != null && data.getData() != null) {
             FilePathUri1 = data.getData();
 
             try {
@@ -209,13 +208,13 @@ public class EditProfileActivity extends AppCompatActivity {
                 // Setting up bitmap selected image into ImageView.
                 backGroundPhoto.setImageBitmap(bitmap);
 
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
 
                 e.printStackTrace();
             }
         }
     }
+
     public String GetFileExtension(Uri uri) {
 
         ContentResolver contentResolver = getContentResolver();
@@ -223,16 +222,16 @@ public class EditProfileActivity extends AppCompatActivity {
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
 
         // Returning the file Extension.
-        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri)) ;
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
 
     }
 
-    private void saveProfile(final String userId){
+    private void saveProfile(final String userId) {
         progressDialog.setTitle("Your Profile is updating...");
         progressDialog.show();
-        StorageReference storageReference= FirebaseStorage.getInstance().getReference();
-        if(FilePathUri == null && FilePathUri1!=null){
-            StorageReference storageReference2nd = storageReference.child(  System.currentTimeMillis() + "." + GetFileExtension(FilePathUri1));
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        if (FilePathUri == null && FilePathUri1 != null) {
+            StorageReference storageReference2nd = storageReference.child(System.currentTimeMillis() + "." + GetFileExtension(FilePathUri1));
 
             // Adding addOnSuccessListener to second StorageReference.
             StorageTask<UploadTask.TaskSnapshot> taskSnapshotStorageTask = storageReference2nd.putFile(FilePathUri1)
@@ -242,16 +241,15 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
                             // Showing toast message after done uploading.
-                            Toast.makeText(getApplicationContext(), "Upload Successfully ", Toast.LENGTH_LONG).show();
-
+                            TastyToast.makeText(getApplicationContext(), "Upload Successfully ", TastyToast.LENGTH_LONG, TastyToast.SUCCESS).show();
 
 
                             //get ImageURL
                             String imageUrl = taskSnapshot.getDownloadUrl().toString();
 
-                            DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("All_Users_Info_Database");
-                            Users user=new Users(username.getText().toString().trim(),email.getText().toString().trim(),
-                                    fullname.getText().toString().trim(),avatarURL,dateofbirth.getText().toString().trim(),imageUrl);
+                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("All_Users_Info_Database");
+                            Users user = new Users(username.getText().toString().trim(), email.getText().toString().trim(),
+                                    fullname.getText().toString().trim(), avatarURL, dateofbirth.getText().toString().trim(), imageUrl);
                             databaseReference.child("users").child(userId).setValue(user);
 
                         }
@@ -265,7 +263,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
                             // Showing exception erro message.
-                            Toast.makeText(EditProfileActivity.this, exception.getMessage(), Toast.LENGTH_LONG).show();
+                            TastyToast.makeText(EditProfileActivity.this, exception.getMessage(), TastyToast.LENGTH_LONG, TastyToast.ERROR).show();
                         }
                     })
 
@@ -274,11 +272,11 @@ public class EditProfileActivity extends AppCompatActivity {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
 
-                            double progress = 50+(50.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                            double progress = 50 + (50.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                             // Setting progressDialog Title.
 
-                            //Toast.makeText(EditProfileActivity.this,"Your Profile is updating " + progress,Toast.LENGTH_SHORT).show();
-                            if(progress>=100) {
+                            //TastyToast.makeText(EditProfileActivity.this,"Your Profile is updating " + progress,Toast.LENGTH_SHORT).show();
+                            if (progress >= 100) {
                                 progressDialog.dismiss();
                                 Intent intent = new Intent(EditProfileActivity.this, MainScreenActivity.class);
                                 startActivity(intent);
@@ -286,10 +284,9 @@ public class EditProfileActivity extends AppCompatActivity {
                             }
                         }
                     });
-        }
-        else if(FilePathUri!=null && FilePathUri1==null){
+        } else if (FilePathUri != null && FilePathUri1 == null) {
 
-            StorageReference storageReference2nd = storageReference.child(  System.currentTimeMillis() + "." + GetFileExtension(FilePathUri));
+            StorageReference storageReference2nd = storageReference.child(System.currentTimeMillis() + "." + GetFileExtension(FilePathUri));
 
             // Adding addOnSuccessListener to second StorageReference.
             StorageTask<UploadTask.TaskSnapshot> taskSnapshotStorageTask = storageReference2nd.putFile(FilePathUri)
@@ -299,16 +296,15 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
                             // Showing toast message after done uploading.
-                            Toast.makeText(getApplicationContext(), "Upload Successfully ", Toast.LENGTH_LONG).show();
-
+                            TastyToast.makeText(getApplicationContext(), "Upload Successfully ", TastyToast.LENGTH_LONG, TastyToast.SUCCESS).show();
 
 
                             //get ImageURL
                             String imageUrl = taskSnapshot.getDownloadUrl().toString();
 
-                            DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("All_Users_Info_Database");
-                            Users user=new Users(username.getText().toString().trim(),email.getText().toString().trim(),
-                                    fullname.getText().toString().trim(),imageUrl,dateofbirth.getText().toString().trim(),backGroundAvatarURL);
+                            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("All_Users_Info_Database");
+                            Users user = new Users(username.getText().toString().trim(), email.getText().toString().trim(),
+                                    fullname.getText().toString().trim(), imageUrl, dateofbirth.getText().toString().trim(), backGroundAvatarURL);
                             databaseReference.child("users").child(userId).setValue(user);
 
                         }
@@ -322,7 +318,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
                             // Showing exception erro message.
-                            Toast.makeText(EditProfileActivity.this, exception.getMessage(), Toast.LENGTH_LONG).show();
+                            TastyToast.makeText(EditProfileActivity.this, exception.getMessage(), TastyToast.LENGTH_LONG, TastyToast.ERROR).show();
                         }
                     })
 
@@ -333,8 +329,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
                             double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                             // Setting progressDialog Title.
-                          //  Toast.makeText(EditProfileActivity.this,"Your Profile is updating " + progress,Toast.LENGTH_SHORT).show();
-                            if(progress>=100) {
+                            //  TastyToast.makeText(EditProfileActivity.this,"Your Profile is updating " + progress,Toast.LENGTH_SHORT).show();
+                            if (progress >= 100) {
                                 progressDialog.dismiss();
                                 Intent intent = new Intent(EditProfileActivity.this, MainScreenActivity.class);
                                 startActivity(intent);
@@ -342,10 +338,9 @@ public class EditProfileActivity extends AppCompatActivity {
                             }
                         }
                     });
-        }
-        else if(FilePathUri!=null && FilePathUri1!=null){
+        } else if (FilePathUri != null && FilePathUri1 != null) {
 
-            StorageReference storageReference2nd = storageReference.child(  System.currentTimeMillis() + "." + GetFileExtension(FilePathUri));
+            StorageReference storageReference2nd = storageReference.child(System.currentTimeMillis() + "." + GetFileExtension(FilePathUri));
 
             // Adding addOnSuccessListener to second StorageReference.
             StorageTask<UploadTask.TaskSnapshot> taskSnapshotStorageTask = storageReference2nd.putFile(FilePathUri)
@@ -355,13 +350,12 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
                             // Showing toast message after done uploading.
-                            Toast.makeText(getApplicationContext(), "Upload Successfully ", Toast.LENGTH_LONG).show();
-
+                            TastyToast.makeText(getApplicationContext(), "Upload Successfully ", TastyToast.LENGTH_LONG, TastyToast.SUCCESS).show();
 
 
                             //get ImageURL
                             String imageUrl = taskSnapshot.getDownloadUrl().toString();
-                            avatarURL=imageUrl;
+                            avatarURL = imageUrl;
                             /*DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("All_Users_Info_Database");
                             Users user=new Users(username.getText().toString().trim(),email.getText().toString().trim(),
                                     fullname.getText().toString().trim(),imageUrl,dateofbirth.getText().toString().trim(),backGroundAvatarURL);
@@ -377,7 +371,7 @@ public class EditProfileActivity extends AppCompatActivity {
                             // Hiding the progressDialog.
 
                             // Showing exception erro message.
-                            Toast.makeText(EditProfileActivity.this, exception.getMessage(), Toast.LENGTH_LONG).show();
+                            TastyToast.makeText(EditProfileActivity.this, exception.getMessage(), TastyToast.LENGTH_LONG, TastyToast.ERROR).show();
                         }
                     })
 
@@ -388,18 +382,17 @@ public class EditProfileActivity extends AppCompatActivity {
 
                             double progress = (50.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                             // Setting progressDialog Title.
-                            Toast.makeText(EditProfileActivity.this,"Your Profile is updating " + progress,Toast.LENGTH_SHORT).show();
-                            if(progress>=50) {
+                            TastyToast.makeText(EditProfileActivity.this, "Your Profile is updating " + progress, TastyToast.LENGTH_SHORT, TastyToast.INFO).show();
+                            if (progress >= 50) {
                                 finalSaveSettings(userId);
                             }
                         }
                     });
 
-        }
-        else {
-            DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("All_Users_Info_Database");
-            Users user=new Users(username.getText().toString().trim(),email.getText().toString().trim(),
-                    fullname.getText().toString().trim(),avatarURL,dateofbirth.getText().toString().trim(),backGroundAvatarURL);
+        } else {
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("All_Users_Info_Database");
+            Users user = new Users(username.getText().toString().trim(), email.getText().toString().trim(),
+                    fullname.getText().toString().trim(), avatarURL, dateofbirth.getText().toString().trim(), backGroundAvatarURL);
             databaseReference.child("users").child(userId).setValue(user);
         }
     }
@@ -416,7 +409,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
                         // Showing toast message after done uploading.
-                        Toast.makeText(getApplicationContext(), "Upload Successfully ", Toast.LENGTH_LONG).show();
+                        TastyToast.makeText(getApplicationContext(), "Upload Successfully ", TastyToast.LENGTH_LONG, TastyToast.SUCCESS).show();
 
 
                         //get ImageURL
@@ -437,7 +430,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         // Hiding the progressDialog.
 
                         // Showing exception erro message.
-                        Toast.makeText(EditProfileActivity.this, exception.getMessage(), Toast.LENGTH_LONG).show();
+                        TastyToast.makeText(EditProfileActivity.this, exception.getMessage(), TastyToast.LENGTH_LONG, TastyToast.ERROR).show();
                     }
                 })
 

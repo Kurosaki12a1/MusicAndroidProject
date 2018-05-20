@@ -11,14 +11,13 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bku.musicandroid.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.sdsmdg.tastytoast.TastyToast;
 
-import org.w3c.dom.Text;
 
 /**
  * Created by Administrator on 3/21/2018.
@@ -46,7 +45,7 @@ public class ForgetPasswordActivity extends Activity {
             public void onClick(View v) {
                 emailAddress = emailTxt.getText().toString().trim();
                 if(TextUtils.isEmpty(emailAddress)) {
-                    Toast.makeText(getApplicationContext(), "Please type your Email!", Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(getApplicationContext(), "Please type your Email!", TastyToast.LENGTH_SHORT, TastyToast.WARNING).show();
                 }
                 else
                 forget_password();

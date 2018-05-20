@@ -13,7 +13,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.bku.musicandroid.R;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -24,6 +23,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import static android.content.ContentValues.TAG;
 
@@ -101,10 +101,10 @@ public class ChangePasswordActivity extends Activity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         progressDialog.dismiss();
                                         if (task.isSuccessful()) {
-                                            Toast.makeText(getApplicationContext(), "Changing passsword successfully.", Toast.LENGTH_SHORT).show();
+                                            TastyToast.makeText(getApplicationContext(), "Changing passsword successfully.", TastyToast.LENGTH_SHORT, TastyToast.SUCCESS).show();
                                             finish();
                                         } else {
-                                            Toast.makeText(getApplicationContext(), "Error occured, changing password failed.", Toast.LENGTH_SHORT).show();
+                                            TastyToast.makeText(getApplicationContext(), "Error occured, changing password failed.", TastyToast.LENGTH_SHORT, TastyToast.ERROR).show();
                                         }
                                     }
                                 });
@@ -115,7 +115,7 @@ public class ChangePasswordActivity extends Activity {
                             progressDialog.dismiss();
                             Log.d(TAG, "Error auth failed");
                             oldpassTxt.setError("Type your old password");
-                            Toast.makeText(getApplicationContext(), "Verify old password failed. If you logged in by Google account, please change password on account.google.com.", Toast.LENGTH_SHORT).show();
+                            TastyToast.makeText(getApplicationContext(), "Verify old password failed. If you logged in by Google account, please change password on account.google.com.", TastyToast.LENGTH_SHORT, TastyToast.ERROR).show();
                         }
 
                     }

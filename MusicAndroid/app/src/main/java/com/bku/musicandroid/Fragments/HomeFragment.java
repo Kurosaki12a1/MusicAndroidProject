@@ -14,10 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bku.musicandroid.Adapter.SongGenreRecycleAdapter;
 import com.bku.musicandroid.Adapter.TopTenSongRecyclerAdapter;
 import com.bku.musicandroid.Model.SongPlayerOnlineInfo;
 import com.bku.musicandroid.R;
@@ -26,14 +23,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.sdsmdg.tastytoast.TastyToast;
 
-import java.lang.reflect.Array;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 
 /**
  * Created by SonPhan on 3/24/2018.
@@ -65,6 +59,7 @@ public class HomeFragment extends Fragment {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference ref = database.getReference();
     DatabaseReference dataRef = ref.child("All_Song_Database_Info");
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -133,7 +128,8 @@ public class HomeFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-    public void bindView(){
+
+    public void bindView() {
         topLike = getView().findViewById(R.id.topLikeList);
         topDownload = getView().findViewById(R.id.topDownloadList);
         topListen = getView().findViewById(R.id.topListenList);
@@ -147,6 +143,7 @@ public class HomeFragment extends Fragment {
         GetTopSong asyncTask = new GetTopSong();
         asyncTask.execute(songList);
     }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -198,7 +195,7 @@ public class HomeFragment extends Fragment {
                         for (DataSnapshot songSnapshot : dataSnapshot.getChildren()) {
                             SongPlayerOnlineInfo song = songSnapshot.getValue(SongPlayerOnlineInfo.class);
                             if (song != null) { //Test for Pop
-                                Log.d("1abc","Song INfo: "+song.getUserName()+song.getSongName()+"   "+song.getDownload());
+                                Log.d("1abc", "Song INfo: " + song.getUserName() + song.getSongName() + "   " + song.getDownload());
                                 songList.add(song);
                             }
 
@@ -213,18 +210,19 @@ public class HomeFragment extends Fragment {
                                     compareResult = like1.compareTo(like2);
                                 } catch (Exception e) {
                                     e.printStackTrace();
-                                    Toast.makeText(getActivity(),"Error when sort like: "+e,Toast.LENGTH_SHORT).show();
+//                                    TastyToast.makeText(getActivity(),"Error when sort like: "+e,Toast.LENGTH_SHORT).show();
+                                    TastyToast.makeText(getActivity(), "Error when sort like: " + e, TastyToast.LENGTH_SHORT, TastyToast.CONFUSING).show();
                                     compareResult = like1.compareTo(like2);
                                 }
                                 return compareResult;
                             }
                         });
                         Collections.reverse(songList);
-                        if(songList.size()>10) {
+                        if (songList.size() > 10) {
                             for (int i = 0; i < 10; i++) {
                                 topLikeList.add(songList.get(i));
                             }
-                        }else{
+                        } else {
                             for (int i = 0; i < songList.size(); i++) {
                                 topLikeList.add(songList.get(i));
                             }
@@ -245,18 +243,19 @@ public class HomeFragment extends Fragment {
                                     compareResult = download1.compareTo(download2);
                                 } catch (Exception e) {
                                     e.printStackTrace();
-                                    Toast.makeText(getActivity(),"Error when sort download: "+e,Toast.LENGTH_SHORT).show();
+//                                    TastyToast.makeText(getActivity(),"Error when sort download: "+e,Toast.LENGTH_SHORT).show();
+                                    TastyToast.makeText(getActivity(), "Error when sort download: " + e, TastyToast.LENGTH_SHORT, TastyToast.CONFUSING).show();
                                     compareResult = download1.compareTo(download2);
                                 }
                                 return compareResult;
                             }
                         });
                         Collections.reverse(songList);
-                        if(songList.size()>10) {
+                        if (songList.size() > 10) {
                             for (int i = 0; i < 10; i++) {
                                 topDownloadList.add(songList.get(i));
                             }
-                        }else{
+                        } else {
                             for (int i = 0; i < songList.size(); i++) {
                                 topDownloadList.add(songList.get(i));
                             }
@@ -266,7 +265,7 @@ public class HomeFragment extends Fragment {
                         layoutManager2.setOrientation(LinearLayoutManager.HORIZONTAL);
                         topDownload.setLayoutManager(layoutManager2);
                         topDownload.setAdapter(topDownloadAdapter);
-                       // Toast.makeText(getActivity(),"Updating Ranking Song Successful",Toast.LENGTH_SHORT).show();
+                        // TastyToast.makeText(getActivity(),"Updating Ranking Song Successful",Toast.LENGTH_SHORT).show();
                         progressLoadMusicDownload.setVisibility(View.GONE);
 
                         Collections.sort(songList, new Comparator<SongPlayerOnlineInfo>() {
@@ -279,18 +278,19 @@ public class HomeFragment extends Fragment {
                                     compareResult = view1.compareTo(view2);
                                 } catch (Exception e) {
                                     e.printStackTrace();
-                                    Toast.makeText(getActivity(),"Error when sort view: "+e,Toast.LENGTH_SHORT).show();
+//                                    TastyToast.makeText(getActivity(),"Error when sort view: "+e,Toast.LENGTH_SHORT).show();
+                                    TastyToast.makeText(getActivity(), "Error when sort view: " + e, TastyToast.LENGTH_SHORT, TastyToast.CONFUSING).show();
                                     compareResult = view1.compareTo(view2);
                                 }
                                 return compareResult;
                             }
                         });
                         Collections.reverse(songList);
-                        if(songList.size()>10) {
+                        if (songList.size() > 10) {
                             for (int i = 0; i < 10; i++) {
                                 topListenList.add(songList.get(i));
                             }
-                        }else{
+                        } else {
                             for (int i = 0; i < songList.size(); i++) {
                                 topListenList.add(songList.get(i));
                             }
@@ -300,15 +300,18 @@ public class HomeFragment extends Fragment {
                         layoutManager3.setOrientation(LinearLayoutManager.HORIZONTAL);
                         topListen.setLayoutManager(layoutManager3);
                         topListen.setAdapter(topListenAdapter);
-                       // Toast.makeText(getActivity(),"Loading done",Toast.LENGTH_SHORT).show();
+                        // TastyToast.makeText(getActivity(),"Loading done",Toast.LENGTH_SHORT).show();
                         progressLoadMusicListen.setVisibility(View.GONE);
                     }
-                }@Override
+                }
+
+                @Override
                 public void onCancelled(DatabaseError databaseError) {
                     progressLoadMusicLike.setVisibility(View.GONE);
                     progressLoadMusicDownload.setVisibility(View.GONE);
                     progressLoadMusicListen.setVisibility(View.GONE);
-                    Toast.makeText(getActivity(), "Cannot retrieve data", Toast.LENGTH_SHORT).show();
+//                    TastyToast.makeText(getActivity(), "Cannot retrieve data", Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(getActivity(), "Cannot retrieve data", TastyToast.LENGTH_SHORT, TastyToast.CONFUSING).show();
 
                 }
             });

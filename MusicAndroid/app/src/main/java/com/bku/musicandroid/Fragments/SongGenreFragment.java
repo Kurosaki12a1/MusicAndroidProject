@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.ArrayList;
 
@@ -204,7 +205,7 @@ public class SongGenreFragment extends Fragment {
                             }
 
                         }
-//                        Toast.makeText(getActivity(),"Loading done",Toast.LENGTH_SHORT).show();
+//                        TastyToast.makeText(getActivity(),"Loading done",Toast.LENGTH_SHORT).show();
                         songInfoOnlineAdapter = new SongGenreRecycleAdapter(getActivity(), listSong);
                         listSongGenre.setAdapter(songInfoOnlineAdapter);
                         Log.d("1abc","list song length: "+listSong.size());
@@ -217,7 +218,7 @@ public class SongGenreFragment extends Fragment {
                 }@Override
                 public void onCancelled(DatabaseError databaseError) {
                     progressLoadMusic.setVisibility(View.GONE);
-                    Toast.makeText(getActivity(), "Cannot retrieve data", Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(getActivity(), "Cannot retrieve data", TastyToast.LENGTH_SHORT, TastyToast.CONFUSING).show();
 
                 }
             });

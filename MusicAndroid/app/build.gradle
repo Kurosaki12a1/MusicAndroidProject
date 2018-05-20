@@ -48,6 +48,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'devlight.io:navigationtabbar:1.2.5'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    compile 'com.sdsmdg.tastytoast:tastytoast:0.1.1'
 
 }
 configurations.all {

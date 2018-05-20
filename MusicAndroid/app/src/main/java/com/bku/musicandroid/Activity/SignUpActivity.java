@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -116,15 +117,15 @@ public class SignUpActivity extends Activity {
                                             if (task.isSuccessful()) {
                                                 Log.e("1abc", "Email send done");
                                                 progressDialog.dismiss();
-                                                Toast.makeText(SignUpActivity.this,
+                                                TastyToast.makeText(SignUpActivity.this,
                                                         "Verification email sent to " + firebaseuser.getEmail() + ". Please verifying in your email.",
-                                                        Toast.LENGTH_SHORT).show();
+                                                        TastyToast.LENGTH_SHORT, TastyToast.INFO).show();
                                             } else {
                                                 progressDialog.dismiss();
                                                 Log.e("1abc", "sendEmailVerification", task.getException());
-                                                Toast.makeText(getApplicationContext(),
+                                                TastyToast.makeText(getApplicationContext(),
                                                         "Failed to send verification email.",
-                                                        Toast.LENGTH_SHORT).show();
+                                                        TastyToast.LENGTH_SHORT, TastyToast.ERROR).show();
                                             }
                                         }
                                     });
@@ -137,8 +138,8 @@ public class SignUpActivity extends Activity {
                             // If sign in fails, display a message to the user.
                             Log.w("1abc", "createUserWithEmail:failure", task.getException());
                             progressDialog.dismiss();
-                            Toast.makeText(getApplicationContext(), "Sign up failed." + task.getException(),
-                                    Toast.LENGTH_SHORT).show();
+                            TastyToast.makeText(getApplicationContext(), "Sign up failed." + task.getException(),
+                                    TastyToast.LENGTH_SHORT, TastyToast.ERROR).show();
                             emailTxt.setError("The email address is already in use by another account.");
                             //     updateUI(null);
                         }
@@ -221,7 +222,7 @@ public class SignUpActivity extends Activity {
                 // Failed to read value
                 Log.w("1abc", "Failed to read value.", error.toException());
                 progressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), "Error: " + error.toException(), Toast.LENGTH_SHORT).show();
+                TastyToast.makeText(getApplicationContext(), "Error: " + error.toException(), TastyToast.LENGTH_SHORT, TastyToast.ERROR).show();
             }
         });
     }

@@ -42,6 +42,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.sdsmdg.tastytoast.TastyToast;
 
 
 import java.util.HashMap;
@@ -81,8 +82,8 @@ public class LoginActivity extends Activity {
     protected void onResume() {
         super.onResume();
         sharedPreferences = getSharedPreferences("RememberPassword", MODE_PRIVATE);
-        emailTxt.setText(sharedPreferences.getString("Email",""));
-        passTxt.setText(sharedPreferences.getString("Password",""));
+        emailTxt.setText(sharedPreferences.getString("Email", ""));
+        passTxt.setText(sharedPreferences.getString("Password", ""));
         chkRememberPassword.setChecked(sharedPreferences.getBoolean("IsChecked", false));
 
         isAtLogin = true;
@@ -99,12 +100,11 @@ public class LoginActivity extends Activity {
     protected void onPause() {
         super.onPause();
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        if (chkRememberPassword.isChecked()){
+        if (chkRememberPassword.isChecked()) {
             editor.putBoolean("IsChecked", true);
             editor.putString("Email", emailTxt.getText().toString());
             editor.putString("Password", passTxt.getText().toString());
-        }
-        else{
+        } else {
             editor.putBoolean("IsChecked", false);
             editor.putString("Email", "");
             editor.putString("Password", "");
@@ -175,7 +175,7 @@ public class LoginActivity extends Activity {
                     Log.d("1abc", "Dang nhap fail chua click button");
                 }
                 if (mAuth.getCurrentUser() != null) {
-                    Toast.makeText(getApplicationContext(), "Co nguoi da login", Toast.LENGTH_SHORT).show();
+                    TastyToast.makeText(getApplicationContext(), "Co nguoi da login", TastyToast.LENGTH_SHORT, TastyToast.WARNING).show();
                 }
                 signIn(emailTxt.getText().toString().trim(), passTxt.getText().toString().trim());
             }
@@ -229,7 +229,7 @@ public class LoginActivity extends Activity {
                             if (user.isEmailVerified() == false) {
                                 showDialog();
                             } else {
-                                Toast.makeText(getApplicationContext(), "LoginActivity success", Toast.LENGTH_SHORT).show();
+                                TastyToast.makeText(getApplicationContext(), "LoginActivity success", TastyToast.LENGTH_SHORT, TastyToast.SUCCESS).show();
                                 Intent intent = new Intent(getApplicationContext(), MainScreenActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -238,8 +238,8 @@ public class LoginActivity extends Activity {
                             // If sign in fails, display a message to the user.
                             progressDialog.dismiss(); //Log in done, close the progress dialog
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(getApplicationContext(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            TastyToast.makeText(getApplicationContext(), "Authentication failed.",
+                                    TastyToast.LENGTH_SHORT, TastyToast.ERROR).show();
                         }
                     }
                 });
@@ -365,7 +365,7 @@ public class LoginActivity extends Activity {
                     public void onCancelled(DatabaseError error) {
                         // Failed to read value
                         progressDialog.dismiss();
-                        Toast.makeText(getApplicationContext(), "Error: " + error.toException(), Toast.LENGTH_SHORT).show();
+                        TastyToast.makeText(getApplicationContext(), "Error: " + error.toException(), TastyToast.LENGTH_SHORT, TastyToast.ERROR).show();
                     }
                 });
             }
@@ -391,14 +391,14 @@ public class LoginActivity extends Activity {
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this,
+                            TastyToast.makeText(LoginActivity.this,
                                     "Verification email sent to " + user.getEmail(),
-                                    Toast.LENGTH_SHORT).show();
+                                    TastyToast.LENGTH_SHORT, TastyToast.INFO).show();
                         } else {
                             Log.e(TAG, "sendEmailVerification", task.getException());
-                            Toast.makeText(getApplicationContext(),
+                            TastyToast.makeText(getApplicationContext(),
                                     "Failed to send verification email.",
-                                    Toast.LENGTH_SHORT).show();
+                                    TastyToast.LENGTH_SHORT, TastyToast.INFO).show();
                         }
                     }
                 });
@@ -432,7 +432,7 @@ public class LoginActivity extends Activity {
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 progressDialog.dismiss();
-                Toast.makeText(getApplicationContext(),"Google Sign In Failed: "+e.getMessage(),Toast.LENGTH_SHORT).show();
+                TastyToast.makeText(getApplicationContext(), "Google Sign In Failed: " + e.getMessage(), TastyToast.LENGTH_SHORT, TastyToast.ERROR).show();
                 Log.w("1abc", "Google sign in failed", e);
             }
         }
@@ -463,7 +463,7 @@ public class LoginActivity extends Activity {
                                 String email = user.getEmail();
                                 Log.d("1abc", fullname + " " + email);
                                 Users temp;
-                                temp = new Users("-1", user.getEmail(), user.getDisplayName(), "Default_avatarURL", "Default_Dateofbirth","");
+                                temp = new Users("-1", user.getEmail(), user.getDisplayName(), "Default_avatarURL", "Default_Dateofbirth", "");
                                 usersRef.child(user.getUid()).setValue(temp);
                             }
                             FirebaseUser user1 = mAuth.getCurrentUser();
@@ -474,11 +474,10 @@ public class LoginActivity extends Activity {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     String username = (String) dataSnapshot.child("userName").getValue();
-                                    Log.d("1abc","Check username: "+username);
+                                    Log.d("1abc", "Check username: " + username);
                                     if (username.equals("-1")) {
                                         verifyUsername();
-                                    }
-                                    else{
+                                    } else {
                                         Intent intent = new Intent(getApplicationContext(), MainScreenActivity.class);
                                         startActivity(intent);
                                         finish();
@@ -490,7 +489,7 @@ public class LoginActivity extends Activity {
                                     // Failed to read value
                                     Log.w("1abc", "Failed to read value.", error.toException());
                                     progressDialog.dismiss();
-                                    Toast.makeText(getApplicationContext(), "Error: " + error.toException(), Toast.LENGTH_SHORT).show();
+                                    TastyToast.makeText(getApplicationContext(), "Error: " + error.toException(), TastyToast.LENGTH_SHORT, TastyToast.ERROR).show();
                                 }
                             });
 
@@ -500,12 +499,13 @@ public class LoginActivity extends Activity {
                             progressDialog.dismiss();
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(getApplicationContext(), "Sign In Fails", Toast.LENGTH_SHORT).show();
+                            TastyToast.makeText(getApplicationContext(), "Sign In Fails", TastyToast.LENGTH_SHORT, TastyToast.ERROR).show();
                         }
 
                     }
                 });
     }
+
     // [START signin]
     public void signInGoogle() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -532,10 +532,10 @@ public class LoginActivity extends Activity {
     }
     ///////////////////////////End of Google Authentication//////////////////////////////////////
 
-    public void   checkAlreadyLogin(){
-        mAuth=FirebaseAuth.getInstance();
-        if(mAuth.getCurrentUser()!=null){
-            Intent intent=new Intent(LoginActivity.this,MainScreenActivity.class);
+    public void checkAlreadyLogin() {
+        mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser() != null) {
+            Intent intent = new Intent(LoginActivity.this, MainScreenActivity.class);
             startActivity(intent);
             finish();
         }

@@ -31,6 +31,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -42,21 +43,21 @@ import java.io.File;
 public class UploadSongActivity extends AppCompatActivity {
     String Storage_Path = "Music Storage";
     public static final String Database_Path = "All_Song_Database_Info";
-    public static final String USER_PATH="All_Users_Info_Database";
+    public static final String USER_PATH = "All_Users_Info_Database";
     StorageReference storageReference;
     DatabaseReference databaseReference;
     Uri FilePathUri;
     ProgressDialog progressDialog;
     ProgressBar progressBar;
     FirebaseAuth mAuth;
-    EditText songName,singerName;
+    EditText songName, singerName;
     Spinner genreSpinner;
-    Button openFile,Upload,Exit;
-    String imageSong="";
-    String currentId="";
-    String currentUserName="";
-    byte [] bytePicSong=null;
-    String [] gerne={
+    Button openFile, Upload, Exit;
+    String imageSong = "";
+    String currentId = "";
+    String currentUserName = "";
+    byte[] bytePicSong = null;
+    String[] gerne = {
             "Pop",
             "Rock",
             "Jazz",
@@ -74,38 +75,39 @@ public class UploadSongActivity extends AppCompatActivity {
             "VPop",
             "KPop"
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_song);
 
-        mAuth=FirebaseAuth.getInstance();
-        currentId=mAuth.getCurrentUser().getUid().toString();
+        mAuth = FirebaseAuth.getInstance();
+        currentId = mAuth.getCurrentUser().getUid().toString();
 
-        progressBar=(ProgressBar)findViewById(R.id.determinateBar);
+        progressBar = (ProgressBar) findViewById(R.id.determinateBar);
 
-        songName=(EditText)findViewById(R.id.inputNameMusic);
+        songName = (EditText) findViewById(R.id.inputNameMusic);
 
-        singerName=(EditText)findViewById(R.id.inputAuthorName);
+        singerName = (EditText) findViewById(R.id.inputAuthorName);
 
-        genreSpinner=(Spinner)findViewById(R.id.genreSpinner);
+        genreSpinner = (Spinner) findViewById(R.id.genreSpinner);
 
-        openFile=(Button)findViewById(R.id.btnSelectFile);
+        openFile = (Button) findViewById(R.id.btnSelectFile);
 
-        Upload=(Button)findViewById(R.id.UpLoad);
+        Upload = (Button) findViewById(R.id.UpLoad);
 
-        Exit=(Button)findViewById(R.id.exit);
+        Exit = (Button) findViewById(R.id.exit);
 
         progressBar.setProgress(0);
 
 
         progressDialog = new ProgressDialog(UploadSongActivity.this);
 
-        DatabaseReference databaseReference1=FirebaseDatabase.getInstance().getReference(USER_PATH).child("users");
+        DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference(USER_PATH).child("users");
         databaseReference1.child(currentId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                currentUserName=dataSnapshot.child("userName").getValue(String.class);
+                currentUserName = dataSnapshot.child("userName").getValue(String.class);
             }
 
             @Override
@@ -119,7 +121,7 @@ public class UploadSongActivity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference(Database_Path);
 
 
-        ArrayAdapter<String>adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,gerne);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, gerne);
         adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
         genreSpinner.setAdapter(adapter);
         //set Default Spinner
@@ -152,6 +154,7 @@ public class UploadSongActivity extends AppCompatActivity {
         });
 
     }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -174,15 +177,15 @@ public class UploadSongActivity extends AppCompatActivity {
                     bytePicSong = new byte[byteArrayOutputStream.size()];
                     bytePicSong = byteArrayOutputStream.toByteArray();
                 }
-            }
-            catch (IllegalArgumentException e){
-                Toast.makeText(UploadSongActivity.this,"Please choose song which name don't have special character ",Toast.LENGTH_SHORT).show();
+            } catch (IllegalArgumentException e) {
+                TastyToast.makeText(UploadSongActivity.this, "Please choose song which name don't have special character ", TastyToast.LENGTH_SHORT, TastyToast.WARNING).show();
             }
 
 
         }
     }
-    public void UploadMusicToStorage(){
+
+    public void UploadMusicToStorage() {
         if (FilePathUri != null) {
 
             // Setting progressDialog Title.
@@ -192,21 +195,20 @@ public class UploadSongActivity extends AppCompatActivity {
             progressDialog.show();
 
             // Creating second StorageReference.
-            StorageReference storageReference2nd = storageReference.child(Storage_Path + System.currentTimeMillis() + "." +".mp3");
-            StorageReference storageReference3rd=storageReference.child("Image " + System.currentTimeMillis()+" ."+".png");
+            StorageReference storageReference2nd = storageReference.child(Storage_Path + System.currentTimeMillis() + "." + ".mp3");
+            StorageReference storageReference3rd = storageReference.child("Image " + System.currentTimeMillis() + " ." + ".png");
 
             //check If ImageSong available
-            if(bytePicSong!=null){
+            if (bytePicSong != null) {
                 storageReference3rd.putBytes(bytePicSong).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        imageSong=taskSnapshot.getDownloadUrl().toString();
+                        imageSong = taskSnapshot.getDownloadUrl().toString();
                     }
                 });
-            }
-            else{
+            } else {
                 //Default Image
-                imageSong="https://firebasestorage.googleapis.com/v0/b/android-music-app-player.appspot.com/o/ic_audiotrack_dark.png?alt=media&token=ce75b506-1a36-4863-bede-ceff31f88b46";
+                imageSong = "https://firebasestorage.googleapis.com/v0/b/android-music-app-player.appspot.com/o/ic_audiotrack_dark.png?alt=media&token=ce75b506-1a36-4863-bede-ceff31f88b46";
             }
 
             storageReference2nd.putFile(FilePathUri)
@@ -221,7 +223,7 @@ public class UploadSongActivity extends AppCompatActivity {
                             progressDialog.dismiss();
 
                             // Showing toast message after done uploading.
-                            Toast.makeText(getApplicationContext(), "Music Uploaded Successfully ", Toast.LENGTH_LONG).show();
+                            TastyToast.makeText(getApplicationContext(), "Music Uploaded Successfully ", TastyToast.LENGTH_LONG, TastyToast.SUCCESS).show();
 
                             // Getting image upload ID.
                             String musicUploadId = databaseReference.push().getKey();
@@ -232,7 +234,7 @@ public class UploadSongActivity extends AppCompatActivity {
                             // String userId=mAuth.getCurrentUser().getUid().toString();
 
 
-                            SongPlayerOnlineInfo songPlayerOnlineInfo = new SongPlayerOnlineInfo(musicUploadId,songName.getText().toString(),singerName.getText().toString(),taskSnapshot.getDownloadUrl().toString(),imageSong,"0",currentId,genreSpinner.getSelectedItem().toString(),currentUserName,"0","0");
+                            SongPlayerOnlineInfo songPlayerOnlineInfo = new SongPlayerOnlineInfo(musicUploadId, songName.getText().toString(), singerName.getText().toString(), taskSnapshot.getDownloadUrl().toString(), imageSong, "0", currentId, genreSpinner.getSelectedItem().toString(), currentUserName, "0", "0");
                             databaseReference.child(musicUploadId).setValue(songPlayerOnlineInfo);
 
                         }
@@ -246,7 +248,7 @@ public class UploadSongActivity extends AppCompatActivity {
                             progressDialog.dismiss();
 
                             // Showing exception erro message.
-                            Toast.makeText(UploadSongActivity.this, exception.getMessage(), Toast.LENGTH_LONG).show();
+                            TastyToast.makeText(UploadSongActivity.this, exception.getMessage(), TastyToast.LENGTH_LONG, TastyToast.ERROR).show();
                         }
                     })
 
@@ -258,19 +260,18 @@ public class UploadSongActivity extends AppCompatActivity {
                             // Setting progressDialog Title.
                             progressDialog.setTitle("Music is Uploading...");
                             progressBar.setVisibility(View.VISIBLE);
-                            progressBar.setProgress((int)progress+1);
-                            if(progress>=100){
-                                Intent intent=new Intent(UploadSongActivity.this,MainScreenActivity.class);
+                            progressBar.setProgress((int) progress + 1);
+                            if (progress >= 100) {
+                                Intent intent = new Intent(UploadSongActivity.this, MainScreenActivity.class);
                                 startActivity(intent);
                                 finish();
                             }
 
                         }
                     });
-        }
-        else {
+        } else {
 
-            Toast.makeText(UploadSongActivity.this, "Please Select Music or Add Music Name", Toast.LENGTH_LONG).show();
+            TastyToast.makeText(UploadSongActivity.this, "Please Select Music or Add Music Name", TastyToast.LENGTH_LONG, TastyToast.WARNING).show();
 
         }
     }
