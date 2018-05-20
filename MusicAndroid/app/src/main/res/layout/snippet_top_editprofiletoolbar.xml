@@ -25,7 +25,8 @@
                     android:id="@+id/backArrow"
                     android:src="@drawable/ic_arrow"
                     android:layout_marginRight="20dp"
-                    android:layout_marginLeft="10dp" />
+                    android:layout_marginLeft="10dp"
+                    android:scaleType="center"/>
 
                 <TextView
                     android:layout_toRightOf="@+id/backArrow"

@@ -27,24 +27,29 @@ public class OfflineMusicManager {
 
     private ArrayList<SongPlayerOfflineInfo> scanMusic(String path) {
         ArrayList<SongPlayerOfflineInfo> tempList = new ArrayList<>();
-        File home = new File(path);
-        File[] listFile = home.listFiles(new FileExtensionFilter());
+        try {
+            File home = new File(path);
+            File[] listFile = home.listFiles(new FileExtensionFilter());
 
-        //if (home.listFiles(new FileExtensionFilter()).length > 0) {
-        if (listFile != null) {
+            //if (home.listFiles(new FileExtensionFilter()).length > 0) {
+            if (listFile != null) {
 
-            for (File file : listFile) {
-                if (!file.isDirectory()) {
-                    if (file.getName().endsWith(".mp3") || file.getName().endsWith(".MP3")) {
-                        SongPlayerOfflineInfo songPlayerOfflineInfo = new SongPlayerOfflineInfo(file,context);
-                        // Adding each song to SongList
-                        if (!songPlayerOfflineInfo.isBrokenFile())
-                            tempList.add(songPlayerOfflineInfo);
+                for (File file : listFile) {
+                    if (!file.isDirectory()) {
+                        if (file.getName().endsWith(".mp3") || file.getName().endsWith(".MP3")) {
+                            SongPlayerOfflineInfo songPlayerOfflineInfo = new SongPlayerOfflineInfo(file, context);
+                            // Adding each song to SongList
+                            if (!songPlayerOfflineInfo.isBrokenFile())
+                                tempList.add(songPlayerOfflineInfo);
+                        }
+                    } else {
+                        tempList.addAll(scanMusic(file.getAbsolutePath()));
                     }
-                } else {
-                    tempList.addAll(scanMusic(file.getAbsolutePath()));
                 }
             }
+        }
+        catch(OutOfMemoryError e){
+            //return tempList;
         }
         // return songs list array
         return tempList;

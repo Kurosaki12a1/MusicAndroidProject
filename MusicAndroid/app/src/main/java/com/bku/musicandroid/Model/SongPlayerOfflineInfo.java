@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
+import android.widget.Toast;
 
 import com.bku.musicandroid.R;
 
@@ -48,7 +49,7 @@ public class SongPlayerOfflineInfo extends SongPlayerInfo implements Serializabl
             m.setDataSource(fileSong.getAbsolutePath());
             songName = m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
             songArtist = m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
-            byte [] bytePicSong = null;
+            byte [] bytePicSong ;
             if (songName == null) {
                 songName = fileSong.getName();
             }
@@ -56,25 +57,28 @@ public class SongPlayerOfflineInfo extends SongPlayerInfo implements Serializabl
                 songArtist = "Unknown";
             }
 
-            if(m.getEmbeddedPicture()!=null){
-                byte [] data1=m.getEmbeddedPicture();
-                Bitmap bitmap = BitmapFactory.decodeByteArray(data1, 0, data1.length);
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                bytePicSong=new byte[byteArrayOutputStream.size()];
-                bytePicSong = byteArrayOutputStream.toByteArray();
-            }
-            else{
-                Bitmap bitmap=BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_audiotrack_dark);
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                bytePicSong=new byte[byteArrayOutputStream.size()];
-                bytePicSong = byteArrayOutputStream.toByteArray();
-            }
-            this.setSongName(songName);
-            this.setSongArtists(songArtist);
-            this.setSongImage(bytePicSong);
-            isBrokenFile = false;
+
+                if (m.getEmbeddedPicture() != null) {
+                    byte[] data1 = m.getEmbeddedPicture();
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(data1, 0, data1.length);
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                    //bytePicSong=new byte[byteArrayOutputStream.size()];
+                    bytePicSong = byteArrayOutputStream.toByteArray();
+                } else {
+                    Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_audiotrack_dark);
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                    //bytePicSong=new byte[byteArrayOutputStream.size()];
+                    bytePicSong = byteArrayOutputStream.toByteArray();
+                }
+                this.setSongName(songName);
+                this.setSongArtists(songArtist);
+                this.setSongImage(bytePicSong);
+                isBrokenFile = false;
+
+
+
         } catch (Exception ex){
             isBrokenFile = true;
             return;
@@ -92,7 +96,7 @@ public class SongPlayerOfflineInfo extends SongPlayerInfo implements Serializabl
             m.setDataSource(fileSong.getAbsolutePath());
             songName = m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
             songArtist = m.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
-            byte [] bytePicSong = null;
+            byte [] bytePicSong ;
             if (songName == null) {
                 songName = fileSong.getName();
             }
@@ -105,14 +109,14 @@ public class SongPlayerOfflineInfo extends SongPlayerInfo implements Serializabl
                 Bitmap bitmap = BitmapFactory.decodeByteArray(data1, 0, data1.length);
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                bytePicSong=new byte[byteArrayOutputStream.size()];
+                //bytePicSong=new byte[byteArrayOutputStream.size()];
                 bytePicSong = byteArrayOutputStream.toByteArray();
             }
             else{
                 Bitmap bitmap=BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_audiotrack_dark);
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                bytePicSong=new byte[byteArrayOutputStream.size()];
+                //bytePicSong=new byte[byteArrayOutputStream.size()];
                 bytePicSong = byteArrayOutputStream.toByteArray();
             }
             this.setSongName(songName);

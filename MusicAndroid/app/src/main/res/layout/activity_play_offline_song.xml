@@ -18,7 +18,8 @@
             android:src="@drawable/ic_arrow"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"/>
+            android:layout_alignParentTop="true"
+            android:scaleType="center"/>
         <TextView
             android:textColor="@color/colorWhite"
             android:id="@+id/song_title"
@@ -50,15 +51,7 @@
             android:paddingTop="3dp"
             android:textSize="14sp" />
 
-        <ImageView
-            android:id="@+id/option"
-            android:layout_width="80dp"
-            android:layout_height="60dp"
 
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-
-            android:src="@drawable/ic_more_vert_white_24dp"/>
     </RelativeLayout>
 
     <RelativeLayout

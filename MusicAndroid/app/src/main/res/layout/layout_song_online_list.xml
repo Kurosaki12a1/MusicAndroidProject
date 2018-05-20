@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="120dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/colorTabBackgroundLighter"
+    android:background="@drawable/custom_border_linear_layout"
     >
 
     <ImageView
