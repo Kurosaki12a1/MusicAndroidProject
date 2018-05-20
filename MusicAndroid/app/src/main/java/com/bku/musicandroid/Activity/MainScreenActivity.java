@@ -123,7 +123,8 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
                         txtSongName.setText(listSong.get(nPosition).getSongName());
                     }
                 } catch (Exception e) {
-                    // DO NOTHING, JUST FUCKING IGNORE IT 'CAUSE OF NO TIME LEFT, LOL..
+                    // WELL, LET'S TRY AGAIN NEXT TIME :V
+                    lastSongPath = "";
                 }
             }
         };

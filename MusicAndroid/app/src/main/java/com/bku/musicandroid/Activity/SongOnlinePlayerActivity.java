@@ -129,12 +129,17 @@ public class SongOnlinePlayerActivity extends AppCompatActivity   implements See
                     repeatAll.setVisibility(View.VISIBLE);
                 }
 
-                // Update new song info UI when auto move to another song
-                if (!strLastSongURL.equals(listSong.get(nPosition).getPath())) {
-                    strLastSongURL = listSong.get(nPosition).getPath();
-                    getCurrentInfoSong(nPosition);
-                    updateSongInfoUI();
-                    avatarSong.setRotation(0.0f);
+                try {
+                    // Update new song info UI when auto move to another song
+                    if (!strLastSongURL.equals(listSong.get(nPosition).getPath())) {
+                        strLastSongURL = listSong.get(nPosition).getPath();
+                        getCurrentInfoSong(nPosition);
+                        updateSongInfoUI();
+                        avatarSong.setRotation(0.0f);
+                    }
+                } catch (Exception e) {
+                    // WELL, LET'S TRY AGAIN NEXT TIME :V
+                    strLastSongURL = "";
                 }
 
                 // Update progress bar and rotate the bitmap every 100ms

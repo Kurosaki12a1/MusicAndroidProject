@@ -115,7 +115,8 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
                         avatarSong.setRotation(0.0f);
                     }
                 } catch (Exception e) {
-                    // DO NOTHING, JUST FUCKING IGNORE IT 'CAUSE OF NO TIME LEFT, LOL..
+                    // WELL, LET'S TRY AGAIN NEXT TIME :V
+                    lastSongPath = "";
                 }
 
                 // Update progress bar and rotate the bitmap every 100ms
