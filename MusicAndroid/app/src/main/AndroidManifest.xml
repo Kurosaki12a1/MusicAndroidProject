@@ -74,6 +74,8 @@
             android:screenOrientation="portrait" />
 
         <activity android:name=".Activity.ChooseOfflinePlaylistActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Activity.FavoriteSongActivity"
             android:screenOrientation="portrait">
         </activity>
     </application>

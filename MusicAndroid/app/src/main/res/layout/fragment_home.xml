@@ -4,12 +4,15 @@
     android:id="@+id/fragmentLibrary"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorTabBackgroundLighter"
+   >
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,13 +35,17 @@
                 android:id="@+id/progressLike"
                 style="?android:attr/progressBarStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+
+                />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/topLikeList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" />
+                android:orientation="horizontal"
+                android:background="@drawable/custom_border_linear_layout"
+            />
 
             <TextView
                 android:id="@+id/txtTopDownload"
@@ -61,7 +68,9 @@
                 android:id="@+id/topDownloadList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" />
+                android:orientation="horizontal"
+                android:background="@drawable/custom_border_linear_layout"
+             />
 
             <TextView
                 android:id="@+id/txtTopListen"
@@ -84,7 +93,9 @@
                 android:id="@+id/topListenList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" />
+                android:orientation="horizontal"
+                android:background="@drawable/custom_border_linear_layout"
+              />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </FrameLayout>

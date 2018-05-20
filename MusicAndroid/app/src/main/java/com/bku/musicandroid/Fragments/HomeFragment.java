@@ -266,7 +266,7 @@ public class HomeFragment extends Fragment {
                         layoutManager2.setOrientation(LinearLayoutManager.HORIZONTAL);
                         topDownload.setLayoutManager(layoutManager2);
                         topDownload.setAdapter(topDownloadAdapter);
-                        Toast.makeText(getActivity(),"Updating Ranking Song Successful",Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(getActivity(),"Updating Ranking Song Successful",Toast.LENGTH_SHORT).show();
                         progressLoadMusicDownload.setVisibility(View.GONE);
 
                         Collections.sort(songList, new Comparator<SongPlayerOnlineInfo>() {
@@ -300,7 +300,7 @@ public class HomeFragment extends Fragment {
                         layoutManager3.setOrientation(LinearLayoutManager.HORIZONTAL);
                         topListen.setLayoutManager(layoutManager3);
                         topListen.setAdapter(topListenAdapter);
-                        Toast.makeText(getActivity(),"Loading done",Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(getActivity(),"Loading done",Toast.LENGTH_SHORT).show();
                         progressLoadMusicListen.setVisibility(View.GONE);
                     }
                 }@Override

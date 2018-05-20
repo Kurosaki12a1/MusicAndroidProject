@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.bku.musicandroid.Activity.ActivityPlayListOnline;
 import com.bku.musicandroid.Activity.ChangePasswordActivity;
 import com.bku.musicandroid.Activity.EditProfileActivity;
+import com.bku.musicandroid.Activity.FavoriteSongActivity;
 import com.bku.musicandroid.Activity.LoginActivity;
 import com.bku.musicandroid.Activity.UploadSongActivity;
 import com.bku.musicandroid.R;
@@ -59,7 +60,7 @@ import javax.net.ssl.HttpsURLConnection;
 public class ProfileFragment extends Fragment {
 
     private ImageView profileImage, backGroundImage;
-    private TextView txtBar, txtName, playList, signOutTxt, changePasswordTxt,EditProfile,UpLoad;
+    private TextView txtBar, txtName, playList, signOutTxt, changePasswordTxt,EditProfile,UpLoad,likedSong;
     private AppCompatButton menu;
     String userId = "";
     FirebaseAuth mAuth;
@@ -212,6 +213,14 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        likedSong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FavoriteSongActivity.class);
+                startActivity(intent);
+            }
+        });
+
         UpLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -234,6 +243,7 @@ public class ProfileFragment extends Fragment {
         changePasswordTxt = getView().findViewById(R.id.ChangePassBtn);
         EditProfile=getView().findViewById(R.id.EditProfile);
         UpLoad=getView().findViewById(R.id.UpLoad);
+        likedSong=getView().findViewById(R.id.YourLikedSong);
     }
 
    /* private void ShowMenu() {
