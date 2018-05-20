@@ -73,7 +73,9 @@
             android:name=".Service.SongPlayerService"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".Activity.ChooseOfflinePlaylistActivity"></activity>
+        <activity android:name=".Activity.ChooseOfflinePlaylistActivity"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

@@ -72,19 +72,6 @@ public class PlayListAdapter extends RecyclerView.Adapter<PlayListAdapter.ViewHo
                 notifyItemRangeChanged(nTempPosition,ListSong.size());
                 DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference(Song_List);
                 databaseReference.child(playListId).child(songPlayerOnlineInfo.getSongId()).removeValue();
-             /*   Intent intent=new Intent(context, AddSongToPlayListPopUp.class);
-                intent.putExtra("nameSong",songPlayerOnlineInfo.getSongName());
-                intent.putExtra("nameArtist",songPlayerOnlineInfo.getSongArtists());
-                intent.putExtra("userUpload",songPlayerOnlineInfo.getUserName());
-                intent.putExtra("viewListen",songPlayerOnlineInfo.getView());
-                intent.putExtra("Download",songPlayerOnlineInfo.getDownload());
-                intent.putExtra("Liked",songPlayerOnlineInfo.getLiked());
-                intent.putExtra("songId",songPlayerOnlineInfo.getSongId());
-                intent.putExtra("songGenre",songPlayerOnlineInfo.getSongGenre());
-                intent.putExtra("ImageSongURL",songPlayerOnlineInfo.getImageSongURL());
-                intent.putExtra("songURL",songPlayerOnlineInfo.getSongURL());
-                intent.putExtra("userId",songPlayerOnlineInfo.getUserId());
-                context.startActivity(intent);*/
             }
         });
 

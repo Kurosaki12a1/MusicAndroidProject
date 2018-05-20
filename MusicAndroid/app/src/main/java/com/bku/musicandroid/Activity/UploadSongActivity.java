@@ -156,19 +156,23 @@ public class UploadSongActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 7 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-
-            FilePathUri = data.getData();
-            //This below code will get image of audio
-            MediaMetadataRetriever retriever  = new MediaMetadataRetriever();
-            retriever.setDataSource(data.getData().getPath());
-            //if there is image of audio
-            if(retriever.getEmbeddedPicture()!=null) {
-                byte [] data1=retriever.getEmbeddedPicture();
-                Bitmap bitmap = BitmapFactory.decodeByteArray(data1, 0, data1.length);
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                bytePicSong=new byte[byteArrayOutputStream.size()] ;
-                bytePicSong = byteArrayOutputStream.toByteArray();
+            try {
+                FilePathUri = data.getData();
+                //This below code will get image of audio
+                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                retriever.setDataSource(data.getData().getPath());
+                //if there is image of audio
+                if (retriever.getEmbeddedPicture() != null) {
+                    byte[] data1 = retriever.getEmbeddedPicture();
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(data1, 0, data1.length);
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                    bytePicSong = new byte[byteArrayOutputStream.size()];
+                    bytePicSong = byteArrayOutputStream.toByteArray();
+                }
+            }
+            catch (IllegalArgumentException e){
+                Toast.makeText(UploadSongActivity.this,"Please choose song which name don't have special character ",Toast.LENGTH_SHORT).show();
             }
 
 
