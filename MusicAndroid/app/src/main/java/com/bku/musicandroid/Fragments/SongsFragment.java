@@ -20,6 +20,7 @@ import com.bku.musicandroid.Adapter.SongInfoOfflineListAdapter;
 import com.bku.musicandroid.Model.OfflineMusicManager;
 import com.bku.musicandroid.R;
 import com.bku.musicandroid.Model.SongPlayerOfflineInfo;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.ArrayList;
 
@@ -172,6 +173,11 @@ public class SongsFragment extends Fragment {
         @Override
         protected void onPostExecute(ArrayList<SongPlayerOfflineInfo> songPlayerOfflineInfos) {
             super.onPostExecute(songPlayerOfflineInfos);
+            if (songPlayerOfflineInfos.size() == 0){
+                TastyToast.makeText(getContext(), "Insufficient memory or empty offline song, please try again later.", TastyToast.LENGTH_SHORT, TastyToast.CONFUSING);
+            } else {
+                TastyToast.makeText(getContext(), "Load music successfully.", TastyToast.LENGTH_SHORT, TastyToast.SUCCESS);
+            }
         }
 
         @Override

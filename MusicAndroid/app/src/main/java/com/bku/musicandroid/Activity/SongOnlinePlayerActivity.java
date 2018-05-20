@@ -32,6 +32,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,12 +49,12 @@ import java.util.Random;
  * Created by Welcome on 4/30/2018.
  */
 
-public class SongOnlinePlayerActivity extends AppCompatActivity   implements SeekBar.OnSeekBarChangeListener{
+public class SongOnlinePlayerActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
 
     public static final String Liked_Path = "All_Liked_Song_Database";
     public static final String Song_Database = "All_Song_Database_Info";
-    public static final String Download_Database="All_Download_Song_Database";
-    public static final String View_Database="All_View_Song_Database";
+    public static final String Download_Database = "All_Download_Song_Database";
+    public static final String View_Database = "All_View_Song_Database";
     TextView songTitle, songArtist, elapsedTime, durationTime;
     ImageView option, shuffle, repeatAll, repeatOne, previous, play, next, avatarSong, backArrow, download, liked;
     SeekBar progressSong;
@@ -62,7 +63,7 @@ public class SongOnlinePlayerActivity extends AppCompatActivity   implements See
     //Chinh thanh progress luon cap nhat
 //    private Handler mHandler;
     private boolean isRepeatOne = false;
-    private boolean isShuffle=false;
+    private boolean isShuffle = false;
     private boolean isPause = false;
     private int totalDuration = 100;
     private int currentPosition = 0;
@@ -84,7 +85,7 @@ public class SongOnlinePlayerActivity extends AppCompatActivity   implements See
     String strSongImageURL = "";
     String strSongId = "";
 
-//    SongPlayerOnlineInfo songInfo;
+    //    SongPlayerOnlineInfo songInfo;
     ArrayList<SongPlayerOnlineInfo> listSong;
     UtilitySongOnlineClass utilitySongOnlineClass;
 
@@ -231,18 +232,16 @@ public class SongOnlinePlayerActivity extends AppCompatActivity   implements See
                     nPosition = listSong.size() - 1;
                     playSong();
                 } else {
-                    if(isShuffle)
-                    {
+                    if (isShuffle) {
                         //Tron cung mang nghia repeat all
-                        Random rand=new Random();
+                        Random rand = new Random();
                         int nTempPosition;
                         do {
-                            nTempPosition = rand.nextInt((listSong.size()-nPosition-1));
+                            nTempPosition = rand.nextInt((listSong.size() - nPosition - 1));
                         } while (nTempPosition == nPosition);
-                        nPosition=nTempPosition;
+                        nPosition = nTempPosition;
                         playSong();
-                    }
-                    else {
+                    } else {
                         nPosition--;
                         playSong();
                     }
@@ -255,23 +254,20 @@ public class SongOnlinePlayerActivity extends AppCompatActivity   implements See
                 isUserChangePosition = true;
                 isPause = false;
 
-                if(nPosition==listSong.size()-1){
+                if (nPosition == listSong.size() - 1) {
                     nPosition = 0;
                     playSong();
-                }
-                else {
-                    if(isShuffle)
-                    {
+                } else {
+                    if (isShuffle) {
                         //Tron cung mang nghia repeat all
-                        Random rand=new Random();
+                        Random rand = new Random();
                         int nTempPosition;
                         do {
-                            nTempPosition = rand.nextInt((listSong.size()-nPosition-1));
+                            nTempPosition = rand.nextInt((listSong.size() - nPosition - 1));
                         } while (nTempPosition == nPosition);
-                        nPosition=nTempPosition;
+                        nPosition = nTempPosition;
                         playSong();
-                    }
-                    else {
+                    } else {
                         nPosition++;
                         playSong();
                     }
@@ -306,12 +302,11 @@ public class SongOnlinePlayerActivity extends AppCompatActivity   implements See
             public void onClick(View v) {
                 isShuffle = !isShuffle;
 
-                if(isShuffle){
-                    Toast.makeText(SongOnlinePlayerActivity.this , "Shuffle mode : ON",Toast.LENGTH_SHORT).show();
+                if (isShuffle) {
+                    TastyToast.makeText(SongOnlinePlayerActivity.this, "Shuffle mode : ON", TastyToast.LENGTH_SHORT, TastyToast.DEFAULT).show();
 
-                }
-                else{
-                    Toast.makeText(SongOnlinePlayerActivity.this , "Shuffle mode : OFF",Toast.LENGTH_SHORT).show();
+                } else {
+                    TastyToast.makeText(SongOnlinePlayerActivity.this, "Shuffle mode : OFF", TastyToast.LENGTH_SHORT, TastyToast.DEFAULT).show();
                 }
                 startMusicService();
             }
@@ -320,8 +315,8 @@ public class SongOnlinePlayerActivity extends AppCompatActivity   implements See
         download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  download.setImageDrawable(getResources().getDrawable(R.drawable.ic_downloaded_state));
-                Download(strSongName,strSongURL);
+                //  download.setImageDrawable(getResources().getDrawable(R.drawable.ic_downloaded_state));
+                Download(strSongName, strSongURL);
 
             }
         });
@@ -353,7 +348,8 @@ public class SongOnlinePlayerActivity extends AppCompatActivity   implements See
             try {
                 avatarSong.setRotation(avatarSong.getRotation() + 1.0f);
 
-            } catch (Exception e) { }
+            } catch (Exception e) {
+            }
 
         }
     }
@@ -373,7 +369,6 @@ public class SongOnlinePlayerActivity extends AppCompatActivity   implements See
 
         progressSong.setProgress(progress);
     }
-
 
 
     @Override
@@ -484,7 +479,7 @@ public class SongOnlinePlayerActivity extends AppCompatActivity   implements See
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("MusicPlayerUpdate"));
     }
 
-    private void Download(String songName,String songURL){
+    private void Download(String songName, String songURL) {
         File folder = new File(Environment.getExternalStorageDirectory() + "/Download");
         if (!folder.exists()) {
             folder.mkdir();
@@ -493,11 +488,11 @@ public class SongOnlinePlayerActivity extends AppCompatActivity   implements See
         DownloadManager.Request mRqRequest = new DownloadManager.Request(
                 Uri.parse(songURL));
         mRqRequest.setDescription("Downloading Song name " + songName);
-        mRqRequest.setDestinationInExternalPublicDir("/Download", songName+".mp3");
+        mRqRequest.setDestinationInExternalPublicDir("/Download", songName + ".mp3");
         //mRqRequest.setDestinationUri(Uri.parse("/Download"));
         mRqRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         if (mManager != null) {
-          mManager.enqueue(mRqRequest);
+            mManager.enqueue(mRqRequest);
         }
         updateDownLoad();
     }
@@ -508,9 +503,9 @@ public class SongOnlinePlayerActivity extends AppCompatActivity   implements See
         LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
     }
 
-    private void updateDownLoad(){
-        final DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference(Song_Database).child(strSongId);
-        DatabaseReference databaseReference1=FirebaseDatabase.getInstance().getReference(Download_Database).child(strSongId);
+    private void updateDownLoad() {
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(Song_Database).child(strSongId);
+        DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference(Download_Database).child(strSongId);
         databaseReference1.push().setValue("Id of Download");
         databaseReference1.addValueEventListener(new ValueEventListener() {
             @Override
@@ -527,18 +522,18 @@ public class SongOnlinePlayerActivity extends AppCompatActivity   implements See
         });
     }
 
-    protected void upView(){
+    protected void upView() {
 
-        final DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference(Song_Database).child(strSongId);
-        DatabaseReference databaseReference1=FirebaseDatabase.getInstance().getReference(View_Database).child(strSongId);
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(Song_Database).child(strSongId);
+        DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference(View_Database).child(strSongId);
         databaseReference1.push().setValue("Id of View");
         databaseReference1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-           //   songInfo=dataSnapshot.getValue(SongPlayerOnlineInfo.class);
+                //   songInfo=dataSnapshot.getValue(SongPlayerOnlineInfo.class);
 
-              listSong.get(nPosition).setView(String.valueOf(dataSnapshot.getChildrenCount()));
-              databaseReference.setValue(listSong.get(nPosition));
+                listSong.get(nPosition).setView(String.valueOf(dataSnapshot.getChildrenCount()));
+                databaseReference.setValue(listSong.get(nPosition));
                 //ReLoadActivity();
             }
 
@@ -561,7 +556,7 @@ public class SongOnlinePlayerActivity extends AppCompatActivity   implements See
         i.putExtra("currentPosition", currentPosition);
         i.putExtra("isUserChangePosition", isUserChangePosition);
         i.putExtra("isOnline", true);
-        i.putExtra("isShuffle",isShuffle);
+        i.putExtra("isShuffle", isShuffle);
         startService(i);
     }
 

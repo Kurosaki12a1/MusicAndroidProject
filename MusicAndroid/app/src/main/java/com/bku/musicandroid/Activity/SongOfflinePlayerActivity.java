@@ -22,6 +22,7 @@ import com.bku.musicandroid.Model.SongPlayerOfflineInfo;
 import com.bku.musicandroid.Service.SongPlayerService;
 import com.bku.musicandroid.Utility.TimerOfSong;
 import com.bku.musicandroid.Utility.UtilitySongOfflineClass;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -179,18 +180,16 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
                     nPosition = listSong.size() - 1;
                     playSong();
                 } else {
-                    if(isShuffle)
-                    {
+                    if (isShuffle) {
                         //Tron cung mang nghia repeat all
-                        Random rand=new Random();
+                        Random rand = new Random();
                         int nTempPosition;
                         do {
-                            nTempPosition = rand.nextInt((listSong.size()-nPosition-1));
+                            nTempPosition = rand.nextInt((listSong.size() - nPosition - 1));
                         } while (nTempPosition == nPosition);
-                        nPosition=nTempPosition;
+                        nPosition = nTempPosition;
                         playSong();
-                    }
-                    else {
+                    } else {
                         nPosition--;
                         playSong();
                     }
@@ -204,23 +203,20 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
                 isUserChangePosition = true;
                 isPause = false;
 
-                if(nPosition==listSong.size()-1){
+                if (nPosition == listSong.size() - 1) {
                     nPosition = 0;
                     playSong();
-                }
-                else {
-                    if(isShuffle)
-                    {
+                } else {
+                    if (isShuffle) {
                         //Tron cung mang nghia repeat all
-                        Random rand=new Random();
+                        Random rand = new Random();
                         int nTempPosition;
                         do {
-                            nTempPosition = rand.nextInt((listSong.size()-nPosition-1));
+                            nTempPosition = rand.nextInt((listSong.size() - nPosition - 1));
                         } while (nTempPosition == nPosition);
-                        nPosition=nTempPosition;
+                        nPosition = nTempPosition;
                         playSong();
-                    }
-                    else {
+                    } else {
                         nPosition++;
                         playSong();
                     }
@@ -254,12 +250,11 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
             @Override
             public void onClick(View v) {
                 isShuffle = !isShuffle;
-                if(isShuffle){
-                    Toast.makeText(SongOfflinePlayerActivity.this , "Shuffle mode : ON",Toast.LENGTH_SHORT).show();
+                if (isShuffle) {
+                    TastyToast.makeText(SongOfflinePlayerActivity.this, "Shuffle mode : ON", TastyToast.LENGTH_SHORT, TastyToast.DEFAULT).show();
 
-                }
-                else{
-                    Toast.makeText(SongOfflinePlayerActivity.this , "Shuffle mode : OFF",Toast.LENGTH_SHORT).show();
+                } else {
+                    TastyToast.makeText(SongOfflinePlayerActivity.this, "Shuffle mode : OFF", TastyToast.LENGTH_SHORT, TastyToast.DEFAULT).show();
                 }
                 isRepeatOne = false;
                 startMusicService();
@@ -358,9 +353,9 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
 
     /**
      * Created by Son on 5/11/2018.
-
-    * Function to start music service in background
-    * Beside the first call, we will call it each time user changes something in playing song
+     * <p>
+     * Function to start music service in background
+     * Beside the first call, we will call it each time user changes something in playing song
      */
     void startMusicService() {
         Intent i = new Intent(SongOfflinePlayerActivity.this, SongPlayerService.class);
@@ -370,7 +365,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
         i.putExtra("isRepeatAll", isRepeatAll);
         i.putExtra("currentPosition", currentPosition);
         i.putExtra("isUserChangePosition", isUserChangePosition);
-        i.putExtra("isShuffle",isShuffle);
+        i.putExtra("isShuffle", isShuffle);
         startService(i);
     }
 
@@ -416,7 +411,8 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
             try {
                 avatarSong.setRotation(avatarSong.getRotation() + 1.0f);
 
-            } catch (Exception e) { }
+            } catch (Exception e) {
+            }
 
         }
     }
