@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bku.musicandroid.R;
 import com.bku.musicandroid.Model.SongPlayerOnlineInfo;
@@ -304,7 +305,14 @@ public class SongOnlinePlayerActivity extends AppCompatActivity   implements See
             @Override
             public void onClick(View v) {
                 isShuffle = !isShuffle;
-                isRepeatOne = false;
+
+                if(isShuffle){
+                    Toast.makeText(SongOnlinePlayerActivity.this , "Shuffle mode : ON",Toast.LENGTH_SHORT).show();
+
+                }
+                else{
+                    Toast.makeText(SongOnlinePlayerActivity.this , "Shuffle mode : OFF",Toast.LENGTH_SHORT).show();
+                }
                 startMusicService();
             }
         });
@@ -553,6 +561,7 @@ public class SongOnlinePlayerActivity extends AppCompatActivity   implements See
         i.putExtra("currentPosition", currentPosition);
         i.putExtra("isUserChangePosition", isUserChangePosition);
         i.putExtra("isOnline", true);
+        i.putExtra("isShuffle",isShuffle);
         startService(i);
     }
 

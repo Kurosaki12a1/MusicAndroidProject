@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.bku.musicandroid.R;
@@ -253,6 +254,13 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
             @Override
             public void onClick(View v) {
                 isShuffle = !isShuffle;
+                if(isShuffle){
+                    Toast.makeText(SongOfflinePlayerActivity.this , "Shuffle mode : ON",Toast.LENGTH_SHORT).show();
+
+                }
+                else{
+                    Toast.makeText(SongOfflinePlayerActivity.this , "Shuffle mode : OFF",Toast.LENGTH_SHORT).show();
+                }
                 isRepeatOne = false;
                 startMusicService();
             }
@@ -362,6 +370,7 @@ public class SongOfflinePlayerActivity extends AppCompatActivity implements Seek
         i.putExtra("isRepeatAll", isRepeatAll);
         i.putExtra("currentPosition", currentPosition);
         i.putExtra("isUserChangePosition", isUserChangePosition);
+        i.putExtra("isShuffle",isShuffle);
         startService(i);
     }
 
