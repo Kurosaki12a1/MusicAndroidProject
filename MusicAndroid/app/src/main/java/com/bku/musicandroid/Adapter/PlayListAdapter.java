@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bku.musicandroid.Activity.AddSongToPlayListPopUp;
 import com.bku.musicandroid.Activity.SongOnlinePlayerActivity;
 import com.bku.musicandroid.Model.SongPlayerOnlineInfo;
 import com.bku.musicandroid.R;
@@ -19,7 +18,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Welcome on 5/14/2018.

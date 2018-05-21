@@ -1,7 +1,6 @@
 package com.bku.musicandroid.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bku.musicandroid.Activity.AddSongToPlayListPopUp;
-import com.bku.musicandroid.Activity.PlayListActivity;
 import com.bku.musicandroid.Model.PlayListOnlineInfo;
 import com.bku.musicandroid.Model.SongPlayerOnlineInfo;
 import com.bku.musicandroid.R;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 

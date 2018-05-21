@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.bku.musicandroid.R;
 import com.bku.musicandroid.Model.SongPlayerOnlineInfo;
@@ -34,7 +33,6 @@ import com.google.firebase.storage.UploadTask;
 import com.sdsmdg.tastytoast.TastyToast;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 
 /**
  * Created by Thinh on 4/22/2018.

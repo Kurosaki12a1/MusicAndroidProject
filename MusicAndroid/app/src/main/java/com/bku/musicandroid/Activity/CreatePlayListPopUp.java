@@ -7,7 +7,6 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bku.musicandroid.Model.PlayListOnlineInfo;
 import com.bku.musicandroid.R;
@@ -19,7 +18,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sdsmdg.tastytoast.TastyToast;
 
-import org.w3c.dom.Text;
 
 /**
  * Created by Welcome on 5/14/2018.

@@ -17,7 +17,6 @@ import com.bku.musicandroid.Utility.UtilitySongOnlineClass;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Welcome on 4/29/2018.

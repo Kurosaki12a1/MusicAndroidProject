@@ -2,7 +2,6 @@ package com.bku.musicandroid.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,22 +10,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bku.musicandroid.Adapter.PlayListAdapter;
-import com.bku.musicandroid.Adapter.SearchAdapter;
 import com.bku.musicandroid.Model.PlayListOnlineInfo;
 import com.bku.musicandroid.Model.SongPlayerOnlineInfo;
 import com.bku.musicandroid.R;
-import com.bku.musicandroid.Utility.UtilitySongOfflineClass;
-import com.bku.musicandroid.Utility.UtilitySongOnlineClass;
-import com.fasterxml.jackson.databind.ser.std.DateTimeSerializerBase;
-import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 

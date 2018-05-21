@@ -2,7 +2,6 @@ package com.bku.musicandroid.Activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,7 +13,6 @@ import android.widget.ImageView;
 import com.bku.musicandroid.Adapter.OfflinePlaylistRecycleAdapter;
 import com.bku.musicandroid.Database.OfflineDatabaseHelper;
 import com.bku.musicandroid.Model.OfflinePlaylist;
-import com.bku.musicandroid.Model.SongPlayerOfflineInfo;
 import com.bku.musicandroid.R;
 
 import java.util.ArrayList;

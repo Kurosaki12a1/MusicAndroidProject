@@ -1,9 +1,7 @@
 package com.bku.musicandroid.Adapter;
 
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -15,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bku.musicandroid.Activity.ChooseOfflinePlaylistActivity;
 import com.bku.musicandroid.Database.OfflineDatabaseHelper;
 import com.bku.musicandroid.Fragments.OfflineSongInPlaylistFragment;
 import com.bku.musicandroid.Model.OfflinePlaylist;
@@ -25,7 +22,6 @@ import com.bku.musicandroid.Utility.UtilitySongOfflineClass;
 import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 

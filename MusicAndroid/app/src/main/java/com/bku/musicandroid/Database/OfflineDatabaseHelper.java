@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.bku.musicandroid.Model.OfflinePlaylist;
 import com.bku.musicandroid.Model.SongPlayerOfflineInfo;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**

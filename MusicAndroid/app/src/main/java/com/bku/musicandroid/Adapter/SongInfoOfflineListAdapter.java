@@ -21,11 +21,9 @@ import com.bku.musicandroid.Activity.ChooseOfflinePlaylistActivity;
 import com.bku.musicandroid.Activity.SongOfflinePlayerActivity;
 import com.bku.musicandroid.Database.OfflineDatabaseHelper;
 import com.bku.musicandroid.R;
-import com.bku.musicandroid.Model.SongPlayerInfo;
 import com.bku.musicandroid.Model.SongPlayerOfflineInfo;
 import com.bku.musicandroid.Utility.UtilitySongOfflineClass;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

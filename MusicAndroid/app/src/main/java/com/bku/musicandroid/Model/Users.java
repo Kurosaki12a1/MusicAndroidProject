@@ -1,7 +1,5 @@
 package com.bku.musicandroid.Model;
 
-import java.util.Date;
-
 /**
  * Created by Administrator on 3/21/2018.
  */

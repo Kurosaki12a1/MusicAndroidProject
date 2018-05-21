@@ -22,11 +22,9 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.bku.musicandroid.Activity.LoginActivity;
-import com.bku.musicandroid.Activity.MainScreenActivity;
 import com.bku.musicandroid.Model.SongPlayerInfo;
 import com.bku.musicandroid.Model.SongPlayerOnlineInfo;
 import com.bku.musicandroid.R;
-import com.bku.musicandroid.Model.SongPlayerOfflineInfo;
 import com.bku.musicandroid.Utility.Constants;
 import com.bku.musicandroid.Utility.UtilitySongOfflineClass;
 import com.bku.musicandroid.Utility.UtilitySongOnlineClass;

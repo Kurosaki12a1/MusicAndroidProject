@@ -2,8 +2,6 @@ package com.bku.musicandroid.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -12,15 +10,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bku.musicandroid.Activity.ActivityPlayListOnline;
 import com.bku.musicandroid.Activity.ChangePasswordActivity;
@@ -29,7 +23,6 @@ import com.bku.musicandroid.Activity.FavoriteSongActivity;
 import com.bku.musicandroid.Activity.LoginActivity;
 import com.bku.musicandroid.Activity.UploadSongActivity;
 import com.bku.musicandroid.R;
-import com.bku.musicandroid.Service.SongPlayerService;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -37,21 +30,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-
-import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by Welcome on 5/13/2018.

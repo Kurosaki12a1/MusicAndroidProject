@@ -12,7 +12,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.bku.musicandroid.R;
 import com.bku.musicandroid.Model.Users;
@@ -34,7 +33,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.lang.Thread.sleep;
 
 /**
  * Created by Administrator on 3/21/2018.
@@ -71,8 +69,8 @@ public class SignUpActivity extends Activity {
                 confirmpassTxt = findViewById(R.id.confirmpass_txt);
                 usernameTxt = findViewById(R.id.username_txt);
                 email = emailTxt.getText().toString().trim();
-                password = passwordTxt.getText().toString().trim();
-                confirmpass = confirmpassTxt.getText().toString().trim();
+                password = passwordTxt.getText().toString();
+                confirmpass = confirmpassTxt.getText().toString();
                 username = usernameTxt.getText().toString().trim();
                 progressDialog = new ProgressDialog(SignUpActivity.this);
                 progressDialog.setTitle("Sign up");
@@ -120,18 +118,19 @@ public class SignUpActivity extends Activity {
                                                 TastyToast.makeText(SignUpActivity.this,
                                                         "Verification email sent to " + firebaseuser.getEmail() + ". Please verifying in your email.",
                                                         TastyToast.LENGTH_SHORT, TastyToast.INFO).show();
+                                                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                                                startActivity(intent);
+                                                auth.signOut();
                                             } else {
                                                 progressDialog.dismiss();
                                                 Log.e("1abc", "sendEmailVerification", task.getException());
                                                 TastyToast.makeText(getApplicationContext(),
                                                         "Failed to send verification email.",
                                                         TastyToast.LENGTH_SHORT, TastyToast.ERROR).show();
+                                                auth.signOut();
                                             }
                                         }
                                     });
-                            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            auth.signOut();
 
                             //        updateUI(user);
                         } else {
@@ -158,8 +157,8 @@ public class SignUpActivity extends Activity {
         confirmpassTxt = findViewById(R.id.confirmpass_txt);
         usernameTxt = findViewById(R.id.username_txt);
         email = emailTxt.getText().toString().trim();
-        password = passwordTxt.getText().toString().trim();
-        confirmpass = confirmpassTxt.getText().toString().trim();
+        password = passwordTxt.getText().toString();
+        confirmpass = confirmpassTxt.getText().toString();
         username = usernameTxt.getText().toString().trim();
         Log.d("1abc", "pass: " + password + " Confirm: " + confirmpass + " email: " + email + " username: " + username);
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
