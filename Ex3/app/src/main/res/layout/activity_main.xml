@@ -1,18 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.bku.jobs.MainActivity">
+    android:background="#423752"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+        <TextView
+            android:id="@+id/txtTab"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Home"
+            android:textColor="@color/colorWhite"
+            android:textSize="28sp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:background="#605271"
+            android:textStyle="bold"
+            />
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_horizontal_ntb"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <devlight.io.library.ntb.NavigationTabBar
+        android:id="@+id/ntb_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        app:ntb_badge_size="1sp"
+        app:ntb_badge_bg_color="#ffff0000"
+        app:ntb_badge_gravity="top"
+        app:ntb_badge_position="left"
+        app:ntb_badge_title_color="#ffffffff"
+        app:ntb_badge_use_typeface="true"
+        app:ntb_badged="true"
+        app:ntb_typeface="fonts/agency.ttf"/>
+
+
+
+
+</LinearLayout>
