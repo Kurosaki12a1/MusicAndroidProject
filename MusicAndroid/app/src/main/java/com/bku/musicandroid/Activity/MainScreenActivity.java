@@ -92,7 +92,7 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
             currentItem=extras.getInt("currentItem");
             mainViewPager.setCurrentItem(currentItem);
         }
-        //set Default Item 
+        //set Default Item
         currentItem=0;
 
         imgPlay = findViewById(R.id.imgPlay);
