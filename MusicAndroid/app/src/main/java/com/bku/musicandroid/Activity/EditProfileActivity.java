@@ -276,6 +276,7 @@ public class EditProfileActivity extends AppCompatActivity {
                             if (progress >= 100) {
                                 progressDialog.dismiss();
                                 Intent intent = new Intent(EditProfileActivity.this, MainScreenActivity.class);
+                                intent.putExtra("currentItem",4);
                                 startActivity(intent);
                                 finish();
                             }
@@ -330,6 +331,7 @@ public class EditProfileActivity extends AppCompatActivity {
                             if (progress >= 100) {
                                 progressDialog.dismiss();
                                 Intent intent = new Intent(EditProfileActivity.this, MainScreenActivity.class);
+                                intent.putExtra("currentItem",4);
                                 startActivity(intent);
                                 finish();
                             }
@@ -387,10 +389,16 @@ public class EditProfileActivity extends AppCompatActivity {
                     });
 
         } else {
+            progressDialog.dismiss();
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("All_Users_Info_Database");
             Users user = new Users(username.getText().toString().trim(), email.getText().toString().trim(),
                     fullname.getText().toString().trim(), avatarURL, dateofbirth.getText().toString().trim(), backGroundAvatarURL);
             databaseReference.child("users").child(userId).setValue(user);
+            Intent intent = new Intent(EditProfileActivity.this, MainScreenActivity.class);
+            intent.putExtra("currentItem",4);
+            startActivity(intent);
+
+            finish();
         }
     }
 
@@ -442,6 +450,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         if (progress >= 100) {
                             progressDialog.dismiss();
                             Intent intent = new Intent(EditProfileActivity.this, MainScreenActivity.class);
+                            intent.putExtra("currentItem",4);
                             startActivity(intent);
                             finish();
                         }
