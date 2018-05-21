@@ -73,6 +73,7 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
     // Firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private int currentItem=0;
     //Navigation Drawer
 
 
@@ -86,6 +87,13 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
         txtStatus=(TextView)findViewById(R.id.txtTab);
         mainFragmentPagerAdapter = new MainFragmentPagerAdapter(this, getSupportFragmentManager());
         mainViewPager.setAdapter(mainFragmentPagerAdapter);
+        Bundle extras = getIntent().getExtras();
+        if(extras!=null){
+            currentItem=extras.getInt("currentItem");
+            mainViewPager.setCurrentItem(currentItem);
+        }
+        //set Default Item 
+        currentItem=0;
 
         imgPlay = findViewById(R.id.imgPlay);
         layoutMusicControl = findViewById(R.id.layoutMusicControl);
@@ -213,7 +221,7 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
 
 
         navigationTabBar.setModels(models);
-        navigationTabBar.setViewPager(mainViewPager,0);
+        navigationTabBar.setViewPager(mainViewPager,currentItem);
 
         //IMPORTANT: ENABLE SCROLL BEHAVIOUR IN COORDINATOR LAYOUT
         navigationTabBar.setBehaviorEnabled(true);

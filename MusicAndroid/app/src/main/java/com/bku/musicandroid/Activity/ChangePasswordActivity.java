@@ -4,6 +4,7 @@ package com.bku.musicandroid.Activity;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -102,6 +103,9 @@ public class ChangePasswordActivity extends Activity {
                                         progressDialog.dismiss();
                                         if (task.isSuccessful()) {
                                             TastyToast.makeText(getApplicationContext(), "Changing passsword successfully.", TastyToast.LENGTH_SHORT, TastyToast.SUCCESS).show();
+                                            Intent intent = new Intent(ChangePasswordActivity.this, MainScreenActivity.class);
+                                            intent.putExtra("currentItem",4);
+                                            startActivity(intent);
                                             finish();
                                         } else {
                                             TastyToast.makeText(getApplicationContext(), "Error occured, changing password failed.", TastyToast.LENGTH_SHORT, TastyToast.ERROR).show();

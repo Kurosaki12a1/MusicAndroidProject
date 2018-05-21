@@ -264,6 +264,7 @@ public class UploadSongActivity extends AppCompatActivity {
                             if (progress >= 100) {
                                 Intent intent = new Intent(UploadSongActivity.this, MainScreenActivity.class);
                                 startActivity(intent);
+                                intent.putExtra("currentItem",4);
                                 finish();
                             }
 
