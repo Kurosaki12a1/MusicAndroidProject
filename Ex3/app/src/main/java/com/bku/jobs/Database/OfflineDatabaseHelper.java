@@ -23,6 +23,10 @@ public class OfflineDatabaseHelper extends SQLiteOpenHelper{
 
     private Context context;
 
+    public OfflineDatabaseHelper(Context context){
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
+    }
     public OfflineDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         this.context=context;
