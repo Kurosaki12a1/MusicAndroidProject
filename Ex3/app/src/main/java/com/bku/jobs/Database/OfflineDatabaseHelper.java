@@ -1,8 +1,14 @@
 package com.bku.jobs.Database;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.bku.jobs.Models.JobInfo;
+
+import java.util.ArrayList;
 
 /**
  * Created by Welcome on 5/21/2018.
@@ -24,48 +30,84 @@ public class OfflineDatabaseHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL(JobInfo.TABLE_NAME);
       /*  sqLiteDatabase.execSQL(OfflinePlaylist.CREATE_TABLE);
         sqLiteDatabase.execSQL(SongPlayerOfflineInfo.CREATE_TABLE);*/
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-     /*   sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + OfflinePlaylist.TABLE_NAME);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + SongPlayerOfflineInfo.TABLE_NAME);
-
-        onCreate(sqLiteDatabase);*/
+        db.execSQL("DROP TABLE IF EXISTS " + JobInfo.TABLE_NAME);
+        onCreate(db);
     }
 
-   /* public int insertPlaylist(OfflinePlaylist playlist) {
-        SQLiteDatabase db = getWritableDatabase();
-
-        ContentValues value = new ContentValues();
-        value.put(OfflinePlaylist.COLUMN_NAME, playlist.getName());
-        value.put(OfflinePlaylist.COLUMN_SONG_COUNT, playlist.getSongCount());
-        long id = db.insert(OfflinePlaylist.TABLE_NAME, null, value);
+    public String insertJob(JobInfo job){
+        SQLiteDatabase db=getWritableDatabase();
+        ContentValues value=new ContentValues();
+        value.put(JobInfo.COLUMN_ID,job.getJobId());
+        value.put(JobInfo.COLUMN_CreatedAt,job.getJobCreatedAt());
+        value.put(JobInfo.COLUMN_Title,job.getJobTitle());
+        value.put(JobInfo.COLUMN_Location,job.getLocation());
+        value.put(JobInfo.COLUMN_Type,job.getType());
+        value.put(JobInfo.COLUMN_Description,job.getDescription());
+        value.put(JobInfo.COLUMN_howToApply,job.getHowToApply());
+        value.put(JobInfo.COLUMN_Company,job.getCompany());
+        value.put(JobInfo.COLUMN_CompanyURL,job.getCompanyURL());
+        value.put(JobInfo.COLUMN_CompanyLogo,job.getCompanyLogo());
+        value.put(JobInfo.COLUMN_URL,job.getURL());
+        db.insert(JobInfo.TABLE_NAME, null, value);
         db.close();
-
-        return (int) id;
+        return  job.getJobId();
     }
 
-    public void updatePlaylist(int id, String columnName, int value) {
+    public void updateJob(String id, String columnName, int value) {
         SQLiteDatabase db = getWritableDatabase();
-
         ContentValues values = new ContentValues();
         values.put(columnName, String.valueOf(value));
-        db.update(OfflinePlaylist.TABLE_NAME, values, " id = ? ", new String[]{String.valueOf(id)});
+        db.update(JobInfo.TABLE_NAME, values, " Id = ? ", new String[]{(id)});
     }
 
-    public void deletePlaylist(int id) {
+    public void deleteJob(String id) {
         SQLiteDatabase db = getWritableDatabase();
-        // First delete the playlist in table playlist
-        db.delete(OfflinePlaylist.TABLE_NAME, "id = ?", new String[]{String.valueOf(id)});
-        // Then delete all song belong to this playlist in the table
-        db.delete(SongPlayerOfflineInfo.TABLE_NAME, SongPlayerOfflineInfo.COLUMN_PLAYLIST_ID + " = ? ", new String[]{String.valueOf(id)});
+        //  delete the job id in table Jon
+        db.delete(JobInfo.TABLE_NAME, "Id = ?", new String[]{(id)});
         db.close();
     }
 
+    public ArrayList<JobInfo> getAllJob() {
+        ArrayList<JobInfo> listJob = new ArrayList<>();
+        // Select All Query
+        String selectQuery = "SELECT * FROM " + JobInfo.TABLE_NAME + " ORDER BY " + JobInfo.COLUMN_ID;
 
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                JobInfo lst = new JobInfo();
+                lst.setJobId(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_ID)));
+                lst.setJobId(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_CreatedAt)));
+                lst.setJobId(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_Title)));
+                lst.setJobId(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_Location)));
+                lst.setJobId(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_Type)));
+                lst.setJobId(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_Description)));
+                lst.setJobId(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_howToApply)));
+                lst.setJobId(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_Company)));
+                lst.setJobId(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_CompanyURL)));
+                lst.setJobId(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_CompanyLogo)));
+                lst.setJobId(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_URL)));
+                listJob.add(lst);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return listJob;
+    }
+
+
+
+/*
     public OfflinePlaylist getPlaylist(int id) {
         SQLiteDatabase db = getReadableDatabase();
         // Select All Query

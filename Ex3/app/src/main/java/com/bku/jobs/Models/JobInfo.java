@@ -7,7 +7,78 @@ package com.bku.jobs.Models;
  */
 
 public class JobInfo {
+
+    public static final String TABLE_NAME="Favorite_Job";
+
+    public static final String COLUMN_ID="Id";
+
+    public static final String COLUMN_CreatedAt="createdAt";
+
+    public static final String COLUMN_Title="Title";
+
+    public static final String COLUMN_Location="Location";
+
+    public static final String COLUMN_Type="Type";
+
+    public static final String COLUMN_Description="Description";
+
+    public static final String COLUMN_howToApply="How To Apply";
+
+    public static final String COLUMN_Company="Company Name";
+
+    public static final String COLUMN_CompanyURL="Website of Company";
+
+    public static final String COLUMN_CompanyLogo="Company Logo";
+
+    public static final String COLUMN_URL="URL";
+
+
+    public void setJobId(String jobId) {
+        JobId = jobId;
+    }
+
     private String JobId;
+
+    public void setJobCreatedAt(String jobCreatedAt) {
+        JobCreatedAt = jobCreatedAt;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        JobTitle = jobTitle;
+    }
+
+    public void setLocation(String location) {
+        Location = location;
+    }
+
+    public void setType(String type) {
+        Type = type;
+    }
+
+    public void setDescription(String description) {
+        Description = description;
+    }
+
+    public void setHowToApply(String howToApply) {
+        HowToApply = howToApply;
+    }
+
+    public void setCompany(String company) {
+        Company = company;
+    }
+
+    public void setCompanyURL(String companyURL) {
+        CompanyURL = companyURL;
+    }
+
+    public void setCompanyLogo(String companyLogo) {
+        CompanyLogo = companyLogo;
+    }
+
+    public void setURL(String URL) {
+        this.URL = URL;
+    }
+
     private String JobCreatedAt;
     private String JobTitle;
     private String Location;
@@ -18,6 +89,10 @@ public class JobInfo {
     private String CompanyURL; //url cua trang cong ty
     private String CompanyLogo;
     private String URL; // url cua trang tren github
+
+    public JobInfo(){
+
+    }
 
     public JobInfo(String jobId,String jobCreatedAt,String jobTitle,String location,String Type,
                    String description,String howToApply,String company,String companyURL,
