@@ -15,8 +15,9 @@ import com.bku.jobs.R;
 
 public class JobDetailActivity extends AppCompatActivity {
 
-    JobInfo job;
+   // JobInfo job;
     ImageView backBtn;
+
     TextView jobTitle, company, jobType, location, jobCreated, jobDescription, howToApply;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class JobDetailActivity extends AppCompatActivity {
                 jobType.setText(extras.getString("jobType"));
                 location.setText(extras.getString("location"));
                 jobCreated.setText(extras.getString("jobCreated"));
-                jobDescription.setText(extras.getString("jobDescription"));
+                jobDescription.setText(fromHtml(extras.getString("jobDescription")));
                 howToApply.setText(extras.getString("howToApply"));
 
             }
