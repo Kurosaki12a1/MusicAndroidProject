@@ -19,6 +19,9 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by Huy on 05/23/18.
  */
@@ -26,6 +29,13 @@ import java.util.List;
 public class JobsAdapter extends ArrayAdapter<JobInfo> {
     private Context mContext;
     private List<JobInfo> jobList = new ArrayList<>();
+
+    @BindView(R.id.companyLogo) ImageView companyLogo;
+    @BindView(R.id.titleJob) TextView titleJob;
+    @BindView(R.id.companyName) TextView companyName;
+    @BindView(R.id.typeJob) TextView typeJob;
+    @BindView(R.id.location) TextView location;
+    @BindView(R.id.createdAt) TextView createdAt;
 
     public JobsAdapter(@NonNull Context context, ArrayList<JobInfo> list){
         super(context,0,list);
@@ -38,20 +48,15 @@ public class JobsAdapter extends ArrayAdapter<JobInfo> {
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listItem = convertView;
         if (listItem == null)
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.list_item,parent,false);
-        JobInfo currentJob = jobList.get(position);
-        ImageView logoCompany = (ImageView) listItem.findViewById(R.id.companyLogo);
-        Glide.with(mContext).load(currentJob.getCompanyLogo()).into(logoCompany);
-        TextView jobTitle = (TextView) listItem.findViewById(R.id.jobTitle);
-        jobTitle.setText(currentJob.getJobTitle());
-        TextView company = (TextView) listItem.findViewById(R.id.companyName);
-        company.setText(currentJob.getCompany());
-        TextView jobType = (TextView) listItem.findViewById(R.id.jobType);
-        jobType.setText(currentJob.getType());
-        TextView location = (TextView) listItem.findViewById(R.id.location);
-        location.setText(currentJob.getLocation());
-        TextView jobCreated = (TextView) listItem.findViewById(R.id.jobCreated);
-        jobCreated.setText(currentJob.getJobCreatedAt());
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.favorite_job_item,parent,false);
+        JobInfo jobInfo=jobList.get(position);
+        ButterKnife.bind(this,listItem);
+        Glide.with(mContext).load(jobInfo.getCompanyLogo()).fitCenter().into(companyLogo);
+        titleJob.setText(jobInfo.getJobTitle());
+        typeJob.setText("/ " +jobInfo.getType());
+        companyName.setText("Company Name : " +jobInfo.getCompany());
+        createdAt.setText(jobInfo.getJobCreatedAt());
+        location.setText("Location : "+jobInfo.getLocation());
         return listItem;
     }
 

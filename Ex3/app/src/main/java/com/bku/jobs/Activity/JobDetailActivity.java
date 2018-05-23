@@ -20,10 +20,12 @@ import com.bku.jobs.Util.UlTagHandler;
 
 public class JobDetailActivity extends AppCompatActivity {
 
+
     ImageView backBtn;
     TextView jobTitle, company, jobType, location, jobCreated, jobDescription;
     Button applyBtn;
     String howToApply;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +44,7 @@ public class JobDetailActivity extends AppCompatActivity {
                 location.setText(extras.getString("location"));
                 jobCreated.setText(extras.getString("jobCreated"));
                 jobDescription.setText(fromHtml(extras.getString("jobDescription")));
+
                 jobDescription.setMovementMethod(LinkMovementMethod.getInstance());
                 howToApply = extras.getString("howToApply");
             }
