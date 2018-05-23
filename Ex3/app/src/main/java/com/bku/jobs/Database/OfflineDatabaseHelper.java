@@ -78,6 +78,20 @@ public class OfflineDatabaseHelper extends SQLiteOpenHelper{
         db.close();
     }
 
+    public boolean checkExist(String id){
+        SQLiteDatabase db = getReadableDatabase();
+        String selectQuery = "SELECT * FROM "+ JobInfo.TABLE_NAME + " WHERE "+JobInfo.COLUMN_ID + " ='"+id+"' ";
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if(cursor!=null){
+            if(cursor.getCount()>0){
+                cursor.close();
+                return true;
+            }
+            cursor.close();
+        }
+        return false;
+    }
+
     public ArrayList<JobInfo> getAllJob() {
         ArrayList<JobInfo> listJob = new ArrayList<>();
         // Select All Query

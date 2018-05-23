@@ -14,23 +14,31 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bku.jobs.Database.OfflineDatabaseHelper;
 import com.bku.jobs.Models.JobInfo;
 import com.bku.jobs.R;
 import com.bku.jobs.Util.UlTagHandler;
+import com.bku.jobs.Util.UtilityJob;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class JobDetailActivity extends AppCompatActivity {
 
-
+    @BindView(R.id.liked) ImageView liked;
     ImageView backBtn;
     TextView jobTitle, company, jobType, location, jobCreated, jobDescription;
     Button applyBtn;
     String howToApply;
-
+    OfflineDatabaseHelper db;
+    JobInfo jobInfo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_detail);
+        ButterKnife.bind(this);
         bindView();
+        db=new OfflineDatabaseHelper(JobDetailActivity.this);
         if (savedInstanceState == null){
             Bundle extras = getIntent().getExtras();
             if(extras == null){
@@ -78,6 +86,30 @@ public class JobDetailActivity extends AppCompatActivity {
                         .show();
             }
         });
+        jobInfo= UtilityJob.getInstance().getJobInfo();
+        checkAlreadyLiked();
+        liked.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(db.checkExist(jobInfo.getJobId())){
+                    db.deleteJob(jobInfo.getJobId());
+                    liked.setImageDrawable(getResources().getDrawable(R.drawable.ic_fav_video));
+                }
+                else {
+                    db.insertJob(jobInfo);
+                    liked.setImageDrawable(getResources().getDrawable(R.drawable.ic_faved_album));
+                }
+            }
+        });
+    }
+
+    private void checkAlreadyLiked(){
+        if(db.checkExist(jobInfo.getJobId())){
+            liked.setImageDrawable(getResources().getDrawable(R.drawable.ic_faved_album));
+        }
+        else{
+            liked.setImageDrawable(getResources().getDrawable(R.drawable.ic_fav_video));
+        }
     }
 
     @SuppressWarnings("deprecation")

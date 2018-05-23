@@ -30,6 +30,7 @@ import com.bku.jobs.Adapter.JobsAdapter;
 import com.bku.jobs.Models.JobInfo;
 import com.bku.jobs.R;
 import com.bku.jobs.Util.HttpHandler;
+import com.bku.jobs.Util.UtilityJob;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -94,6 +95,8 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         intent.putExtra("jobCreated", jobsList.get(i).getJobCreatedAt());
         intent.putExtra("jobDescription", jobsList.get(i).getDescription());
         intent.putExtra("howToApply",jobsList.get(i).getHowToApply());
+        UtilityJob utilityJob=UtilityJob.getInstance();
+        utilityJob.setJobInfo(jobsList.get(i));
         startActivity(intent);
     }
 
