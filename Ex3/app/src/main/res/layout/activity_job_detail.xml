@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.bku.jobs.Activity.JobDetailActivity"
-    android:orientation="vertical">
+
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:background="@color/colorPrimary">
+        android:background="#12708B">
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -24,63 +30,90 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Job Detail"
-            android:layout_marginTop="15dp"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:textStyle="bold"
             android:textColor="@color/colorWhite"/>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp">
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_heart"
+                android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
     </LinearLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/jobTitle"
-                android:text="Android Developer"
-                android:textStyle="bold"
-                android:textSize="20dp"
-                android:layout_marginTop="5dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/jobTitle"
+                    android:text="Android Developer"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_marginTop="5dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:id="@+id/companyName"
+                        android:text="Apple" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/jobType"
+                        android:layout_marginLeft="10dp"
+                        android:text="Full time"/>
+                </LinearLayout>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/companyName"
-                    android:text="Apple" />
+                    android:id="@+id/location"
+                    android:text="USA"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/jobType"
-                    android:layout_marginLeft="10dp"
-                    android:text="Full time"/>
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="2hr ago"
+                    android:id="@+id/jobCreated"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="Description"
+                    android:id="@+id/jobDescription"/>
             </LinearLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/location"
-                android:text="USA"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2hr ago"
-                android:id="@+id/jobCreated"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Description"
-                android:id="@+id/jobDescription"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/how_to_apply"
-                android:text="How to apply"/>
-        </LinearLayout>
-    </ScrollView>
 
+
+    </ScrollView>
 </LinearLayout>
+    <Button
+        android:id="@+id/applyBtn"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="APPLY NOW"
+        android:background="#FF5C00"
+        android:layout_alignParentBottom="true"
+        />
+</RelativeLayout>

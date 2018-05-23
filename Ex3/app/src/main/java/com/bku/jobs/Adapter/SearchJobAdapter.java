@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bku.jobs.Database.OfflineDatabaseHelper;
-import com.bku.jobs.Fragment.FavoriteFragment;
 import com.bku.jobs.Models.JobInfo;
 import com.bku.jobs.R;
 import com.bumptech.glide.Glide;
@@ -24,13 +22,13 @@ import butterknife.ButterKnife;
  * Created by Welcome on 5/22/2018.
  */
 
-public class FavoriteJobAdapter extends RecyclerView.Adapter<FavoriteJobAdapter.ViewHolder> {
+public class SearchJobAdapter extends RecyclerView.Adapter<SearchJobAdapter.ViewHolder> {
 
     private static Context ctx;
     ArrayList<JobInfo> lstJobInfo;
 
 
-    public FavoriteJobAdapter(Context context, ArrayList<JobInfo> lst){
+    public SearchJobAdapter(Context context, ArrayList<JobInfo> lst){
         this.ctx=context;
         this.lstJobInfo=new ArrayList<>(lst);
         this.lstJobInfo=lst;
@@ -38,22 +36,22 @@ public class FavoriteJobAdapter extends RecyclerView.Adapter<FavoriteJobAdapter.
 
     @NonNull
     @Override
-    public FavoriteJobAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SearchJobAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.favorite_job_item, parent, false);
-        ViewHolder viewHolder = new FavoriteJobAdapter.ViewHolder(view);
+        ViewHolder viewHolder = new SearchJobAdapter.ViewHolder(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FavoriteJobAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SearchJobAdapter.ViewHolder holder, int position) {
 
         JobInfo jobInfo=lstJobInfo.get(position);
         Glide.with(ctx).load(jobInfo.getCompanyLogo()).fitCenter().into(holder.companyLogo);
         holder.titleJob.setText(jobInfo.getJobTitle());
         holder.typeJob.setText("/ " +jobInfo.getType());
+        holder.location.setText(jobInfo.getLocation());
         holder.companyName.setText("Company Name : " +jobInfo.getCompany());
         holder.createdAt.setText(jobInfo.getJobCreatedAt());
-        holder.location.setText("Location : "+jobInfo.getLocation());
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
