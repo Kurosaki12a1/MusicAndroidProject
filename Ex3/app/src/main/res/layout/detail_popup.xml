@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    android:background="@color/colorTabBackgroundLighter">
+
+    <TextView
+        android:text="Detail Info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:id="@+id/title_popup"
+        android:background="@drawable/custom_border"
+        />
+
+    <ImageView
+        android:id="@+id/companyLogo"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_below="@+id/title_popup"
+        android:layout_marginTop="20dp"
+
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/companyLogo"
+        android:layout_below="@+id/title_popup"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/rel1"
+        android:background="@drawable/custom_border">
+
+        <TextView
+            android:id="@+id/titleJob"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textSize="16sp"
+            android:textColor="@color/colorWhite"
+            android:text="Title Job"
+            />
+
+
+        <TextView
+            android:id="@+id/companyName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_below="@id/titleJob"
+            android:textSize="14sp"
+            android:textColor="@color/colorWhite"
+            android:text="Company Name"
+            />
+
+        <TextView
+            android:id="@+id/typeJob"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/companyName"
+            android:layout_alignBaseline="@+id/companyName"
+            android:textSize="14sp"
+            android:textColor="@color/colorWhite"
+            android:text=" / Type Job"
+            />
+
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/companyName"
+            android:textSize="14sp"
+            android:textColor="@color/colorWhite"
+            android:text="Ho Chi Minh"
+            />
+
+        <TextView
+            android:id="@+id/createdAt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/location"
+            android:textSize="14sp"
+            android:textColor="@color/colorWhite"
+            android:text="25/05/2018"
+            />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rel1"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        android:background="@drawable/custom_border">
+
+        <TextView
+            android:id="@+id/title_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DETAIL INFORMATION "
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:background="@drawable/custom_border"
+            android:textColor="@color/colorWhite"/>
+
+        <TextView
+            android:id="@+id/websiteCompany"
+            android:layout_below="@+id/title_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Website Company : www.google.com.vn"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+
+            android:textColor="@color/colorWhite"/>
+
+
+        <TextView
+            android:id="@+id/Description"
+            android:layout_below="@+id/websiteCompany"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description : We are the best"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:inputType="textMultiLine"
+
+            android:textColor="@color/colorWhite"/>
+
+        <TextView
+            android:id="@+id/howToApply"
+            android:layout_below="@+id/Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Link Apply : abc.xyz"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:inputType="textMultiLine"
+            android:textColor="@color/colorWhite"/>
+
+        <TextView
+            android:id="@+id/linkGitHub"
+            android:layout_below="@+id/howToApply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Link on GitHub : "
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:inputType="textMultiLine"
+            android:textColor="@color/colorWhite"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
