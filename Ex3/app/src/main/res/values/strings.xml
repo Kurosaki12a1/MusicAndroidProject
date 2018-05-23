@@ -3,4 +3,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="name_hint">Your name:</string>
+    <string name="enter_name">Enter your name</string>
+    <string name="position_hint">Position:</string>
+    <string name="enter_position">Enter position</string>
+    <string name="location_hint">Location:</string>
+    <string name="enter_location">Enter location</string>
+    <string name="schedule_hint">Schedule:</string>
+    <string name="save">Save</string>
 </resources>

@@ -3,5 +3,92 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     android:id="@+id/fragment_profile">
+    <TextView
+        android:id="@+id/txtHintName"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/colorWhite"
+        android:text="@string/name_hint"/>
+    <EditText
+        android:id="@+id/edtName"
+        android:layout_toEndOf="@+id/txtHintName"
+        android:layout_width="match_parent"
+        android:hint="@string/enter_name"
+        android:textColor="@color/colorWhite"
+        android:backgroundTint="@color/colorWhite"
+        android:textColorHint="@color/yellow"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/txtHintPosition"
+        android:layout_below="@id/txtHintName"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/colorWhite"
+        android:text="@string/position_hint"/>
+    <EditText
+        android:id="@+id/edtPosition"
+        android:layout_toEndOf="@+id/txtHintPosition"
+        android:layout_below="@id/edtName"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:hint="@string/enter_position"
+        android:textColor="@color/colorWhite"
+        android:backgroundTint="@color/colorWhite"
+        android:textColorHint="@color/yellow"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/txtHintLocation"
+        android:layout_below="@id/txtHintPosition"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/colorWhite"
+        android:text="@string/location_hint"/>
+    <EditText
+        android:id="@+id/edtLocation"
+        android:layout_toEndOf="@+id/txtHintLocation"
+        android:layout_below="@id/edtPosition"
+        android:layout_width="match_parent"
+        android:hint="@string/enter_location"
+        android:textColor="@color/colorWhite"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/colorWhite"
+        android:textColorHint="@color/yellow"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/txtHintSchedule"
+        android:layout_below="@id/txtHintLocation"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/colorWhite"
+        android:text="@string/schedule_hint"/>
+    <Spinner
+        android:id="@+id/spinnerSchedule"
+        android:layout_toEndOf="@+id/txtHintSchedule"
+        android:layout_below="@id/edtLocation"
+        android:layout_width="wrap_content"
+        android:backgroundTint="@color/colorWhite"
+        android:minHeight="30dp"
+        android:hint="@string/enter_location"
+        android:dropDownWidth="wrap_content"
+        android:layout_marginTop="15dp"
+        android:entries="@array/array_schedule"
+        style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinnerSchedule"
+        android:layout_marginTop="60dp"
+        android:text="@string/save"/>
 </RelativeLayout>
