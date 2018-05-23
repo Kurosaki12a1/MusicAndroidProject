@@ -33,12 +33,12 @@ public class JobInfo {
     public static final String COLUMN_URL="URL";
 
     public static final String CREATE_TABLE=
-            "CREATE TABLE "+ TABLE_NAME + " ( "+COLUMN_ID +"TEXT PRIMARY KEY ,"+
-                    COLUMN_Title + " TEXT,"+COLUMN_CreatedAt+ " TEXT,"+
-                    COLUMN_Location + " TEXT,"+COLUMN_Type+ " TEXT,"+
-                    COLUMN_Description+ " TEXT,"+COLUMN_howToApply + " TEXT,"+
-                    COLUMN_Company + " TEXT,"+ COLUMN_CompanyURL+ " TEXT,"+
-                    COLUMN_CompanyLogo + " TEXT," + COLUMN_URL + " TEXT " +")";
+            "CREATE TABLE "+ TABLE_NAME + " ( "+COLUMN_ID +" TEXT PRIMARY KEY ,"+
+                    COLUMN_Title + " TEXT, "+COLUMN_CreatedAt+ " TEXT, "+
+                    COLUMN_Location + " TEXT, "+COLUMN_Type+ " TEXT, "+
+                    COLUMN_Description+ " TEXT, "+COLUMN_howToApply + " TEXT, "+
+                    COLUMN_Company + " TEXT, "+ COLUMN_CompanyURL+ " TEXT, "+
+                    COLUMN_CompanyLogo + " TEXT, " + COLUMN_URL + " TEXT " +");";
 
 
     public void setJobId(String jobId) {

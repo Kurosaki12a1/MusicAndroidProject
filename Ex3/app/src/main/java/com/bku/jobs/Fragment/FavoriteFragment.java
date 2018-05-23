@@ -52,7 +52,6 @@ public class FavoriteFragment extends Fragment {
         View view =inflater.inflate(R.layout.fragment_favorite_job, container, false);
         ButterKnife.bind(this,view);
         db=new OfflineDatabaseHelper(getContext());
-
         bindView();
         return view;
     }
@@ -68,6 +67,8 @@ public class FavoriteFragment extends Fragment {
     public void bindView() {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        JobInfo job=new JobInfo("1","2","3","4","5","6","7","8","9","http://github-jobs.s3.amazonaws.com/f3315720-554c-11e8-8ca1-a6d2be499f9d.png","11");
+//        db.insertJob(job);
         restoreFromDb();
         recyclerView.setAdapter(adapter);
 
@@ -85,8 +86,8 @@ public class FavoriteFragment extends Fragment {
     }
 
     private void restoreFromDb() {
-        ArrayList<JobInfo> lstJob = new ArrayList<>(db.getAllJob());
-        adapter=new FavoriteJobAdapter(getContext(),lstJob);
+        ArrayList<JobInfo> lstJob = db.getAllJob();
+        adapter=new FavoriteJobAdapter(getActivity(),lstJob);
     }
 
     @Override

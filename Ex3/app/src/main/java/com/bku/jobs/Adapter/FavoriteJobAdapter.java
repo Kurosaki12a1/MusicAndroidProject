@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by Welcome on 5/22/2018.
@@ -45,6 +46,7 @@ public class FavoriteJobAdapter extends RecyclerView.Adapter<FavoriteJobAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull FavoriteJobAdapter.ViewHolder holder, int position) {
+
         JobInfo jobInfo=lstJobInfo.get(position);
         Glide.with(ctx).load(jobInfo.getCompanyLogo()).fitCenter().into(holder.companyLogo);
         holder.titleJob.setText(jobInfo.getJobTitle());
@@ -73,7 +75,7 @@ public class FavoriteJobAdapter extends RecyclerView.Adapter<FavoriteJobAdapter.
         @BindView(R.id.createdAt) TextView createdAt;
         public ViewHolder(View itemView) {
             super(itemView);
-
+            ButterKnife.bind(this,itemView);
         }
     }
 }
