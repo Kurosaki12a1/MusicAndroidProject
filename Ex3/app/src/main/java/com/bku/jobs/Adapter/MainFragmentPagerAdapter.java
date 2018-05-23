@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.bku.jobs.Fragment.FavoriteFragment;
 import com.bku.jobs.Fragment.HomeFragment;
+import com.bku.jobs.Fragment.SearchFragment;
 
 /**
  * Created by Welcome on 5/21/2018.
@@ -26,7 +27,10 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         if (position == 0) {
             return new HomeFragment();
-        } else {
+        } else if (position == 1) {
+            return new SearchFragment();
+        }
+        else {
             return new FavoriteFragment();
         }
     }
@@ -34,7 +38,7 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
         // This determines the number of tabs
         @Override
         public int getCount () {
-            return 2;
+            return 3;
         }
 
         // This determines the title for each tab
@@ -46,6 +50,9 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
                     //return mContext.getString(R.string.category_usefulinfo);
                     return "Home";
                 case 1:
+                    //return mContext.getString(R.string.category_usefulinfo);
+                    return "Search";
+                case 2:
                     //return mContext.getString(R.string.category_places);
                     return "Favorite Job";
                 default:

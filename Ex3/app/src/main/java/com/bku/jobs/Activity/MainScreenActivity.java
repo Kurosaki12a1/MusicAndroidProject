@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bku.jobs.Adapter.MainFragmentPagerAdapter;
 import com.bku.jobs.Fragment.FavoriteFragment;
 import com.bku.jobs.Fragment.HomeFragment;
+import com.bku.jobs.Fragment.SearchFragment;
 import com.bku.jobs.R;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import devlight.io.library.ntb.NavigationTabBar;
 
 public class MainScreenActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener,
-        FavoriteFragment.OnFragmentInteractionListener {
+        FavoriteFragment.OnFragmentInteractionListener, SearchFragment.OnFragmentInteractionListener {
 
     ViewPager mainViewPager;
     MainFragmentPagerAdapter mainFragmentPagerAdapter;
@@ -42,6 +43,13 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
                         getResources().getDrawable(R.drawable.ic_transparent_home),
                         Color.parseColor(colors[0]))
                         .title("Home")
+                        .build()
+        );
+        models.add(
+                new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.ic_search),
+                        Color.parseColor(colors[2]))
+                        .title("Search")
                         .build()
         );
         models.add(
@@ -84,6 +92,9 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
             public void onPageSelected(final int position) {
                 if(position==0){
                     txtStatus.setText("Home");
+                }
+                else if(position==1){
+                    txtStatus.setText("Search");
                 }
                 else {
                     txtStatus.setText("Your Favorite Job");
