@@ -53,6 +53,7 @@ public class FavoriteJobAdapter extends RecyclerView.Adapter<FavoriteJobAdapter.
         holder.typeJob.setText("/" +jobInfo.getType());
         holder.companyName.setText(jobInfo.getCompany());
         holder.createdAt.setText(jobInfo.getJobCreatedAt());
+        holder.location.setText("Location : "+jobInfo.getLocation());
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
