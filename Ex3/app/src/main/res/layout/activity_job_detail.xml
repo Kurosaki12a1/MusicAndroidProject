@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.bku.jobs.Activity.JobDetailActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"

@@ -48,9 +48,9 @@ public class SearchJobAdapter extends RecyclerView.Adapter<SearchJobAdapter.View
         JobInfo jobInfo=lstJobInfo.get(position);
         Glide.with(ctx).load(jobInfo.getCompanyLogo()).fitCenter().into(holder.companyLogo);
         holder.titleJob.setText(jobInfo.getJobTitle());
-        holder.typeJob.setText("/" +jobInfo.getType());
+        holder.typeJob.setText("/ " +jobInfo.getType());
         holder.location.setText(jobInfo.getLocation());
-        holder.companyName.setText(jobInfo.getCompany());
+        holder.companyName.setText("Company Name : " +jobInfo.getCompany());
         holder.createdAt.setText(jobInfo.getJobCreatedAt());
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

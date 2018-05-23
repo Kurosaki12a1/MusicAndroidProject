@@ -50,8 +50,8 @@ public class FavoriteJobAdapter extends RecyclerView.Adapter<FavoriteJobAdapter.
         JobInfo jobInfo=lstJobInfo.get(position);
         Glide.with(ctx).load(jobInfo.getCompanyLogo()).fitCenter().into(holder.companyLogo);
         holder.titleJob.setText(jobInfo.getJobTitle());
-        holder.typeJob.setText("/" +jobInfo.getType());
-        holder.companyName.setText(jobInfo.getCompany());
+        holder.typeJob.setText("/ " +jobInfo.getType());
+        holder.companyName.setText("Company Name : " +jobInfo.getCompany());
         holder.createdAt.setText(jobInfo.getJobCreatedAt());
         holder.location.setText("Location : "+jobInfo.getLocation());
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
