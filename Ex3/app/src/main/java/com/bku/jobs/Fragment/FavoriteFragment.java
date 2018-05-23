@@ -42,7 +42,7 @@ public class FavoriteFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ButterKnife.bind(getActivity());
+
 
     }
 
@@ -50,7 +50,7 @@ public class FavoriteFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =inflater.inflate(R.layout.fragment_favorite_job, container, false);
-
+        ButterKnife.bind(this,view);
         db=new OfflineDatabaseHelper(getContext());
 
         bindView();
@@ -66,6 +66,7 @@ public class FavoriteFragment extends Fragment {
 
 
     public void bindView() {
+
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         restoreFromDb();
         recyclerView.setAdapter(adapter);

@@ -34,7 +34,7 @@ public class OfflineDatabaseHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(JobInfo.TABLE_NAME);
+        db.execSQL(JobInfo.CREATE_TABLE);
       /*  sqLiteDatabase.execSQL(OfflinePlaylist.CREATE_TABLE);
         sqLiteDatabase.execSQL(SongPlayerOfflineInfo.CREATE_TABLE);*/
     }
@@ -81,7 +81,7 @@ public class OfflineDatabaseHelper extends SQLiteOpenHelper{
     public ArrayList<JobInfo> getAllJob() {
         ArrayList<JobInfo> listJob = new ArrayList<>();
         // Select All Query
-        String selectQuery = "SELECT * FROM " + JobInfo.TABLE_NAME + " ORDER BY " + JobInfo.COLUMN_ID;
+        String selectQuery = "SELECT * FROM " + JobInfo.TABLE_NAME ;
 
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
