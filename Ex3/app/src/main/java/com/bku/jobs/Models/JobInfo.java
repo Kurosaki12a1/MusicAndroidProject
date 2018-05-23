@@ -1,12 +1,14 @@
 package com.bku.jobs.Models;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by Welcome on 5/21/2018.
  */
 
-public class JobInfo {
+public class JobInfo implements Parcelable{
 
     public static final String TABLE_NAME="Favorite_Job";
 
@@ -121,5 +123,48 @@ public class JobInfo {
     public String getCompanyURL(){return CompanyURL;}
     public String getCompanyLogo(){return CompanyLogo;}
     public String getURL(){return URL;}
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(this.JobId);
+        parcel.writeString(this.JobTitle);
+        parcel.writeString(this.JobCreatedAt);
+        parcel.writeString(this.Location);
+        parcel.writeString(this.Type);
+        parcel.writeString(this.Description);
+        parcel.writeString(this.HowToApply);
+        parcel.writeString(this.Company);
+        parcel.writeString(this.CompanyURL);
+        parcel.writeString(this.CompanyLogo);
+        parcel.writeString(this.URL);
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public JobInfo createFromParcel(Parcel in) {
+            return new JobInfo(in);
+        }
+
+        public JobInfo[] newArray(int size) {
+            return new JobInfo[size];
+        }
+    };
+    public JobInfo(Parcel in){
+        this.JobId = in.readString();
+        this.JobTitle = in.readString();
+        this.JobCreatedAt = in.readString();
+        this.Location = in.readString();
+        this.Type = in.readString();
+        this.Description = in.readString();
+        this.HowToApply = in.readString();
+        this.Company = in.readString();
+        this.CompanyURL = in.readString();
+        this.CompanyLogo = in.readString();
+        this.URL = in.readString();
+    }
 
 }

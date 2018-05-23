@@ -2,6 +2,7 @@ package com.bku.jobs.Activity;
 
 import android.graphics.Color;
 import android.net.Uri;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import devlight.io.library.ntb.NavigationTabBar;
 
 public class MainScreenActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener,
-        FavoriteFragment.OnFragmentInteractionListener {
+        FavoriteFragment.OnFragmentInteractionListener{
 
     ViewPager mainViewPager;
     MainFragmentPagerAdapter mainFragmentPagerAdapter;
@@ -31,6 +32,7 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
         mainFragmentPagerAdapter = new MainFragmentPagerAdapter(this, getSupportFragmentManager());
         mainViewPager.setAdapter(mainFragmentPagerAdapter);
         initUI();
+
     }
     private void initUI(){
         final String[] colors = getResources().getStringArray(R.array.default_preview);
@@ -102,6 +104,5 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-
     }
 }

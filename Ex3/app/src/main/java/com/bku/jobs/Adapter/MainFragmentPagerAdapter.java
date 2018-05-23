@@ -25,6 +25,7 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
+
             return new HomeFragment();
         } else {
             return new FavoriteFragment();
