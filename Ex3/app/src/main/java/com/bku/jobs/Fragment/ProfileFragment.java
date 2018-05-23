@@ -50,11 +50,19 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        TextView text = (TextView) spinner.getChildAt(0);
+        if (text != null) {
+            text.setTextColor(getResources().getColor(R.color.colorWhite));
+        }
     }
 
     @OnItemSelected(R.id.spinnerSchedule)
     public void spinnerItemSelected(Spinner spinner) {
-        ((TextView)spinner.getChildAt(0)).setTextColor(getResources().getColor(R.color.colorWhite));
+        try {
+            ((TextView) spinner.getChildAt(0)).setTextColor(getResources().getColor(R.color.colorWhite));
+        } catch (Exception e){
+            // DO NOTHING
+        }
     }
 
     @Override
@@ -70,6 +78,7 @@ public class ProfileFragment extends Fragment {
         edtPosition.setText(position);
         edtLocation.setText(location);
         spinner.setSelection(schedule);
+
     }
 
     @OnClick(R.id.btnSave)
