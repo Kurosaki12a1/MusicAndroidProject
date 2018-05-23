@@ -93,7 +93,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         intent.putExtra("location", jobsList.get(i).getLocation());
         intent.putExtra("jobCreated", jobsList.get(i).getJobCreatedAt());
         intent.putExtra("jobDescription", jobsList.get(i).getDescription());
-        intent.putExtra("howToApply", jobsList.get(i).getHowToApply());
+        intent.putExtra("howToApply",jobsList.get(i).getHowToApply());
         startActivity(intent);
     }
 
@@ -196,6 +196,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                         job.setCompany(j.getString("company"));
                         job.setCompanyURL(j.getString("company_url"));
                         job.setCompanyLogo(j.getString("company_logo"));
+                        job.setHowToApply(j.getString("how_to_apply"));
                         job.setURL(j.getString("url"));
                         jobsList.add(i, job);
                     }
