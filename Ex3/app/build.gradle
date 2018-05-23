@@ -35,6 +35,3 @@ dependencies {
     implementation 'devlight.io:navigationtabbar:1.2.5'
     implementation 'com.github.bumptech.glide:glide:3.7.0'
 }
-
-
-

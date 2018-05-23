@@ -24,18 +24,20 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
     ViewPager mainViewPager;
     MainFragmentPagerAdapter mainFragmentPagerAdapter;
     TextView txtStatus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mainViewPager = findViewById(R.id.vp_horizontal_ntb);
-        txtStatus=(TextView)findViewById(R.id.txtTab);
+        txtStatus = (TextView) findViewById(R.id.txtTab);
         mainFragmentPagerAdapter = new MainFragmentPagerAdapter(this, getSupportFragmentManager());
         mainViewPager.setAdapter(mainFragmentPagerAdapter);
         initUI();
 
     }
-    private void initUI(){
+
+    private void initUI() {
         final String[] colors = getResources().getStringArray(R.array.default_preview);
 
         final NavigationTabBar navigationTabBar = (NavigationTabBar) findViewById(R.id.ntb_horizontal);
@@ -61,16 +63,21 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
                         .title("Your Favorite Job")
                         .build()
         );
+        models.add(
+                new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.ic_profile_transparent),
+                        Color.parseColor(colors[3]))
+                        .title("Profile")
+                        .build()
+        );
 
         navigationTabBar.setModels(models);
-        navigationTabBar.setViewPager(mainViewPager,0);
+        navigationTabBar.setViewPager(mainViewPager, 0);
         //set Default Item
-
 
 
         //IMPORTANT: ENABLE SCROLL BEHAVIOUR IN COORDINATOR LAYOUT
         navigationTabBar.setBehaviorEnabled(true);
-
 
 
         navigationTabBar.setOnTabBarSelectedIndexListener(new NavigationTabBar.OnTabBarSelectedIndexListener() {
@@ -92,14 +99,14 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
 
             @Override
             public void onPageSelected(final int position) {
-                if(position==0){
+                if (position == 0) {
                     txtStatus.setText("Home");
-                }
-                else if(position==1){
+                } else if (position == 1) {
                     txtStatus.setText("Search");
-                }
-                else {
+                } else if (position == 2) {
                     txtStatus.setText("Your Favorite Job");
+                } else {
+                    txtStatus.setText("Profile");
                 }
             }
 
