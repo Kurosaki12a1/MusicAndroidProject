@@ -1,6 +1,7 @@
 package com.bku.jobs.Activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -20,15 +21,23 @@ import com.bku.jobs.R;
 import com.bku.jobs.Util.UlTagHandler;
 import com.bku.jobs.Util.UtilityJob;
 
+import org.w3c.dom.Text;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class JobDetailActivity extends AppCompatActivity {
 
     @BindView(R.id.liked) ImageView liked;
-    ImageView backBtn;
-    TextView jobTitle, company, jobType, location, jobCreated, jobDescription;
-    Button applyBtn;
+    @BindView(R.id.jobTitle) TextView jobTitle;
+    @BindView(R.id.companyName) TextView company;
+    @BindView(R.id.jobType) TextView jobType;
+    @BindView(R.id.location) TextView location;
+    @BindView(R.id.jobCreated) TextView jobCreated;
+    @BindView(R.id.jobDescription) TextView jobDescription;
+    @BindView(R.id.applyBtn) Button applyBtn;
+    @BindView(R.id.backBtn) ImageView backBtn;
     String howToApply;
     OfflineDatabaseHelper db;
     JobInfo jobInfo;
@@ -37,32 +46,19 @@ public class JobDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_job_detail);
         ButterKnife.bind(this);
-        bindView();
+        //Declare Database
         db=new OfflineDatabaseHelper(JobDetailActivity.this);
-        if (savedInstanceState == null){
-            Bundle extras = getIntent().getExtras();
-            if(extras == null){
-                Toast.makeText(this,"ERROR", Toast.LENGTH_LONG).show();
-            }
-            else {
-                //company, jobType, location, jobCreated, jobDescription, howToApply;
-                jobTitle.setText(extras.getString("jobTitle"));
-                company.setText(extras.getString("company"));
-                jobType.setText(extras.getString("jobType"));
-                location.setText(extras.getString("location"));
-                jobCreated.setText(extras.getString("jobCreated"));
-                jobDescription.setText(fromHtml(extras.getString("jobDescription")));
-
-                jobDescription.setMovementMethod(LinkMovementMethod.getInstance());
-                howToApply = extras.getString("howToApply");
-            }
-        }
+        //Get JobInfo
+        jobInfo= UtilityJob.getInstance().getJobInfo();
+        checkAlreadyLiked();
+        initUI();
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
+
         applyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,11 +67,7 @@ public class JobDetailActivity extends AppCompatActivity {
                 message.setPadding(10,5,5,0);
                 message.setText(fromHtml(howToApply));
                 message.setMovementMethod(LinkMovementMethod.getInstance());
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                    builder = new AlertDialog.Builder(JobDetailActivity.this, android.R.style.Theme_Material_Dialog_Alert);
-//                } else {
-                    builder = new AlertDialog.Builder(JobDetailActivity.this);
-              //  }
+                builder = new AlertDialog.Builder(JobDetailActivity.this);
                 builder.setTitle(fromHtml("<b>How to apply:</b>"))
                         .setView(message)
                         .setPositiveButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -86,8 +78,7 @@ public class JobDetailActivity extends AppCompatActivity {
                         .show();
             }
         });
-        jobInfo= UtilityJob.getInstance().getJobInfo();
-        checkAlreadyLiked();
+
         liked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,16 +111,17 @@ public class JobDetailActivity extends AppCompatActivity {
             return Html.fromHtml(html,null,new UlTagHandler());
         }
     }
-
-    private void bindView(){
-        backBtn = (ImageView) findViewById(R.id.backBtn);
-        jobTitle = (TextView) findViewById(R.id.jobTitle);
-        company = (TextView) findViewById(R.id.companyName);
-        jobType = (TextView) findViewById(R.id.jobType);
-        location = (TextView) findViewById(R.id.location);
-        jobCreated = (TextView) findViewById(R.id.jobCreated);
-        jobDescription = (TextView) findViewById(R.id.jobDescription);
-        applyBtn = (Button)findViewById(R.id.applyBtn);
+    private void initUI(){
+        jobTitle.setText(jobInfo.getJobTitle());
+        company.setText(jobInfo.getCompany());
+        jobType.setText(jobInfo.getType());
+        location.setText(jobInfo.getLocation());
+        jobCreated.setText(jobInfo.getJobCreatedAt());
+        jobDescription.setText(fromHtml(jobInfo.getDescription()));
+        jobDescription.setMovementMethod(LinkMovementMethod.getInstance());
+        howToApply =jobInfo.getHowToApply();
     }
+
+
 
 }
