@@ -1,22 +1,39 @@
 package com.bku.jobs.Fragment;
 
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.RingtoneManager;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bku.jobs.Models.JobInfo;
 import com.bku.jobs.R;
+import com.bku.jobs.Util.HttpHandler;
+import com.bku.jobs.Util.NotificationHelper;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +44,8 @@ import butterknife.OnItemSelected;
  * A simple {@link Fragment} subclass.
  */
 public class ProfileFragment extends Fragment {
+    public static final String TAG = "PROFILE_FRAGMENT";
+    ArrayList<JobInfo> jobsList = new ArrayList<>();
     @BindView(R.id.edtName)EditText edtName;
     @BindView(R.id.edtPosition)EditText edtPosition;
     @BindView(R.id.edtLocation)EditText edtLocation;
@@ -90,5 +109,75 @@ public class ProfileFragment extends Fragment {
         editor.putString("location", edtLocation.getText().toString());
         editor.putInt("schedule", spinner.getSelectedItemPosition());
         editor.apply();
+
+        Toast.makeText(getContext(), "Profile saved!", Toast.LENGTH_LONG).show();
+
+        String schedule = (spinner.getSelectedItemPosition() == 0) ? "fulltime" : "parttime";
+        String url = "https://jobs.search.gov/jobs/search.json?query="
+                + schedule + "+" + edtPosition.getText().toString() + "+jobs+at+" + edtLocation.getText().toString();
+        GetRelatedJobs getRelatedJobs = new GetRelatedJobs();
+        getRelatedJobs.execute(url);
     }
+
+    private class GetRelatedJobs extends AsyncTask<String, Void, Integer> {
+        @Override
+        protected Integer doInBackground(String... url) {
+            HttpHandler sh = new HttpHandler();
+            String jsonStr = sh.makeServiceCall(url[0]);
+            Log.e(TAG, "Response from url: " + jsonStr );
+            if (jsonStr != null){
+                try {
+                    JSONArray jobs = new JSONArray(jsonStr);
+                    return jobs.length();
+
+//                    for (int i=0; i<jobs.length();i++){
+//                        JSONObject j = jobs.getJSONObject(i);
+//                        JobInfo job = new JobInfo();
+//                        job.setJobId(j.getString("id"));
+//                        job.setJobCreatedAt(j.getString("created_at"));
+//                        job.setJobTitle(j.getString("title"));
+//                        job.setLocation(j.getString("location"));
+//                        job.setType(j.getString("type"));
+//                        job.setDescription(j.getString("description"));
+//                        job.setCompany(j.getString("company"));
+//                        job.setCompanyURL(j.getString("company_url"));
+//                        job.setCompanyLogo(j.getString("company_logo"));
+//                        job.setHowToApply(j.getString("how_to_apply"));
+//                        job.setURL(j.getString("url"));
+//                        jobsList.add(i, job);
+//                    }
+                }catch (final JSONException e){
+                    Log.e(TAG, "Json parsing error: " + e.getMessage());
+                    getActivity().runOnUiThread(new Runnable(){
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity().getApplicationContext(),"Json parsing error: " + e.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            }else {
+                Log.e(TAG, "Couldn't get json from server.");
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity().getApplicationContext(),
+                                "Couldn't get json from server!",
+                                Toast.LENGTH_LONG)
+                                .show();
+                    }
+                });
+            }
+            return null;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        @Override
+        protected void onPostExecute(Integer value) {
+            super.onPostExecute(value);
+            if (value > 0) {
+                new NotificationHelper(getContext()).showNotification(value);
+            }
+        }
+    }
+
 }
