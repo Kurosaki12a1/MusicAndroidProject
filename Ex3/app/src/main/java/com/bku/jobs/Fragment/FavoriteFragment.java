@@ -67,10 +67,8 @@ public class FavoriteFragment extends Fragment {
     public void bindView() {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        JobInfo job=new JobInfo("1","2","3","4","5","6","7","8","9","http://github-jobs.s3.amazonaws.com/f3315720-554c-11e8-8ca1-a6d2be499f9d.png","11");
-//        db.insertJob(job);
         restoreFromDb();
-        recyclerView.setAdapter(adapter);
+
 
         getActivity().getSupportFragmentManager().addOnBackStackChangedListener(new android.support.v4.app.FragmentManager.OnBackStackChangedListener() {
             @Override
@@ -88,6 +86,7 @@ public class FavoriteFragment extends Fragment {
     private void restoreFromDb() {
         ArrayList<JobInfo> lstJob = db.getAllJob();
         adapter=new FavoriteJobAdapter(getActivity(),lstJob);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
