@@ -1,6 +1,7 @@
 package com.bku.jobs.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bku.jobs.Activity.JobDetailActivity;
 import com.bku.jobs.Models.JobInfo;
 import com.bku.jobs.R;
+import com.bku.jobs.Util.UtilityJob;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -45,17 +48,19 @@ public class SearchJobAdapter extends RecyclerView.Adapter<SearchJobAdapter.View
     @Override
     public void onBindViewHolder(@NonNull SearchJobAdapter.ViewHolder holder, int position) {
 
-        JobInfo jobInfo=lstJobInfo.get(position);
+        final JobInfo jobInfo=lstJobInfo.get(position);
         Glide.with(ctx).load(jobInfo.getCompanyLogo()).fitCenter().into(holder.companyLogo);
         holder.titleJob.setText(jobInfo.getJobTitle());
         holder.typeJob.setText("/ " +jobInfo.getType());
         holder.location.setText(jobInfo.getLocation());
         holder.companyName.setText("Company Name : " +jobInfo.getCompany());
         holder.createdAt.setText(jobInfo.getJobCreatedAt());
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
-                return false;
+            public void onClick(View v) {
+                UtilityJob utilityJob=UtilityJob.getInstance();
+                utilityJob.setJobInfo(jobInfo);
+                ctx.startActivity(new Intent(ctx, JobDetailActivity.class));
             }
         });
     }
