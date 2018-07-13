@@ -9,8 +9,28 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_centerInParent="true"/>
-    <ListView
-        android:layout_width="fill_parent"
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/errorText"
+        android:layout_centerInParent="true"
+        android:textColor="@color/colorWhite"
+        android:textSize="24sp"
+        android:visibility="gone"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/jobsList"/>
+        android:text="Try Again"
+        android:layout_below="@+id/errorText"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:id="@+id/btnRetry"/>
+
+    <ListView
+        android:id="@+id/jobsList"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

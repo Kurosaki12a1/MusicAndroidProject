@@ -3,32 +3,40 @@ package com.bku.jobs.Fragment;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.icu.util.TimeUnit;
 import android.net.Uri;
-import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bku.jobs.API.APIService;
 import com.bku.jobs.Adapter.SearchJobAdapter;
-import com.bku.jobs.HTTP.HttpHandler;
-import com.bku.jobs.Models.JobInfo;
+import com.bku.jobs.ModelData.JobData;
 import com.bku.jobs.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
+import rx.Observer;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Welcome on 5/21/2018.
@@ -47,8 +55,16 @@ public class SearchFragment extends Fragment {
     private RecyclerView resultList;
     private SearchJobAdapter searchAdapter;
     private OnFragmentInteractionListener mListener;
-    private ArrayList<JobInfo> jobArrayList;
+    private ArrayList<JobData> jobArrayList;
     private ProgressDialog pDialog;
+
+
+
+    APIService apiService;
+
+    String url="https://jobs.github.com";
+
+
     public SearchFragment() {
         // Required empty public constructor
     }
@@ -92,7 +108,19 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         bindView();
         super.onViewCreated(view, savedInstanceState);
-        searchBtn.setOnClickListener(new View.OnClickListener() {
+
+        Retrofit retrofit=new Retrofit.Builder().baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+         apiService=retrofit.create(APIService.class);
+
+
+        setKeyListener();
+
+
+      /*  searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(searchTxt.getText().toString().isEmpty()){
@@ -102,7 +130,68 @@ public class SearchFragment extends Fragment {
                 new GetSearchResult().execute();
 
             }
+        });*/
+    }
+
+    private void setKeyListener(){
+        searchTxt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                getListSearch(apiService);
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void getListSearch(APIService apiService){
+        Observable<List<JobData>> observable=apiService.getSearchData(searchTxt.getText().toString())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+
+        //delay 100ms mỗi lần seach
+        observable.debounce(100, java.util.concurrent.TimeUnit.MILLISECONDS)
+                    .subscribe(new Observer<List<JobData>>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Toast.makeText(getActivity(),"Opps , there is an error ... ",Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onNext(List<JobData> jobData2) {
+                            jobArrayList=new ArrayList<>();
+                            jobArrayList.addAll(jobData2);
+                            searchAdapter = new SearchJobAdapter(getActivity(), jobArrayList);
+                            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                            resultList.setLayoutManager(layoutManager);
+                            resultList.setAdapter(searchAdapter);
+                        }
+                    });
+
+
+
+
+    }
+
+    private void getFilter(){
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -152,7 +241,7 @@ public class SearchFragment extends Fragment {
     }
 
 
-    private class GetSearchResult extends AsyncTask<Void, Void, Void> {
+   /* private class GetSearchResult extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
@@ -231,5 +320,5 @@ public class SearchFragment extends Fragment {
             }
         }
 
-    }
+    }*/
 }

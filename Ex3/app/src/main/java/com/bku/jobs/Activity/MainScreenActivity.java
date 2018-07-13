@@ -30,6 +30,7 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mainViewPager = findViewById(R.id.vp_horizontal_ntb);
+        mainViewPager.setOffscreenPageLimit(4);
         txtStatus = (TextView) findViewById(R.id.txtTab);
         mainFragmentPagerAdapter = new MainFragmentPagerAdapter(this, getSupportFragmentManager());
         mainViewPager.setAdapter(mainFragmentPagerAdapter);

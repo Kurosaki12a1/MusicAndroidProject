@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.bku.jobs.Adapter.FavoriteJobAdapter;
 import com.bku.jobs.Database.OfflineDatabaseHelper;
+import com.bku.jobs.ModelData.JobData;
 import com.bku.jobs.Models.JobInfo;
 import com.bku.jobs.R;
 
@@ -84,7 +85,7 @@ public class FavoriteFragment extends Fragment {
     }
 
     private void restoreFromDb() {
-        ArrayList<JobInfo> lstJob = db.getAllJob();
+        ArrayList<JobData> lstJob = db.getAllJob();
         adapter=new FavoriteJobAdapter(getActivity(),lstJob);
         recyclerView.setAdapter(adapter);
     }

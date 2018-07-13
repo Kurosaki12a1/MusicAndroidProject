@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.bku.jobs.ModelData.JobData;
 import com.bku.jobs.Models.JobInfo;
 
 import java.util.ArrayList;
@@ -45,20 +46,20 @@ public class OfflineDatabaseHelper extends SQLiteOpenHelper{
         onCreate(db);
     }
 
-    public int insertJob(JobInfo job){
+    public int insertJob(JobData job){
         SQLiteDatabase db=getWritableDatabase();
         ContentValues value=new ContentValues();
-        value.put(JobInfo.COLUMN_ID,job.getJobId());
-        value.put(JobInfo.COLUMN_CreatedAt,job.getJobCreatedAt());
-        value.put(JobInfo.COLUMN_Title,job.getJobTitle());
+        value.put(JobInfo.COLUMN_ID,job.getId());
+        value.put(JobInfo.COLUMN_CreatedAt,job.getCreatedAt());
+        value.put(JobInfo.COLUMN_Title,job.getTitle());
         value.put(JobInfo.COLUMN_Location,job.getLocation());
         value.put(JobInfo.COLUMN_Type,job.getType());
         value.put(JobInfo.COLUMN_Description,job.getDescription());
         value.put(JobInfo.COLUMN_howToApply,job.getHowToApply());
         value.put(JobInfo.COLUMN_Company,job.getCompany());
-        value.put(JobInfo.COLUMN_CompanyURL,job.getCompanyURL());
+        value.put(JobInfo.COLUMN_CompanyURL,job.getCompanyUrl());
         value.put(JobInfo.COLUMN_CompanyLogo,job.getCompanyLogo());
-        value.put(JobInfo.COLUMN_URL,job.getURL());
+        value.put(JobInfo.COLUMN_URL,job.getUrl());
         long id = db.insert(JobInfo.TABLE_NAME, null, value);
         db.close();
         return  (int) id;
@@ -92,8 +93,8 @@ public class OfflineDatabaseHelper extends SQLiteOpenHelper{
         return false;
     }
 
-    public ArrayList<JobInfo> getAllJob() {
-        ArrayList<JobInfo> listJob = new ArrayList<>();
+    public ArrayList<JobData> getAllJob() {
+        ArrayList<JobData> listJob = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT * FROM " + JobInfo.TABLE_NAME ;
 
@@ -101,18 +102,18 @@ public class OfflineDatabaseHelper extends SQLiteOpenHelper{
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor.moveToFirst()) {
             do {
-                JobInfo lst = new JobInfo();
-                lst.setJobId(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_ID)));
-                lst.setJobCreatedAt(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_CreatedAt)));
-                lst.setJobTitle(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_Title)));
+                JobData lst = new JobData();
+                lst.setId(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_ID)));
+                lst.setCreatedAt(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_CreatedAt)));
+                lst.setTitle(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_Title)));
                 lst.setLocation(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_Location)));
                 lst.setType(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_Type)));
                 lst.setDescription(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_Description)));
                 lst.setHowToApply(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_howToApply)));
                 lst.setCompany(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_Company)));
-                lst.setCompanyURL(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_CompanyURL)));
+                lst.setCompanyUrl(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_CompanyURL)));
                 lst.setCompanyLogo(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_CompanyLogo)));
-                lst.setURL(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_URL)));
+                lst.setUrl(cursor.getString(cursor.getColumnIndex(JobInfo.COLUMN_URL)));
                 listJob.add(lst);
             } while (cursor.moveToNext());
         }

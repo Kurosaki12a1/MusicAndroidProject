@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bku.jobs.Activity.JobDetailActivity;
 import com.bku.jobs.Database.OfflineDatabaseHelper;
 import com.bku.jobs.Fragment.FavoriteFragment;
+import com.bku.jobs.ModelData.JobData;
 import com.bku.jobs.Models.JobInfo;
 import com.bku.jobs.R;
 import com.bku.jobs.Util.UtilityJob;
@@ -30,10 +31,10 @@ import butterknife.ButterKnife;
 public class FavoriteJobAdapter extends RecyclerView.Adapter<FavoriteJobAdapter.ViewHolder> {
 
     private static Context ctx;
-    ArrayList<JobInfo> lstJobInfo;
+    ArrayList<JobData> lstJobInfo;
 
 
-    public FavoriteJobAdapter(Context context, ArrayList<JobInfo> lst){
+    public FavoriteJobAdapter(Context context, ArrayList<JobData> lst){
         this.ctx=context;
         this.lstJobInfo=new ArrayList<>(lst);
         this.lstJobInfo=lst;
@@ -50,12 +51,12 @@ public class FavoriteJobAdapter extends RecyclerView.Adapter<FavoriteJobAdapter.
     @Override
     public void onBindViewHolder(@NonNull FavoriteJobAdapter.ViewHolder holder, int position) {
 
-        final JobInfo jobInfo=lstJobInfo.get(position);
+        final JobData jobInfo=lstJobInfo.get(position);
         Glide.with(ctx).load(jobInfo.getCompanyLogo()).fitCenter().into(holder.companyLogo);
-        holder.titleJob.setText(jobInfo.getJobTitle());
+        holder.titleJob.setText(jobInfo.getTitle());
         holder.typeJob.setText("/ " +jobInfo.getType());
         holder.companyName.setText("Company Name : " +jobInfo.getCompany());
-        holder.createdAt.setText(jobInfo.getJobCreatedAt());
+        holder.createdAt.setText(jobInfo.getCreatedAt());
         holder.location.setText("Location : "+jobInfo.getLocation());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

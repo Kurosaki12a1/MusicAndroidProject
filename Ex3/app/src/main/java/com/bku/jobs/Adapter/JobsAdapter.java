@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bku.jobs.ModelData.JobData;
 import com.bku.jobs.Models.JobInfo;
 import com.bku.jobs.R;
 import com.bumptech.glide.Glide;
@@ -26,9 +27,9 @@ import butterknife.ButterKnife;
  * Created by Huy on 05/23/18.
  */
 
-public class JobsAdapter extends ArrayAdapter<JobInfo> {
+public class JobsAdapter extends ArrayAdapter<JobData> {
     private Context mContext;
-    private List<JobInfo> jobList = new ArrayList<>();
+    private List<JobData> jobList = new ArrayList<>();
 
     @BindView(R.id.companyLogo) ImageView companyLogo;
     @BindView(R.id.titleJob) TextView titleJob;
@@ -37,7 +38,7 @@ public class JobsAdapter extends ArrayAdapter<JobInfo> {
     @BindView(R.id.location) TextView location;
     @BindView(R.id.createdAt) TextView createdAt;
 
-    public JobsAdapter(@NonNull Context context, ArrayList<JobInfo> list){
+    public JobsAdapter(@NonNull Context context, ArrayList<JobData> list){
         super(context,0,list);
         this.mContext = context;
         this.jobList = list;
@@ -49,13 +50,13 @@ public class JobsAdapter extends ArrayAdapter<JobInfo> {
         View listItem = convertView;
         if (listItem == null)
             listItem = LayoutInflater.from(mContext).inflate(R.layout.favorite_job_item,parent,false);
-        JobInfo jobInfo=jobList.get(position);
+        JobData jobInfo=jobList.get(position);
         ButterKnife.bind(this,listItem);
         Glide.with(mContext).load(jobInfo.getCompanyLogo()).fitCenter().into(companyLogo);
-        titleJob.setText(jobInfo.getJobTitle());
+        titleJob.setText(jobInfo.getTitle());
         typeJob.setText("/ " +jobInfo.getType());
         companyName.setText("Company Name : " +jobInfo.getCompany());
-        createdAt.setText(jobInfo.getJobCreatedAt());
+        createdAt.setText(jobInfo.getCreatedAt());
         location.setText("Location : "+jobInfo.getLocation());
         return listItem;
     }

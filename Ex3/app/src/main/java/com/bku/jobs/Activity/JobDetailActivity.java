@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bku.jobs.Database.OfflineDatabaseHelper;
+import com.bku.jobs.ModelData.JobData;
 import com.bku.jobs.Models.JobInfo;
 import com.bku.jobs.R;
 import com.bku.jobs.Util.UlTagHandler;
@@ -40,7 +41,7 @@ public class JobDetailActivity extends AppCompatActivity {
     @BindView(R.id.backBtn) ImageView backBtn;
     String howToApply;
     OfflineDatabaseHelper db;
-    JobInfo jobInfo;
+    JobData jobInfo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,8 +83,8 @@ public class JobDetailActivity extends AppCompatActivity {
         liked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(db.checkExist(jobInfo.getJobId())){
-                    db.deleteJob(jobInfo.getJobId());
+                if(db.checkExist(jobInfo.getId())){
+                    db.deleteJob(jobInfo.getId());
                     liked.setImageDrawable(getResources().getDrawable(R.drawable.ic_fav_video));
                 }
                 else {
@@ -95,7 +96,7 @@ public class JobDetailActivity extends AppCompatActivity {
     }
 
     private void checkAlreadyLiked(){
-        if(db.checkExist(jobInfo.getJobId())){
+        if(db.checkExist(jobInfo.getId())){
             liked.setImageDrawable(getResources().getDrawable(R.drawable.ic_faved_album));
         }
         else{
@@ -112,11 +113,11 @@ public class JobDetailActivity extends AppCompatActivity {
         }
     }
     private void initUI(){
-        jobTitle.setText(jobInfo.getJobTitle());
+        jobTitle.setText(jobInfo.getTitle());
         company.setText(jobInfo.getCompany());
         jobType.setText(jobInfo.getType());
         location.setText(jobInfo.getLocation());
-        jobCreated.setText(jobInfo.getJobCreatedAt());
+        jobCreated.setText(jobInfo.getCreatedAt());
         jobDescription.setText(fromHtml(jobInfo.getDescription()));
         jobDescription.setMovementMethod(LinkMovementMethod.getInstance());
         howToApply =jobInfo.getHowToApply();
