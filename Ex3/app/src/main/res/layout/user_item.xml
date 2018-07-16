@@ -21,6 +21,7 @@
         android:layout_toEndOf="@+id/avatarUser"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:textColor="@color/colorWhite"
         />
 
     <TextView
@@ -31,6 +32,7 @@
         android:layout_toEndOf="@+id/avatarUser"
         android:layout_below="@+id/nameUser"
         android:textSize="16sp"
+        android:textColor="@color/colorWhite"
         android:textStyle="bold"
         />
 
@@ -42,6 +44,7 @@
         android:layout_toEndOf="@+id/avatarUser"
         android:layout_below="@+id/genderUser"
         android:textSize="16sp"
+        android:textColor="@color/colorWhite"
         android:textStyle="bold"/>
 
     <TextView
@@ -52,6 +55,7 @@
         android:id="@+id/phoneUser"
         android:layout_toEndOf="@+id/nameUser"
         android:textSize="16sp"
+        android:textColor="@color/colorWhite"
         android:textStyle="bold"/>
 
     <TextView
@@ -63,6 +67,7 @@
         android:layout_below="@+id/phoneUser"
         android:layout_toEndOf="@+id/genderUser"
         android:textSize="16sp"
+        android:textColor="@color/colorWhite"
         android:textStyle="bold"/>
 
     <TextView
@@ -74,6 +79,7 @@
         android:layout_below="@+id/cellUser"
         android:layout_toEndOf="@+id/emailUser"
         android:textSize="16sp"
+        android:textColor="@color/colorWhite"
         android:textStyle="bold"/>
 
 

@@ -318,6 +318,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
             }
         });
 */
+
         Observable.zip(observable, observableUserData, new Func2<List<JobData>, UserData, DataZip>() {
 
             @Override

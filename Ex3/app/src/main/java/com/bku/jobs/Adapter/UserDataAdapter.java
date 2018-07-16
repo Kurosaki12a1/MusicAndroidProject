@@ -45,12 +45,12 @@ public class UserDataAdapter extends RecyclerView.Adapter<UserDataAdapter.ViewHo
     public void onBindViewHolder(@NonNull UserDataAdapter.ViewHolder holder, int position) {
         ResultsItem data=lstResult.get(position);
         Glide.with(context).load(data.getPicture().getThumbnail()).into(holder.avatarUser);
-        holder.nameUser.setText(data.getName().getFirst() + " " +data.getName().getLast());
-        holder.genderUser.setText(data.getGender());
-        holder.emailUser.setText(data.getEmail());
-        holder.phoneUser.setText(data.getPhone());
-        holder.cellUser.setText(data.getCell());
-        holder.natUser.setText(data.getNat());
+        holder.nameUser.setText("Name : " +data.getName().getFirst() + " " +data.getName().getLast());
+        holder.genderUser.setText("Gender : "+data.getGender());
+        holder.emailUser.setText("Email : " +data.getEmail());
+        holder.phoneUser.setText("Phone : "+data.getPhone());
+        holder.cellUser.setText("Cell " +data.getCell());
+        holder.natUser.setText("Nation " +data.getNat());
     }
 
     @Override

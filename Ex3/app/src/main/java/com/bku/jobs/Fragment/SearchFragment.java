@@ -165,9 +165,9 @@ public class SearchFragment extends Fragment {
     }
 
     private void  getDataLocation(APIService apiService) {
-        splitString=searchTxt.getText().toString().split(";");
-        if(searchTxt.getText().toString().contains(";")) splitString=searchTxt.getText().toString().split(";");
-        if(splitString.length>1) {
+     //   jobArrayList=new ArrayList<>();
+        if(searchTxt.getText().toString().contains(";")) {
+            splitString=searchTxt.getText().toString().split(";");
             strSearch=splitString[0];
         }
         else strSearch=searchTxt.getText().toString();
@@ -181,7 +181,7 @@ public class SearchFragment extends Fragment {
                 }).filter(new Func1<JobData, Boolean>() {
              @Override
              public Boolean call(JobData jobData) {
-                 return splitString.length <= 1 || jobData.getLocation().contains(splitString[1]);
+                 return !searchTxt.getText().toString().contains(";")|| jobData.getLocation().contains(splitString[1]);
              }
          })
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
