@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,9 @@ import com.bku.jobs.Adapter.SearchJobAdapter;
 import com.bku.jobs.ModelData.JobData;
 import com.bku.jobs.R;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Retrofit;
@@ -34,9 +37,13 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by Welcome on 5/21/2018.
@@ -58,10 +65,11 @@ public class SearchFragment extends Fragment {
     private ArrayList<JobData> jobArrayList;
     private ProgressDialog pDialog;
 
-
+    String [] splitString;
 
     APIService apiService;
 
+    String strSearch;
     String url="https://jobs.github.com";
 
 
@@ -143,15 +151,61 @@ public class SearchFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                getListSearch(apiService);
+             // getListSearch(apiService);
+              //  getDataLocation(apiService);
             }
 
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void afterTextChanged(Editable s) {
 
+                getDataLocation(apiService);
             }
         });
+    }
+
+    private void  getDataLocation(APIService apiService) {
+        splitString=searchTxt.getText().toString().split(";");
+        if(searchTxt.getText().toString().contains(";")) splitString=searchTxt.getText().toString().split(";");
+        if(splitString.length>1) {
+            strSearch=splitString[0];
+        }
+        else strSearch=searchTxt.getText().toString();
+        apiService.getSearchData(strSearch)
+                .flatMap(new Func1<List<JobData>, Observable<JobData>>() {
+                    @Override
+                    public Observable<JobData> call(List<JobData> jobData) {
+                        jobArrayList=new ArrayList<>();
+                        return Observable.from(jobData);
+                    }
+                }).filter(new Func1<JobData, Boolean>() {
+             @Override
+             public Boolean call(JobData jobData) {
+                 return splitString.length <= 1 || jobData.getLocation().contains(splitString[1]);
+             }
+         })
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+         .subscribe(new Subscriber<JobData>() {
+
+             @Override
+             public void onCompleted() {
+                 searchAdapter = new SearchJobAdapter(getActivity(), jobArrayList);
+                 LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                 layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                 resultList.setLayoutManager(layoutManager);
+                 resultList.setAdapter(searchAdapter);
+             }
+
+             @Override
+             public void onError(Throwable e) {
+
+             }
+
+             @Override
+             public void onNext(JobData jobData) {
+                 jobArrayList.add(jobData);
+             }
+         });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

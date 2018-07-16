@@ -1,6 +1,7 @@
 package com.bku.jobs.API;
 
 import com.bku.jobs.ModelData.JobData;
+import com.bku.jobs.ModelData.UserData.UserData;
 
 import java.util.List;
 
@@ -19,4 +20,8 @@ public interface APIService {
 
     @GET("/positions.json?")
     Observable<List<JobData>> getSearchData(@Query("description") String keySearch);
+
+    @GET("/api?inc=gender,name,nat,email,phone,cell,picture")
+    Observable<UserData> getUserData(@Query("results") String numResults);
+
 }

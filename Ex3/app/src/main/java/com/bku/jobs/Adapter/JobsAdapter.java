@@ -52,7 +52,7 @@ public class JobsAdapter extends ArrayAdapter<JobData> {
             listItem = LayoutInflater.from(mContext).inflate(R.layout.favorite_job_item,parent,false);
         JobData jobInfo=jobList.get(position);
         ButterKnife.bind(this,listItem);
-        Glide.with(mContext).load(jobInfo.getCompanyLogo()).fitCenter().into(companyLogo);
+        Glide.with(mContext).load(jobInfo.getCompanyLogo()).into(companyLogo);
         titleJob.setText(jobInfo.getTitle());
         typeJob.setText("/ " +jobInfo.getType());
         companyName.setText("Company Name : " +jobInfo.getCompany());

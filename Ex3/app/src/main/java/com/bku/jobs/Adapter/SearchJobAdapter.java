@@ -50,7 +50,7 @@ public class SearchJobAdapter extends RecyclerView.Adapter<SearchJobAdapter.View
     public void onBindViewHolder(@NonNull SearchJobAdapter.ViewHolder holder, int position) {
 
         final JobData jobInfo=lstJobInfo.get(position);
-        Glide.with(ctx).load(jobInfo.getCompanyLogo()).fitCenter().into(holder.companyLogo);
+        Glide.with(ctx).load(jobInfo.getCompanyLogo()).into(holder.companyLogo);
         holder.titleJob.setText(jobInfo.getTitle());
         holder.typeJob.setText("/ " +jobInfo.getType());
         holder.location.setText(jobInfo.getLocation());

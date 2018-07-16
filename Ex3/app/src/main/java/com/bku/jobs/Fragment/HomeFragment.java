@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +24,11 @@ import android.widget.Toast;
 import com.bku.jobs.API.APIService;
 import com.bku.jobs.Activity.JobDetailActivity;
 import com.bku.jobs.Adapter.JobsAdapter;
+import com.bku.jobs.Adapter.UserDataAdapter;
+import com.bku.jobs.DataZip;
 import com.bku.jobs.ModelData.JobData;
+import com.bku.jobs.ModelData.UserData.ResultsItem;
+import com.bku.jobs.ModelData.UserData.UserData;
 import com.bku.jobs.R;
 import com.bku.jobs.Util.UtilityJob;
 
@@ -38,6 +44,9 @@ import rx.Observer;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 /**
@@ -49,6 +58,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     private String TAG = HomeFragment.class.getSimpleName();
     private ListView listView;
     private static String url = "https://jobs.github.com";
+    private static String urlData="https://randomuser.me";
   //  ArrayList<JobInfo> jobsList;
     public ProgressBar mProgressBar;
     private JobsAdapter jobsAdapter;
@@ -66,13 +76,19 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
 
     Retrofit retrofit;
 
-    private int numJob=0;
+    Retrofit retrofit1;
+
+    ArrayList<ResultsItem> lstResultsItem;
 
     Observable<List<JobData>> observable;
+
+    Observable<UserData> observableUserData;
 
     Subscription subscription;
 
     APIService apiService;
+
+    APIService apiService1; //for UserData
 
     ArrayList<JobData> jobData;
 
@@ -81,6 +97,12 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     TextView txtError;
 
     Button btnRetry;
+
+    RecyclerView recyclerView;
+
+    Subscription subscription2; //this for something more bigger
+
+
 
 
     public HomeFragment() {
@@ -148,7 +170,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         //Nếu không xảy ra lỗi luồng đè lẫn nhau
 
 
-            subscription = Observable.interval(5, TimeUnit.SECONDS).subscribe(new Subscriber<Long>() {
+           /* subscription = Observable.interval(10, TimeUnit.SECONDS).subscribe(new Subscriber<Long>() {
                 @Override
                 public void onCompleted() {
                     //Không biết khi nào vô đây nữa.....
@@ -184,7 +206,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
 
                     }
                 }
-            });
+            });*/
 
 
         listView.setOnItemClickListener(this);
@@ -247,16 +269,27 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
 
     }
 
-
     private void updateData(final int size){
          retrofit=new Retrofit.Builder().baseUrl(url)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
 
+         retrofit1=new Retrofit.Builder().baseUrl(urlData)
+                 .addConverterFactory(GsonConverterFactory.create())
+                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                 .build();
+
 
         apiService=retrofit.create(APIService.class);
+
+        apiService1=retrofit1.create(APIService.class);
+
         observable=apiService.getJobData();
+
+        observableUserData=apiService1.getUserData("10");
+
+/*
         subscription1=observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<JobData>>() {
@@ -281,13 +314,66 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
             public void onNext(List<JobData> jobData2) {
                     jobDataLst = new ArrayList<>();
                     jobDataLst.addAll(jobData2);
-                    numJob = jobData2.size();
+
+            }
+        });
+*/
+        Observable.zip(observable, observableUserData, new Func2<List<JobData>, UserData, DataZip>() {
+
+            @Override
+            public DataZip call(List<JobData> jobData, UserData userData) {
+                return new DataZip(jobData,userData);
+            }
+        }).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<DataZip>() {
+            @Override
+            public void onCompleted() {
+               // Toast.makeText(getActivity(),"Update new  " + size + " Job ",Toast.LENGTH_SHORT).show();
+                jobsAdapter = new JobsAdapter(getActivity(),jobDataLst);
+                listView.setAdapter(jobsAdapter);
+                mProgressBar.setVisibility(View.GONE);
+                UserDataAdapter userDataAdapter=new UserDataAdapter(getContext(),lstResultsItem);
+                recyclerView.setAdapter(userDataAdapter);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(DataZip dataZip) {
+                jobDataLst = new ArrayList<>();
+                jobDataLst.addAll(dataZip.getJobData());
+                lstResultsItem=new ArrayList<>(dataZip.getUserData().getResults());
             }
         });
 
 
-
     }
+
+
+   /* private Subscription getUserData(){
+        return observableUserData.subscribe(new Observer<UserData>() {
+            @Override
+            public void onCompleted() {
+                UserDataAdapter userDataAdapter=new UserDataAdapter(getContext(),lstResultsItem);
+                recyclerView.setAdapter(userDataAdapter);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(UserData userData) {
+                lstResultsItem=new ArrayList<>(userData.getResults());
+            }
+        });
+    }*/
+
+
 
     //Hàm này chỉ lấy 5 phần tử
     private void setRecycleViewAdapter(int size){
@@ -352,17 +438,11 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-       /* UtilityJob utilityJob=UtilityJob.getInstance();
-        utilityJob.setJobData(jobDataLst);*/
-
     }
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-      /*  UtilityJob utilityJob=UtilityJob.getInstance();
-        jobDataLst=utilityJob.getJobData();
-        setRecycleViewAdapter(17);*/
     }
 
     public void bindView() {
@@ -370,6 +450,9 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         txtError=(TextView)getView().findViewById(R.id.errorText);
         listView = (ListView) getView().findViewById(R.id.jobsList);
         mProgressBar = (ProgressBar) getView().findViewById(R.id.progressBar);
+        recyclerView=(RecyclerView)getView().findViewById(R.id.userList);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     /**

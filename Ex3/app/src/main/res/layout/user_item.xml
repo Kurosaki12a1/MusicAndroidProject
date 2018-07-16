@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="130dp"
+    android:background="@drawable/custom_border">
+
+  <ImageView
+      android:id="@+id/avatarUser"
+      android:layout_margin="20dp"
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      >
+
+  </ImageView>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/nameUser"
+        android:layout_toEndOf="@+id/avatarUser"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/genderUser"
+        android:layout_toEndOf="@+id/avatarUser"
+        android:layout_below="@+id/nameUser"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/emailUser"
+        android:layout_toEndOf="@+id/avatarUser"
+        android:layout_below="@+id/genderUser"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/phoneUser"
+        android:layout_toEndOf="@+id/nameUser"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cellUser"
+        android:layout_below="@+id/phoneUser"
+        android:layout_toEndOf="@+id/genderUser"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/natUser"
+        android:layout_below="@+id/cellUser"
+        android:layout_toEndOf="@+id/emailUser"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+
+</RelativeLayout>
