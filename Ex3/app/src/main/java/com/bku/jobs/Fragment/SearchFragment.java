@@ -57,14 +57,11 @@ public class SearchFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private Button searchBtn;
     private EditText searchTxt;
     private RecyclerView resultList;
     private SearchJobAdapter searchAdapter;
     private OnFragmentInteractionListener mListener;
     private ArrayList<JobData> jobArrayList;
-    private ProgressDialog pDialog;
-
     String [] splitString;
 
     APIService apiService;
@@ -172,7 +169,7 @@ public class SearchFragment extends Fragment {
         }
         else strSearch=searchTxt.getText().toString();
         apiService.getSearchData(strSearch)
-                .flatMap(new Func1<List<JobData>, Observable<JobData>>() {
+                .switchMap(new Func1<List<JobData>, Observable<JobData>>() {
                     @Override
                     public Observable<JobData> call(List<JobData> jobData) {
                         jobArrayList=new ArrayList<>();
@@ -181,7 +178,7 @@ public class SearchFragment extends Fragment {
                 }).filter(new Func1<JobData, Boolean>() {
              @Override
              public Boolean call(JobData jobData) {
-                 return !searchTxt.getText().toString().contains(";")|| jobData.getLocation().contains(splitString[1]);
+                 return !searchTxt.getText().toString().contains(";")|| jobData.getLocation().toLowerCase().contains(splitString[1].toLowerCase());
              }
          })
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
@@ -273,7 +270,6 @@ public class SearchFragment extends Fragment {
     }
 
     public void bindView() {
-        searchBtn = getView().findViewById(R.id.searchBtn);
         searchTxt = getView().findViewById(R.id.searchTxt);
         resultList =getView().findViewById(R.id.result_list);
         jobArrayList = new ArrayList<>();

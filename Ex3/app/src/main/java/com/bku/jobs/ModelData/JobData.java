@@ -1,16 +1,32 @@
 package com.bku.jobs.ModelData;
 
+import com.google.gson.annotations.SerializedName;
+
 public class JobData{
+
+	@SerializedName("company_logo")
 	private String companyLogo;
+	@SerializedName("how_to_apply")
 	private String howToApply;
+
+	@SerializedName("created_at")
 	private String createdAt;
+
 	private String description;
+
 	private String location;
+
 	private String company;
+
+	@SerializedName("company_url")
 	private String companyUrl;
+
 	private String id;
+
 	private String title;
+
 	private String type;
+
 	private String url;
 
 	public void setCompanyLogo(String companyLogo){
@@ -105,13 +121,13 @@ public class JobData{
  	public String toString(){
 		return 
 			"JobData{" + 
-			"company_logo = '" + companyLogo + '\'' + 
+			"company_logo = '" + companyLogo + '\'' +
 			",how_to_apply = '" + howToApply + '\'' + 
 			",created_at = '" + createdAt + '\'' + 
 			",description = '" + description + '\'' + 
 			",location = '" + location + '\'' + 
 			",company = '" + company + '\'' + 
-			",company_url = '" + companyUrl + '\'' + 
+			",company_url = '" + companyUrl + '\'' +
 			",id = '" + id + '\'' + 
 			",title = '" + title + '\'' + 
 			",type = '" + type + '\'' + 

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -121,6 +122,7 @@ public class JobDetailActivity extends AppCompatActivity {
         jobDescription.setText(fromHtml(jobInfo.getDescription()));
         jobDescription.setMovementMethod(LinkMovementMethod.getInstance());
         howToApply =jobInfo.getHowToApply();
+        Log.d("__", "initUI: ______" +  jobInfo.getHowToApply()) ;
     }
 
 
