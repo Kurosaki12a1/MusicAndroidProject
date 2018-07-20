@@ -30,7 +30,7 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mainViewPager = findViewById(R.id.vp_horizontal_ntb);
-        mainViewPager.setOffscreenPageLimit(4);
+        mainViewPager.setOffscreenPageLimit(5);
         txtStatus = (TextView) findViewById(R.id.txtTab);
         mainFragmentPagerAdapter = new MainFragmentPagerAdapter(this, getSupportFragmentManager());
         mainViewPager.setAdapter(mainFragmentPagerAdapter);
@@ -71,6 +71,15 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
                         .title("Profile")
                         .build()
         );
+        models.add(
+                new NavigationTabBar.Model.Builder(
+                        getResources().getDrawable(R.drawable.ic_android),
+                        Color.parseColor(colors[4]))
+                        .title("Test Executor")
+                        .build()
+
+
+        );
 
         navigationTabBar.setModels(models);
         navigationTabBar.setViewPager(mainViewPager, 0);
@@ -106,8 +115,11 @@ public class MainScreenActivity extends AppCompatActivity implements HomeFragmen
                     txtStatus.setText("Search");
                 } else if (position == 2) {
                     txtStatus.setText("Your Favorite Job");
-                } else {
+                } else if(position==3){
                     txtStatus.setText("Profile");
+                }
+                else{
+                    txtStatus.setText("Executor");
                 }
             }
 

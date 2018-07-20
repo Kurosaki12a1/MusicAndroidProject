@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 
+import com.bku.jobs.Fragment.ExecutorFragment;
 import com.bku.jobs.Fragment.FavoriteFragment;
 import com.bku.jobs.Fragment.HomeFragment;
 import com.bku.jobs.Fragment.ProfileFragment;
@@ -34,15 +35,18 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
             return new SearchFragment();
         } else if (position == 2) {
             return new FavoriteFragment();
-        } else {
+        } else if(position==3) {
             return new ProfileFragment();
+        }
+        else {
+            return new ExecutorFragment();
         }
     }
 
     // This determines the number of tabs
     @Override
     public int getCount() {
-        return 4;
+        return 5;
     }
 
     // This determines the title for each tab
@@ -61,6 +65,8 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
                 return "Favorite Job";
             case 3:
                 return "Profile";
+            case 4:
+                return "Executor";
             default:
                 return null;
         }

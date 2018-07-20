@@ -28,6 +28,8 @@ import com.bku.jobs.Adapter.JobsAdapter;
 import com.bku.jobs.Adapter.UserDataAdapter;
 import com.bku.jobs.DataZip;
 import com.bku.jobs.ModelData.JobData;
+import com.bku.jobs.ModelData.UserData.Name;
+import com.bku.jobs.ModelData.UserData.Picture;
 import com.bku.jobs.ModelData.UserData.ResultsItem;
 import com.bku.jobs.ModelData.UserData.UserData;
 import com.bku.jobs.R;
@@ -165,7 +167,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         bindView();
         super.onViewCreated(view, savedInstanceState);
-        updateData(10);
 
         //Thời gian update adapter  phải lớn hơn thời gian load xong cái update Data đầu tiên đã
         //Nếu không xảy ra lỗi luồng đè lẫn nhau
@@ -209,9 +210,9 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                 }
             });*/
 
-
+        bindRecycleView();
         listView.setOnItemClickListener(this);
-        btnRetry.setOnClickListener(new View.OnClickListener() {
+        /*btnRetry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(),"Try again....",Toast.LENGTH_SHORT).show();
@@ -220,7 +221,45 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                 listView.setVisibility(View.VISIBLE);
                 callSubscriptsTon();
             }
-        });
+        });*/
+    }
+
+    private void bindRecycleView(){
+        jobDataLst=new ArrayList<>();
+        ArrayList<String> listTypeJob=new ArrayList<>();
+        listTypeJob.add("Java Developer");
+        listTypeJob.add("Python Developer");
+        listTypeJob.add("Android Developer");
+        listTypeJob.add("IOS Developer");
+        listTypeJob.add("Scala Developer");
+        listTypeJob.add("C++ Developer");
+        listTypeJob.add("C# Developer");
+        listTypeJob.add("C Developer");
+        listTypeJob.add("Database Developer");
+        listTypeJob.add("Ruby Developer");
+        for(int i=0 ; i <10;i++){
+            JobData jobData=new JobData();
+            jobData.setId("00"+i);
+            jobData.setCompany("Tập Đoàn IT thứ "+ i);
+            jobData.setUrl("www.google.com.vn");
+            jobData.setCompanyUrl("www.google.com.vn");
+            jobData.setTitle(listTypeJob.get(i));
+            jobData.setCreatedAt("30/02/2018");
+            jobData.setCompanyLogo("");
+            jobData.setDescription("Công ty chém gió về công nghệ " + listTypeJob.get(i));
+            jobData.setHowToApply("www.google.com.vn");
+            jobData.setLocation("Thành Phố Hồ Chí Minh");
+            jobData.setType("Full Time");
+            jobDataLst.add(jobData);
+        }
+
+       /* UtilityJob utilityJob=UtilityJob.getInstance();
+        utilityJob.setJobData(jobDataLst);*/
+        jobsAdapter = new JobsAdapter(getActivity(),jobDataLst);
+        listView.setAdapter(jobsAdapter);
+        mProgressBar.setVisibility(View.GONE);
+
+
     }
 
     private void callSubscriptsTon(){
@@ -282,6 +321,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                  .build();
 
 
+
         apiService=retrofit.create(APIService.class);
 
         apiService1=retrofit1.create(APIService.class);
@@ -300,6 +340,7 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
                 setRecycleViewAdapter(size);
 
             }
+
 
             @Override
             public void onError(Throwable e) {
@@ -452,9 +493,6 @@ public class HomeFragment extends Fragment implements AdapterView.OnItemClickLis
         txtError=(TextView)getView().findViewById(R.id.errorText);
         listView = (ListView) getView().findViewById(R.id.jobsList);
         mProgressBar = (ProgressBar) getView().findViewById(R.id.progressBar);
-        recyclerView=(RecyclerView)getView().findViewById(R.id.userList);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     /**

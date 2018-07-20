@@ -24,8 +24,10 @@ import android.widget.Toast;
 
 import com.bku.jobs.API.APIService;
 import com.bku.jobs.Adapter.SearchJobAdapter;
+import com.bku.jobs.CustomThreadExeccutor.Util;
 import com.bku.jobs.ModelData.JobData;
 import com.bku.jobs.R;
+import com.bku.jobs.Util.UtilityJob;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -114,13 +116,13 @@ public class SearchFragment extends Fragment {
         bindView();
         super.onViewCreated(view, savedInstanceState);
 
-        Retrofit retrofit=new Retrofit.Builder().baseUrl(url)
+    /*    Retrofit retrofit=new Retrofit.Builder().baseUrl(url)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
 
          apiService=retrofit.create(APIService.class);
-
+*/
 
         setKeyListener();
 
@@ -155,11 +157,61 @@ public class SearchFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void afterTextChanged(Editable s) {
-
-                getDataLocation(apiService);
+                getSearchKeyWord(searchTxt.getText().toString());
+                /*getDataLocation(apiService);*/
             }
         });
     }
+
+    private void getSearchKeyWord(String keyword){
+        if(keyword.length()==0) {
+            jobArrayList=new ArrayList<>();
+
+        }
+        else {
+            ArrayList<JobData> jobDataLst = new ArrayList<>();
+            ArrayList<String> listTypeJob = new ArrayList<>();
+            listTypeJob.add("Java Developer");
+            listTypeJob.add("Python Developer");
+            listTypeJob.add("Android Developer");
+            listTypeJob.add("IOS Developer");
+            listTypeJob.add("Scala Developer");
+            listTypeJob.add("C++ Developer");
+            listTypeJob.add("C# Developer");
+            listTypeJob.add("C Developer");
+            listTypeJob.add("Database Developer");
+            listTypeJob.add("Ruby Developer");
+            for (int i = 0; i < 10; i++) {
+                JobData jobData = new JobData();
+                jobData.setId("00" + i);
+                jobData.setCompany("Tập Đoàn IT thứ " + i);
+                jobData.setUrl("www.google.com.vn");
+                jobData.setCompanyUrl("www.google.com.vn");
+                jobData.setTitle(listTypeJob.get(i));
+                jobData.setCreatedAt("30/02/2018");
+                jobData.setCompanyLogo("");
+                jobData.setDescription("Công ty chém gió về công nghệ " + listTypeJob.get(i));
+                jobData.setHowToApply("www.google.com.vn");
+                jobData.setLocation("Thành Phố Hồ Chí Minh");
+                jobData.setType("Full Time");
+                jobDataLst.add(jobData);
+            }
+            jobArrayList = new ArrayList<>();
+            for (int i = 0; i < 10; i++) {
+                if (jobDataLst.get(i).getTitle().toLowerCase().contains(keyword.toLowerCase())) {
+                    jobArrayList.add(jobDataLst.get(i));
+                }
+            }
+            
+        }
+        searchAdapter = new SearchJobAdapter(getActivity(), jobArrayList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        resultList.setLayoutManager(layoutManager);
+        resultList.setAdapter(searchAdapter);
+    }
+
+
 
     private void  getDataLocation(APIService apiService) {
      //   jobArrayList=new ArrayList<>();
